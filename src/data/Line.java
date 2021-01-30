@@ -11,4 +11,8 @@ public class Line {
         this.numLine = numLine;
     }
 
+    public void addStation(Node station){
+        nodes.add(station);
+    }
+
 }

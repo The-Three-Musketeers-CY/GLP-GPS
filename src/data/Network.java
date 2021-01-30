@@ -32,11 +32,10 @@ public class Network {
 
     }
 
-    public void addStationToLine(String numLine, String name, Node node){
+    public void addStationToLine(String numLine,Node node){
 
         Line line = lines.get(numLine) ;
-        //add station to line
-
+        line.addStation(node);
 
     }
 
