@@ -27,7 +27,7 @@ public class Network {
 
     public void addLine(String numLine){
 
-        Line line = new Line() ;
+        Line line = new Line(numLine) ;
         lines.put(numLine, line);
 
     }
