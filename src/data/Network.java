@@ -25,14 +25,22 @@ public class Network {
 
     }
 
-    public void addLine(String number){
+    public void addLine(String numLine){
 
-        line = new Line() ;
-        lines.put(number, line);
+        Line line = new Line() ;
+        lines.put(numLine, line);
 
     }
 
     public void addStationToLine(String numLine, String name, Node node){
+
+        Line line = lines.get(numLine) ;
+        //add station to line
+
+
+    }
+
+    public void addWay(WayType type, Node node1 Node node1){
 
 
     }

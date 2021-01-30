@@ -19,7 +19,7 @@ public class GlobalNetwork {
     public void addNetwork(Network network){
 
         String type = network.getType() ;
-        //do a verif if networks already exist
+        //do a verif if network already exists
         networks.put(type,network);
 
     }
