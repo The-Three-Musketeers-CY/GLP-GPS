@@ -21,8 +21,16 @@ public class Node {
         return poi;
     }
 
-    public boolean isStation(POI poi) {
-        return poi != null && poi.getType().equals(POIType.STATION);
+    public boolean isPOI() {
+        return poi != null;
+    }
+
+    public boolean isStation() {
+        return poi != null && poi.getType() == POIType.STATION;
+    }
+
+    public boolean isAttraction() {
+        return poi != null && poi.getType() == POIType.ATTRACTION;
     }
 
 }
