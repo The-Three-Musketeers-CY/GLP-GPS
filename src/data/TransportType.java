@@ -18,7 +18,7 @@ public class TransportType {
 
     private static HashMap<String, TransportType> initTransportTypes() {
         // Instructions
-        return null;
+        return new HashMap<>();
     }
 
     public static TransportType getInstance(String name) {

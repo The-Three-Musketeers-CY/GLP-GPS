@@ -12,11 +12,13 @@ public class WayType {
 
     private WayType(String name) {
         this.name = name;
+        this.availableTransport = new HashMap<>();
+        this.speed = new HashMap<>();
     }
 
     private static HashMap<String, WayType> initWayTypes() {
         // Instructions
-        return null;
+        return new HashMap<>();
     }
 
     public static WayType getInstance(String name) {
