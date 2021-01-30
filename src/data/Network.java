@@ -39,12 +39,12 @@ public class Network {
 
     }
 
-    public void addWay(WayType type, Node node1 Node node1){
+    public void addWay(WayType type, Node node1, Node node2){
 
 
     }
 
-    public String getType() {
+    public NetworkType getType() {
         return type;
     }
 

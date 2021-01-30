@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class GlobalNetwork {
 
-    private HashMap<String,Network> networks = null ;
+    private HashMap<NetworkType,Network> networks = null ;
 
     private static GlobalNetwork instance = new GlobalNetwork() ;
 
@@ -18,7 +18,7 @@ public class GlobalNetwork {
 
     public void addNetwork(Network network){
 
-        String type = network.getType() ;
+        NetworkType type = network.getType() ;
         //do a verif if network already exists
         networks.put(type,network);
 
