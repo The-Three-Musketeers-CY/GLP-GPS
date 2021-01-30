@@ -33,6 +33,11 @@ public class WayType {
         return list.containsKey(name);
     }
 
+    private void addAvailableTransport(TransportType transportType, int speed) {
+        availableTransport.put(transportType.getName(), transportType);
+        this.speed.put(transportType, speed);
+    }
+
     public String getName() {
         return name;
     }
