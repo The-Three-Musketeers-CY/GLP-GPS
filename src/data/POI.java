@@ -1,10 +1,11 @@
 package data;
 
 public class POI {
-    String name;
-    String type;
 
-    public POI(String name, String type) {
+    private String name;
+    private POIType type;
+
+    public POI(String name, POIType type) {
         this.name = name;
         this.type = type;
     }
@@ -17,7 +18,7 @@ public class POI {
         this.name = name;
     }
 
-    public String getType() {
+    public POIType getType() {
         return type;
     }
 

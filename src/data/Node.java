@@ -1,7 +1,7 @@
 package data;
-import data.Point;
-import data.POI;
+
 public class Node {
+
     String id;
     Point position;
     POI poi = null;
@@ -22,10 +22,7 @@ public class Node {
     }
 
     public boolean isStation(POI poi) {
-        if (getPoi() == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return poi != null && poi.getType().equals(POIType.STATION);
     }
+
 }

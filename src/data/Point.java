@@ -1,8 +1,9 @@
 package data;
 
 public class Point {
-    float x ;
-    float y ;
+
+    private float x;
+    private float y;
 
     public Point(float x, float y) {
         this.x = x;
@@ -34,4 +35,5 @@ public class Point {
                 ", y=" + y +
                 '}';
     }
+
 }

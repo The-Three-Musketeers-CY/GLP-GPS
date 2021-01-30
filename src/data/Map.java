@@ -1,28 +1,29 @@
 package data;
-import data.Node;
 
 import java.util.HashMap;
 
- public class Map {
-    HashMap<String,Node> nodes;
-    private static Map map ;
+public class Map {
+
+    private HashMap<String,Node> nodes;
+    private static Map map = new Map();
 
     public Map() {
         nodes = new HashMap<>();
     }
 
-     public HashMap<String, Node> getNodes() {
+    public HashMap<String, Node> getNodes() {
          return nodes;
-     }
+    }
 
-     public static Map getMap() {
-         return map;
-     }
+    public static Map getMap() {
+        return map;
+    }
 
-     @Override
-     public String toString() {
-         return "Map{" +
-                 "nodes=" + nodes +
-                 '}';
-     }
- }
+    @Override
+    public String toString() {
+        return "Map{" +
+                "nodes=" + nodes +
+                '}';
+    }
+
+}
