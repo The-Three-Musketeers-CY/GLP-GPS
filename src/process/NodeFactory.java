@@ -18,7 +18,8 @@ public class NodeFactory {
         return new POI(name, type);
     }
 
-    public static Node creatNode(String id,float x, float y, String name, POIType type){
+    public static Node creatNode(float x, float y, String name, POIType type){
+        String id = UUID.randomUUID().toString();
         return new Node(id, creatPoint(x, y), creatPOI(name, type));
     }
 }
