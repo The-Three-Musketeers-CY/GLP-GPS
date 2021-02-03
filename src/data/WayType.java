@@ -5,31 +5,31 @@ import java.util.HashMap;
 
 public class WayType {
 
-    private String name;
+    private WayIdentifier name;
     private HashMap<String, TransportType> availableTransport;
     private HashMap<TransportType, Integer> speed;
-    private static HashMap<String, WayType> list = initWayTypes();
+    private static HashMap<WayIdentifier, WayType> list = initWayTypes();
 
-    private WayType(String name) {
+    private WayType(WayIdentifier name) {
         this.name = name;
         this.availableTransport = new HashMap<>();
         this.speed = new HashMap<>();
     }
 
-    private static HashMap<String, WayType> initWayTypes() {
+    private static HashMap<WayIdentifier, WayType> initWayTypes() {
         // Instructions
         return new HashMap<>();
     }
 
-    public static WayType getInstance(String name) {
+    public static WayType getInstance(WayIdentifier name) {
         return list.get(name);
     }
 
-    public static HashMap<String, WayType> getInstances() {
-        return (HashMap<String, WayType>) Collections.unmodifiableMap(list);
+    public static HashMap<WayIdentifier, WayType> getInstances() {
+        return (HashMap<WayIdentifier, WayType>) Collections.unmodifiableMap(list);
     }
 
-    public static boolean isExistWayType(String name) {
+    public static boolean isExistWayType(WayIdentifier name) {
         return list.containsKey(name);
     }
 
@@ -38,7 +38,7 @@ public class WayType {
         this.speed.put(transportType, speed);
     }
 
-    public String getName() {
+    public WayIdentifier getName() {
         return name;
     }
 

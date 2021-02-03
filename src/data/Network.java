@@ -6,22 +6,13 @@ import java.util.HashMap;
 public class Network {
 
     private NetworkType type ;
-    private ArrayList<Way>  ways;
+    private HashMap<String,HashMap<String,WayIdentifier>>  ways;
     private HashMap<String,Line> lines = null ;
 
 
-    public Network(NetworkType type, ArrayList<Way> ways){
+    public Network(NetworkType type){
 
         this.type = type ;
-        this.ways = ways ;
-
-    }
-
-    public Network(NetworkType type, ArrayList<Way> ways, HashMap<String,Line> lines){
-
-        this.type = type ;
-        this.ways = ways ;
-        this.lines = lines ;
 
     }
 
@@ -48,7 +39,7 @@ public class Network {
         return type;
     }
 
-    public ArrayList<Way> getWays() {
+    public HashMap<String,HashMap<String,WayIdentifier>> getWays() {
         return ways;
     }
 
