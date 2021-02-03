@@ -1,4 +1,4 @@
-package data;
+package model;
 
 public class POI {
 

@@ -1,4 +1,4 @@
-package data;
+package model;
 
 public class Node {
 
@@ -15,6 +15,10 @@ public class Node {
         this.id = id;
         this.position = position;
         this.poi = poi;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public POI getPoi() {
