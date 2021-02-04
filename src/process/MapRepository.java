@@ -22,11 +22,18 @@ public class MapRepository {
     public void addNode(Node node){
         nodes.put(node.getId(), node);
     }
-    public void addWay(String idNodeA, String idNodeB, WayIdentifier way){
-        ways.putIfAbsent(idNodeA,new HashMap<>());
+
+    public void addWayToNode(String idNodeA, String idNodeB, WayIdentifier way){
+        ways.putIfAbsent(idNodeA, new HashMap<>());
         ways.get(idNodeA).put(idNodeB, way);
     }
+
+    public void addNodeWays(String idNodeA, HashMap<String, WayIdentifier> ways) {
+        this.ways.put(idNodeA, ways);
+    }
+
     public Node getNode(String id){
         return nodes.get(id);
     }
+
 }

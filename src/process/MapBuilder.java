@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatterBuilder;
 
 public class MapBuilder {
     private MapRepository mapRepository = MapRepository.getInstance();
+
     public MapBuilder(String path){
         File file = new File(path);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -33,13 +34,13 @@ public class MapBuilder {
                     String posX = elt.getAttribute("x");
                     String posY = elt.getAttribute("y");
                     Element poi = (Element) elt.getElementsByTagName("poi").item(0);
-                   String type = null;
-                   String name = null;
+                    String type = null;
+                    String name = null;
                     if(poi != null){
-                         type = poi.getAttribute("type");
+                        type = poi.getAttribute("type");
                         name = poi.getTextContent();
                     }
-                    model.Node node = NodeFactory.creatNode(Float.parseFloat(posX),Float.parseFloat(posY), name, POIType.valueOf(type));
+                    model.Node node = NodeFactory.creatNode(Float.parseFloat(posX),Float.parseFloat(posY), name, (type != null) ? POIType.valueOf(type) : null);
                     mapRepository.addNode(node);
                     NodeList nodeList = elt.getElementsByTagName("adjacentNode");
                     for(int indexAdjacentNode=0; indexAdjacentNode<nodeList.getLength(); indexAdjacentNode++){
@@ -53,11 +54,7 @@ public class MapBuilder {
                     }
                 }
             }
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
     }
