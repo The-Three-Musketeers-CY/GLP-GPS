@@ -7,12 +7,11 @@ public class Network {
     private NetworkType type ;
     private HashMap<String,HashMap<String,WayIdentifier>>  ways;
     private HashMap<String,Line> lines = null ;
+    private WayIdentifier[] acceptedWays;
 
-
-    public Network(NetworkType type){
-
+    public Network(NetworkType type, WayIdentifier[] acceptedWays){
         this.type = type ;
-
+        this.acceptedWays = acceptedWays;
     }
 
     public void addLine(String numLine){
@@ -30,8 +29,7 @@ public class Network {
     }
 
     public void addWay(WayType type, Node node1, Node node2){
-
-
+        // Process...
     }
 
     public NetworkType getType() {
@@ -45,4 +43,12 @@ public class Network {
     public HashMap<String, Line> getLines() {
         return lines;
     }
+
+    public boolean isAcceptedWay(WayIdentifier wayIdentifier) {
+        for (WayIdentifier acceptedWay : acceptedWays) {
+            if (acceptedWay == wayIdentifier) return true;
+        }
+        return false;
+    }
+
 }

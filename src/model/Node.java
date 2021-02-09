@@ -25,6 +25,10 @@ public class Node {
         return poi;
     }
 
+    public Point getPosition() {
+        return position;
+    }
+
     public boolean isPOI() {
         return poi != null;
     }

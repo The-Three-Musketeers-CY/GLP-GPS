@@ -6,6 +6,7 @@ import model.WayIdentifier;
 import java.util.HashMap;
 
 public class MapRepository {
+
     private HashMap<String, Node> nodes;
     private static MapRepository instance = new MapRepository();
     private HashMap<String,HashMap<String, WayIdentifier>> ways;
@@ -34,6 +35,23 @@ public class MapRepository {
 
     public Node getNode(String id){
         return nodes.get(id);
+    }
+
+    public Node getNode(float x, float y) {
+        for (Node node : nodes.values()) {
+            if (node.getPosition().getX() == x && node.getPosition().getY() == y) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    public HashMap<String, Node> getNodes() {
+        return nodes;
+    }
+
+    public HashMap<String, WayIdentifier> getNodeWays(String nodeID) {
+        return ways.get(nodeID);
     }
 
 }
