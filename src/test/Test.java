@@ -3,7 +3,7 @@ package test;
 import model.Map;
 import model.Network;
 import model.Node;
-import process.MapBuilder;
+import process.builders.MapBuilder;
 
 public class Test {
 

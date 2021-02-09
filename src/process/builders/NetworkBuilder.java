@@ -1,4 +1,4 @@
-package process;
+package process.builders;
 
 import model.Map;
 import model.Network;

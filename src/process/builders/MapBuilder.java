@@ -1,4 +1,4 @@
-package process;
+package process.builders;
 
 import model.*;
 import model.identifiers.POIIdentifier;
@@ -9,6 +9,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import process.factories.NodeFactory;
+import process.repositories.MapRepository;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

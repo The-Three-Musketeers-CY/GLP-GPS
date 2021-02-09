@@ -1,4 +1,4 @@
-package process;
+package process.factories;
 
 import model.Node;
 import model.POI;

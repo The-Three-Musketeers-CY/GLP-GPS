@@ -1,4 +1,4 @@
-package process;
+package process.repositories;
 
 import model.Node;
 import model.identifiers.WayIdentifier;
