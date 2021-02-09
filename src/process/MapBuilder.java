@@ -1,8 +1,8 @@
 package process;
 
 import model.*;
-import model.enums.POIType;
-import model.enums.WayIdentifier;
+import model.identifiers.POIIdentifier;
+import model.identifiers.WayIdentifier;
 import model.repositories.WayTypeRepository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -48,7 +48,7 @@ public class MapBuilder {
                         type = poi.getAttribute("type");
                         name = poi.getTextContent();
                     }
-                    model.Node node = NodeFactory.creatNode(Float.parseFloat(posX),Float.parseFloat(posY), name, (type != null) ? POIType.valueOf(type) : null);
+                    model.Node node = NodeFactory.creatNode(Float.parseFloat(posX),Float.parseFloat(posY), name, (type != null) ? POIIdentifier.valueOf(type) : null);
                     mapRepository.addNode(node);
                 }
             }

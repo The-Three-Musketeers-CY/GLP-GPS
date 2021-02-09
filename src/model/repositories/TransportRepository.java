@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class TransportRepository {
 
-    private HashMap<model.enums.TransportIdentifier, Transport> transports;
+    private HashMap<model.identifiers.TransportIdentifier, Transport> transports;
     private static TransportRepository instance = new TransportRepository();
 
     private TransportRepository() {

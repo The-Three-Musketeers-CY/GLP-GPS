@@ -1,6 +1,6 @@
 package model;
 
-import model.enums.POIType;
+import model.identifiers.POIIdentifier;
 
 public class Node {
 
@@ -36,11 +36,11 @@ public class Node {
     }
 
     public boolean isStation() {
-        return poi != null && poi.getType() == POIType.STATION;
+        return poi != null && poi.getType() == POIIdentifier.STATION;
     }
 
     public boolean isAttraction() {
-        return poi != null && poi.getType() == POIType.ATTRACTION;
+        return poi != null && poi.getType() == POIIdentifier.ATTRACTION;
     }
 
     @Override

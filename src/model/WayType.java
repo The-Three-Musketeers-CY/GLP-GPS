@@ -1,7 +1,7 @@
 package model;
 
-import model.enums.TransportIdentifier;
-import model.enums.WayIdentifier;
+import model.identifiers.TransportIdentifier;
+import model.identifiers.WayIdentifier;
 
 import java.util.Collections;
 import java.util.HashMap;

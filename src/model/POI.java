@@ -1,13 +1,13 @@
 package model;
 
-import model.enums.POIType;
+import model.identifiers.POIIdentifier;
 
 public class POI {
 
     private String name;
-    private POIType type;
+    private POIIdentifier type;
 
-    public POI(String name, POIType type) {
+    public POI(String name, POIIdentifier type) {
         this.name = name;
         this.type = type;
     }
@@ -20,7 +20,7 @@ public class POI {
         this.name = name;
     }
 
-    public POIType getType() {
+    public POIIdentifier getType() {
         return type;
     }
 

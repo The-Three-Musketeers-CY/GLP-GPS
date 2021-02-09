@@ -8,13 +8,13 @@ public class TransportBuilder {
     private TransportRepository transportRepository = TransportRepository.getInstance();
 
     public void buildTransports() {
-        for (model.enums.TransportIdentifier identifier : model.enums.TransportIdentifier.values()) {
+        for (model.identifiers.TransportIdentifier identifier : model.identifiers.TransportIdentifier.values()) {
             Transport transportIdentifier = buildTransport(identifier);
             transportRepository.addTransport(transportIdentifier);
         }
     }
 
-    private Transport buildTransport(model.enums.TransportIdentifier identifier) {
+    private Transport buildTransport(model.identifiers.TransportIdentifier identifier) {
         Transport transportIdentifier = null;
         switch (identifier) {
             case CAR:

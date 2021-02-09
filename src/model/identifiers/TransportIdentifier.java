@@ -1,4 +1,4 @@
-package model.enums;
+package model.identifiers;
 
 public enum TransportIdentifier {
 

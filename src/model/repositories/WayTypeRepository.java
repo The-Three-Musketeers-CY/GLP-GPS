@@ -1,7 +1,7 @@
 package model.repositories;
 
 import model.WayType;
-import model.enums.WayIdentifier;
+import model.identifiers.WayIdentifier;
 
 import java.util.HashMap;
 

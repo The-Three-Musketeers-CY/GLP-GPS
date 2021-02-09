@@ -2,19 +2,19 @@ package process;
 
 import model.Map;
 import model.Network;
-import model.enums.NetworkType;
-import model.enums.WayIdentifier;
+import model.identifiers.NetworkIdentifier;
+import model.identifiers.WayIdentifier;
 
 public class NetworkBuilder {
 
     public void buildNetworks(Map map) {
-        for (NetworkType type : NetworkType.values()) {
+        for (NetworkIdentifier type : NetworkIdentifier.values()) {
             Network network = buildNetwork(type);
             map.getNetworks().put(type, network);
         }
     }
 
-    private Network buildNetwork(NetworkType type) {
+    private Network buildNetwork(NetworkIdentifier type) {
         WayIdentifier[] acceptedWays = null;
         switch (type) {
             case AIR:

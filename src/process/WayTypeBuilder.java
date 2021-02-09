@@ -1,8 +1,8 @@
 package process;
 
 import model.WayType;
-import model.enums.TransportIdentifier;
-import model.enums.WayIdentifier;
+import model.identifiers.TransportIdentifier;
+import model.identifiers.WayIdentifier;
 import model.repositories.WayTypeRepository;
 
 public class WayTypeBuilder {

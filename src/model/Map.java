@@ -1,13 +1,13 @@
 package model;
 
-import model.enums.NetworkType;
+import model.identifiers.NetworkIdentifier;
 
 import java.util.HashMap;
 
 public class Map {
 
     private HashMap<String,Node> nodes;
-    private HashMap<NetworkType,Network> networks;
+    private HashMap<NetworkIdentifier,Network> networks;
 
     public Map() {
         nodes = new HashMap<>();
@@ -18,7 +18,7 @@ public class Map {
          return nodes;
     }
 
-    public HashMap<NetworkType, Network> getNetworks() {
+    public HashMap<NetworkIdentifier, Network> getNetworks() {
         return networks;
     }
 

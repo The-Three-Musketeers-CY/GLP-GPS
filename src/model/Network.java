@@ -1,19 +1,19 @@
 package model;
 
-import model.enums.NetworkType;
-import model.enums.WayIdentifier;
+import model.identifiers.NetworkIdentifier;
+import model.identifiers.WayIdentifier;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class Network {
 
-    private NetworkType type ;
+    private NetworkIdentifier type ;
     private HashMap<String,HashMap<String,WayType>> ways;
     private HashMap<String,Line> lines;
     private WayIdentifier[] acceptedWays;
 
-    public Network(NetworkType type, WayIdentifier[] acceptedWays){
+    public Network(NetworkIdentifier type, WayIdentifier[] acceptedWays){
         this.type = type ;
         ways = new HashMap<>();
         lines = new HashMap<>();
@@ -35,7 +35,7 @@ public class Network {
         ways.get(node1.getId()).put(node2.getId(), type);
     }
 
-    public NetworkType getType() {
+    public NetworkIdentifier getType() {
         return type;
     }
 
