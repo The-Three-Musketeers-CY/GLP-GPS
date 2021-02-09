@@ -1,42 +1,45 @@
 package model;
 
+import model.enums.NetworkType;
+import model.enums.WayIdentifier;
+
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Network {
 
     private NetworkType type ;
-    private HashMap<String,HashMap<String,WayIdentifier>>  ways;
-    private HashMap<String,Line> lines = null ;
+    private HashMap<String,HashMap<String,WayType>> ways;
+    private HashMap<String,Line> lines;
     private WayIdentifier[] acceptedWays;
 
     public Network(NetworkType type, WayIdentifier[] acceptedWays){
         this.type = type ;
+        ways = new HashMap<>();
+        lines = new HashMap<>();
         this.acceptedWays = acceptedWays;
     }
 
     public void addLine(String numLine){
-
         Line line = new Line(numLine) ;
         lines.put(numLine, line);
-
     }
 
     public void addStationToLine(String numLine,Node node){
-
         Line line = lines.get(numLine) ;
         line.addStation(node);
-
     }
 
     public void addWay(WayType type, Node node1, Node node2){
-        // Process...
+        ways.putIfAbsent(node1.getId(), new HashMap<>());
+        ways.get(node1.getId()).put(node2.getId(), type);
     }
 
     public NetworkType getType() {
         return type;
     }
 
-    public HashMap<String,HashMap<String,WayIdentifier>> getWays() {
+    public HashMap<String,HashMap<String,WayType>> getWays() {
         return ways;
     }
 
@@ -49,6 +52,16 @@ public class Network {
             if (acceptedWay == wayIdentifier) return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Network{" +
+                "type=" + type +
+                ", ways=" + ways +
+                ", lines=" + lines +
+                ", acceptedWays=" + Arrays.toString(acceptedWays) +
+                '}';
     }
 
 }

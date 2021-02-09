@@ -1,7 +1,7 @@
 package process;
 
 import model.Node;
-import model.WayIdentifier;
+import model.enums.WayIdentifier;
 
 import java.util.HashMap;
 

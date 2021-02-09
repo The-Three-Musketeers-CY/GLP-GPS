@@ -1,5 +1,7 @@
 package model;
 
+import model.enums.NetworkType;
+
 import java.util.HashMap;
 
 public class Map {
@@ -9,6 +11,7 @@ public class Map {
 
     public Map() {
         nodes = new HashMap<>();
+        networks = new HashMap<>();
     }
 
     public HashMap<String, Node> getNodes() {

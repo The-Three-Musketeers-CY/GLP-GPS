@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<map>
+    <node x="1" y="1">
+        <poi type="STATION">Gare du Nord</poi>
+        <adjacentNode x="6" y="21" type="METRO" />
+    </node>
+    <node x="2" y="36">
+        <poi type="BUILDING">Chez Martine</poi>
+    </node>
+    <node x="6" y="21">
+        <poi type="STATION">La Défense</poi>
+        <adjacentNode x="1" y="1" type="METRO" />
+        <adjacentNode x="0" y="0" type="BUS_LANE" />
+    </node>
+    <node x="0" y="0">
+        <poi type="ATTRACTION">Tour Eiffel</poi>
+        <adjacentNode x="6" y="21" type="ROAD" />
+    </node>
+</map>

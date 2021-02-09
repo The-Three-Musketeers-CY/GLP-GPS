@@ -1,5 +1,7 @@
 package model;
 
+import model.enums.POIType;
+
 public class Node {
 
     String id;
@@ -39,6 +41,15 @@ public class Node {
 
     public boolean isAttraction() {
         return poi != null && poi.getType() == POIType.ATTRACTION;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id='" + id + '\'' +
+                ", position=" + position +
+                ", poi=" + poi +
+                '}';
     }
 
 }

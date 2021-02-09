@@ -1,6 +1,9 @@
 package process;
 
 import model.*;
+import model.enums.POIType;
+import model.enums.WayIdentifier;
+import model.repositories.WayTypeRepository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -54,7 +57,7 @@ public class MapBuilder {
                 Node nd = nl.item(indexNode);
                 if(nd.getNodeType()== Node.ELEMENT_NODE) {
                     Element elt = (Element) nd;
-                    model.Node node = mapRepository.getNode(Float.parseFloat("x"), Float.parseFloat("y"));
+                    model.Node node = mapRepository.getNode(Float.parseFloat(elt.getAttribute("x")), Float.parseFloat(elt.getAttribute("y")));
                     if (node != null) {
                         NodeList nodeList = elt.getElementsByTagName("adjacentNode");
                         for (int indexAdjacentNode = 0; indexAdjacentNode < nodeList.getLength(); indexAdjacentNode++) {
@@ -86,16 +89,25 @@ public class MapBuilder {
         for (model.Node node : mapRepository.getNodes().values()) {
             map.getNodes().put(node.getId(), node);
         }
+
+        NetworkBuilder networkBuilder = new NetworkBuilder();
+        networkBuilder.buildNetworks(map);
+        TransportBuilder transportBuilder = new TransportBuilder();
+        transportBuilder.buildTransports();
+        WayTypeBuilder wayTypeBuilder = new WayTypeBuilder();
+        wayTypeBuilder.buildWayTypes();
+
         for (model.Node node : mapRepository.getNodes().values()) {
             HashMap<String, WayIdentifier> ways = mapRepository.getNodeWays(node.getId());
-            for (String adjNodeID : ways.keySet()) {
-                WayIdentifier way = ways.get(adjNodeID);
-                for (Network network : map.getNetworks().values()) {
-                    if (network.isAcceptedWay(way)) {
-                        network.addWay(WayType.getInstance(way), node, map.getNodes().get(adjNodeID));
+            if (ways != null)
+                for (String adjNodeID : ways.keySet()) {
+                    WayIdentifier way = ways.get(adjNodeID);
+                    for (Network network : map.getNetworks().values()) {
+                        if (network.isAcceptedWay(way)) {
+                            network.addWay(WayTypeRepository.getInstance().getWayTypes().get(way), node, map.getNodes().get(adjNodeID));
+                        }
                     }
                 }
-            }
         }
 
         // Returning map after building it correctly

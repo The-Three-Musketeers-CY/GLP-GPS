@@ -1,5 +1,7 @@
 package model;
 
+import model.enums.POIType;
+
 public class POI {
 
     private String name;

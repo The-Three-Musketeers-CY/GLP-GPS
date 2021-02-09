@@ -2,10 +2,9 @@ package process;
 
 import model.Node;
 import model.POI;
-import model.POIType;
+import model.enums.POIType;
 import model.Point;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 public class NodeFactory {
