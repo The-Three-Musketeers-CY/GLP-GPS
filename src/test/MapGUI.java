@@ -1,8 +1,6 @@
 package test;
 
 import model.Map;
-import model.Network;
-import model.Node;
 import process.builders.MapBuilder;
 
 import javax.swing.*;
@@ -14,9 +12,6 @@ public class MapGUI extends JFrame {
 
     private static final Dimension IDEAL_MAIN_DIMENSION = new Dimension(800, 400);
 
-    /**
-     * The core functional part : the map.
-     */
     private MapBuilder mapBuilder;
     private Map map;
 

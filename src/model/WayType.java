@@ -3,6 +3,7 @@ package model;
 import model.identifiers.TransportIdentifier;
 import model.identifiers.WayIdentifier;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -32,6 +33,15 @@ public class WayType {
 
     public HashMap<TransportIdentifier, Integer> getSpeeds() {
         return (HashMap<TransportIdentifier, Integer>) Collections.unmodifiableMap(speed);
+    }
+
+    @Override
+    public String toString() {
+        return "WayType{" +
+                "identifier=" + identifier +
+                ", availableTransports=" + Arrays.toString(availableTransports) +
+                ", speed=" + speed +
+                '}';
     }
 
 }
