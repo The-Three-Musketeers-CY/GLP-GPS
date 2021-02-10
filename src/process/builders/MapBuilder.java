@@ -54,7 +54,8 @@ public class MapBuilder {
                     mapRepository.addNode(node);
                 }
             }
-            // Traitement des liens entre les noeuds (après avoir tous stocké tous les noeuds et leurs différents identifiants)
+
+            // Processing all ways from nodes
             for (int indexNode = 0; indexNode < nl.getLength(); indexNode++) {
                 Node nd = nl.item(indexNode);
                 if(nd.getNodeType()== Node.ELEMENT_NODE) {
@@ -87,11 +88,7 @@ public class MapBuilder {
         // Initializing map
         Map map = new Map();
 
-        // Process...
-        for (model.Node node : mapRepository.getNodes().values()) {
-            map.getNodes().put(node.getId(), node);
-        }
-
+        // Creating networks, transports and wayTypes
         NetworkBuilder networkBuilder = new NetworkBuilder();
         networkBuilder.buildNetworks(map);
         TransportBuilder transportBuilder = new TransportBuilder();
@@ -99,6 +96,12 @@ public class MapBuilder {
         WayTypeBuilder wayTypeBuilder = new WayTypeBuilder();
         wayTypeBuilder.buildWayTypes();
 
+        // Putting nodes into map
+        for (model.Node node : mapRepository.getNodes().values()) {
+            map.getNodes().put(node.getId(), node);
+        }
+
+        // Putting all ways into all concerned networks
         for (model.Node node : mapRepository.getNodes().values()) {
             HashMap<String, WayIdentifier> ways = mapRepository.getNodeWays(node.getId());
             if (ways != null)
