@@ -5,6 +5,14 @@ import model.repositories.TransportRepository;
 
 public class TransportBuilder {
 
+    public static final int FREE_COST = 0;
+
+    public static final int DEFAULT_CAR_COST = 2;
+    public static final float DEFAULT_METRO_BUS_COST = (float) 1.9;
+    public static final int DEFAULT_TRAIN_COST = 60;
+    public static final int DEFAULT_BOAT_COST = 40;
+    public static final int DEFAULT_PLANE_COST = 120;
+
     private TransportRepository transportRepository = TransportRepository.getInstance();
 
     public void buildTransports() {
@@ -18,24 +26,24 @@ public class TransportBuilder {
         Transport transportIdentifier = null;
         switch (identifier) {
             case CAR:
-                transportIdentifier = new Transport(identifier, 2, false);
+                transportIdentifier = new Transport(identifier, DEFAULT_CAR_COST, false);
                 break;
             case BUS:
             case METRO:
-                transportIdentifier = new Transport(identifier, (float) 1.9, true);
+                transportIdentifier = new Transport(identifier, DEFAULT_METRO_BUS_COST, true);
                 break;
             case FOOT:
             case BICYCLE:
-                transportIdentifier = new Transport(identifier, 0, false);
+                transportIdentifier = new Transport(identifier, FREE_COST, false);
                 break;
             case TRAIN:
-                transportIdentifier = new Transport(identifier, 60, true);
+                transportIdentifier = new Transport(identifier, DEFAULT_TRAIN_COST, true);
                 break;
             case BOAT:
-                transportIdentifier = new Transport(identifier, 40, true);
+                transportIdentifier = new Transport(identifier, DEFAULT_BOAT_COST, true);
                 break;
             case PLANE:
-                transportIdentifier = new Transport(identifier, 120, true);
+                transportIdentifier = new Transport(identifier, DEFAULT_PLANE_COST, true);
                 break;
         }
 
