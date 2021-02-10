@@ -59,7 +59,7 @@ public class WayTypeBuilder {
                 wayType = new WayType(identifier, transports);
                 wayType.setSpeed(TransportIdentifier.BICYCLE, DEFAULT_CYCLE_LANE_BICYCLE_SPEED);
                 break;
-            case PLANE_LINE:
+            case PLANE_LANE:
                 transports = new TransportIdentifier[] { TransportIdentifier.PLANE };
                 wayType = new WayType(identifier, transports);
                 wayType.setSpeed(TransportIdentifier.PLANE, DEFAULT_PLANE_SPEED);

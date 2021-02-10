@@ -18,7 +18,7 @@ public class NetworkBuilder {
         WayIdentifier[] acceptedWays = null;
         switch (type) {
             case AIR:
-                acceptedWays = new WayIdentifier[]{ WayIdentifier.PLANE_LINE };
+                acceptedWays = new WayIdentifier[]{ WayIdentifier.PLANE_LANE};
                 break;
             case RAIL:
                 acceptedWays = new WayIdentifier[]{ WayIdentifier.METRO, WayIdentifier.RAILWAY };
