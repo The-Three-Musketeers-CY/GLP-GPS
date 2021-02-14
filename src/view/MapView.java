@@ -72,13 +72,13 @@ public class MapView extends JPanel{
                for(String nodeId2 : network.getWays().get(nodeId1).keySet()){
                    Node node2 = map.getNodes().get(nodeId2);
                    g2d.setStroke(new BasicStroke(15));
-                   g2d.drawLine((int)node1.getPosition().getX()*zoom,(int)node1.getPosition().getY()*zoom,(int)node2.getPosition().getX()*zoom,(int)node2.getPosition().getY()*zoom);
+                   g2d.drawLine(node1.getPosition().getX() *zoom,node1.getPosition().getY()*zoom, node2.getPosition().getX() *zoom, node2.getPosition().getY() *zoom);
                }
            }
         }
         for(Node node : map.getNodes().values()){
             g.setColor(nodeColorType(node));
-            g.fillOval((int)node.getPosition().getX()*zoom-5,(int)node.getPosition().getY()*zoom-5,10,10);
+            g.fillOval(node.getPosition().getX() * zoom-5,node.getPosition().getY() * zoom-5,10,10);
         }
     }
     private Color nodeColorType(Node node){

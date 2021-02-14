@@ -50,7 +50,7 @@ public class MapBuilder {
                         type = poi.getAttribute("type");
                         name = poi.getTextContent();
                     }
-                    model.Node node = NodeFactory.creatNode(Float.parseFloat(posX),Float.parseFloat(posY), name, (type != null) ? POIIdentifier.valueOf(type) : null);
+                    model.Node node = NodeFactory.creatNode(Integer.parseInt(posX),Integer.parseInt(posY), name, (type != null) ? POIIdentifier.valueOf(type) : null);
                     mapRepository.addNode(node);
                 }
             }

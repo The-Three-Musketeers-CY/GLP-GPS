@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class NodeFactory {
 
-    private static Point creatPoint(float x, float y){
+    private static Point creatPoint(int x, int y){
         return new Point(x, y);
     }
 
@@ -17,7 +17,7 @@ public class NodeFactory {
         return new POI(name, type);
     }
 
-    public static Node creatNode(float x, float y, String name, POIIdentifier type){
+    public static Node creatNode(int x, int y, String name, POIIdentifier type){
         String id = UUID.randomUUID().toString();
         return new Node(id, creatPoint(x, y), creatPOI(name, type));
     }
