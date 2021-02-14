@@ -26,8 +26,8 @@ public class MapView extends JPanel{
             int y = e.getY();
 
             for(Node node : map.getNodes().values()){
-                if(node.getPosition().getX()*zoom <= x+10 && node.getPosition().getX()*zoom>= x-10
-                        && node.getPosition().getY()*zoom <= y+10 && node.getPosition().getY()*zoom >= y-10){
+                if(node.getPosition().getX()*zoom <= x+7 && node.getPosition().getX()*zoom>= x-7
+                        && node.getPosition().getY()*zoom <= y+7 && node.getPosition().getY()*zoom >= y-7){
                     if(node.isPOI())
                     JOptionPane.showMessageDialog(MapView.this,node.getPoi().getName());
                     else JOptionPane.showMessageDialog(MapView.this,"Ce n'est pas un POI");
@@ -58,7 +58,7 @@ public class MapView extends JPanel{
 
     public MapView(Map map){
         this.map = map ;
-        zoom = 5 ;
+        zoom = 5;
         this.addMouseListener(new Click());
     }
     @Override
@@ -78,7 +78,7 @@ public class MapView extends JPanel{
         }
         for(Node node : map.getNodes().values()){
             g.setColor(nodeColorType(node));
-            g.fillOval(node.getPosition().getX() * zoom-5,node.getPosition().getY() * zoom-5,10,10);
+            g.fillOval(node.getPosition().getX() * zoom-7,node.getPosition().getY() * zoom-7,14,14);
         }
     }
     private Color nodeColorType(Node node){
