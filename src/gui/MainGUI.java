@@ -17,8 +17,8 @@ public class MainGUI extends JFrame {
     private static final Dimension IDEAL_MAIN_DIMENSION = new Dimension(GPSConfig.WINDOW_WIDTH, GPSConfig.WINDOW_HEIGHT);
     private static final Dimension IDEAL_MAPVIEW_DIMENSION = new Dimension(GPSConfig.WINDOW_WIDTH, GPSConfig.WINDOW_HEIGHT);
 
-    private static final int MIN_DEC_POS_X = GPSConfig.WINDOW_WIDTH - GPSConfig.MAP_SIZE_WIDTH;
-    private static final int MIN_DEC_POS_Y = GPSConfig.WINDOW_HEIGHT - GPSConfig.MAP_SIZE_HEIGHT;
+    private static final int MIN_DEC_POS_X = Math.min(GPSConfig.WINDOW_WIDTH - GPSConfig.MAP_SIZE_WIDTH, 0);
+    private static final int MIN_DEC_POS_Y = Math.min(GPSConfig.WINDOW_HEIGHT - GPSConfig.MAP_SIZE_HEIGHT, 0);
     private static final int MAX_DEC_POS_X = 0;
     private static final int MAX_DEC_POS_Y = 0;
 
