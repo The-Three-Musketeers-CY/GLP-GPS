@@ -24,11 +24,11 @@ public class MapView extends JPanel{
             int y = e.getY();
 
             for(Node node : map.getNodes().values()){
-                if(node.getPosition().getX() <= x+7 && node.getPosition().getX()>= x-7
-                        && node.getPosition().getY() <= y+7 && node.getPosition().getY() >= y-7){
+                if(node.getPosition().getX() <= x+6 && node.getPosition().getX()>= x-6
+                        && node.getPosition().getY() <= y+6 && node.getPosition().getY() >= y-6){
                     if(node.isPOI())
                     JOptionPane.showMessageDialog(MapView.this,node.getPoi().getName());
-                    else JOptionPane.showMessageDialog(MapView.this,"Ce n'est pas un POI");
+                    else JOptionPane.showMessageDialog(MapView.this,"Ce n'est pas un POI", "PAS POI", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
@@ -68,14 +68,14 @@ public class MapView extends JPanel{
                Node node1 = map.getNodes().get(nodeId1);
                for(String nodeId2 : network.getWays().get(nodeId1).keySet()){
                    Node node2 = map.getNodes().get(nodeId2);
-                   g2d.setStroke(new BasicStroke(10));
+                   g2d.setStroke(new BasicStroke(5));
                    g2d.drawLine(node1.getPosition().getX(),node1.getPosition().getY(), node2.getPosition().getX(), node2.getPosition().getY());
                }
            }
         }
         for(Node node : map.getNodes().values()){
             g.setColor(nodeColorType(node));
-            g.fillOval(node.getPosition().getX()-7,node.getPosition().getY()-7,14,14);
+            g.fillOval(node.getPosition().getX()-6,node.getPosition().getY()-6,12,12);
         }
     }
     private Color nodeColorType(Node node){

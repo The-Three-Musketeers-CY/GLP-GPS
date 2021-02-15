@@ -12,8 +12,8 @@ public class MainGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Dimension IDEAL_MAIN_DIMENSION = new Dimension(800, 400);
-    private static final Dimension IDEAL_MAPVIEW_DIMENSION = new Dimension(1000, 1000);
+    private static final Dimension IDEAL_MAIN_DIMENSION = new Dimension(1000, 600);
+    private static final Dimension IDEAL_MAPVIEW_DIMENSION = new Dimension(1000, 600);
 
     private Map map;
 
