@@ -10,8 +10,10 @@ import java.awt.event.*;
 
 public class MapView extends JPanel{
 
-    private static final int MAX_DEC_POS_X = 500;
-    private static final int MAX_DEC_POS_Y = 500;
+    private static final int MIN_DEC_POS_X = -500;
+    private static final int MIN_DEC_POS_Y = -500;
+    private static final int MAX_DEC_POS_X = 0;
+    private static final int MAX_DEC_POS_Y = 0;
 
     private Map map ;
 
@@ -32,8 +34,8 @@ public class MapView extends JPanel{
             int dx = e.getX() - cursorPosX;
             int dy = e.getY() - cursorPosY;
 
-            if (dx + decPosX < MAX_DEC_POS_X && dx + decPosX > -MAX_DEC_POS_X) newDecX = dx + decPosX;
-            if (dy + decPosY < MAX_DEC_POS_Y && dy + decPosY > -MAX_DEC_POS_Y) newDecY = dy + decPosY;
+            if (dx + decPosX <= MAX_DEC_POS_X && dx + decPosX >= MIN_DEC_POS_X) newDecX = dx + decPosX;
+            if (dy + decPosY <= MAX_DEC_POS_Y && dy + decPosY >= MIN_DEC_POS_Y) newDecY = dy + decPosY;
             repaint();
         }
 
