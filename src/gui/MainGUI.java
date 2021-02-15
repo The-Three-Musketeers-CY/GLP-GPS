@@ -1,9 +1,9 @@
-package test;
+package gui;
 
 import model.Map;
 import model.Node;
 import process.builders.MapBuilder;
-import view.MapView;
+import gui.view.MapView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -162,10 +162,6 @@ public class MainGUI extends JFrame {
             mapView.repaint();
         }
 
-    }
-
-    public static void main(String[] args) {
-        new MainGUI("Test", "map.xml");
     }
 
 }

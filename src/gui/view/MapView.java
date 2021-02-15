@@ -1,4 +1,4 @@
-package view;
+package gui.view;
 
 import model.Map;
 import model.Network;
@@ -6,7 +6,6 @@ import model.Node;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class MapView extends JPanel{
 
