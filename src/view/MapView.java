@@ -86,7 +86,7 @@ public class MapView extends JPanel{
                 if(node.getPosition().getX() + newDecX <= x+6 && node.getPosition().getX() + newDecX >= x-6
                         && node.getPosition().getY() + newDecY <= y+6 && node.getPosition().getY() + newDecY >= y-6){
                     if(node.isPOI())
-                    JOptionPane.showMessageDialog(MapView.this,node.getPoi().getName());
+                    JOptionPane.showMessageDialog(MapView.this, node.getPoi().getName() + " | Type : " + node.getPoi().getType().toString(), "POI Info", JOptionPane.PLAIN_MESSAGE);
                     else JOptionPane.showMessageDialog(MapView.this,"Ce n'est pas un POI", "PAS POI", JOptionPane.ERROR_MESSAGE);
                 }
             }
