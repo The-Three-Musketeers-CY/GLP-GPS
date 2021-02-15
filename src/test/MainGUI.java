@@ -5,7 +5,6 @@ import process.builders.MapBuilder;
 import view.MapView;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 
 public class MainGUI extends JFrame {
