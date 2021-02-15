@@ -1,5 +1,6 @@
 package gui;
 
+import config.GPSConfig;
 import model.Map;
 import model.Node;
 import process.builders.MapBuilder;
@@ -13,11 +14,11 @@ public class MainGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Dimension IDEAL_MAIN_DIMENSION = new Dimension(1000, 600);
-    private static final Dimension IDEAL_MAPVIEW_DIMENSION = new Dimension(1000, 600);
+    private static final Dimension IDEAL_MAIN_DIMENSION = new Dimension(GPSConfig.WINDOW_WIDTH, GPSConfig.WINDOW_HEIGHT);
+    private static final Dimension IDEAL_MAPVIEW_DIMENSION = new Dimension(GPSConfig.WINDOW_WIDTH, GPSConfig.WINDOW_HEIGHT);
 
-    private static final int MIN_DEC_POS_X = -500;
-    private static final int MIN_DEC_POS_Y = -500;
+    private static final int MIN_DEC_POS_X = GPSConfig.WINDOW_WIDTH - GPSConfig.MAP_SIZE_WIDTH;
+    private static final int MIN_DEC_POS_Y = GPSConfig.WINDOW_HEIGHT - GPSConfig.MAP_SIZE_HEIGHT;
     private static final int MAX_DEC_POS_X = 0;
     private static final int MAX_DEC_POS_Y = 0;
 
