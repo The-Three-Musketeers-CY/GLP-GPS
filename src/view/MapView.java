@@ -3,7 +3,6 @@ package view;
 import model.Map;
 import model.Network;
 import model.Node;
-import process.builders.MapBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,23 +15,23 @@ public class MapView extends JPanel{
     private int decX = 0;
     private int decY = 0;
 
-    private int dx = 0;
-    private int dy = 0;
-
     private int posX = 0;
     private int posY = 0;
+
+    private int cursorPosX = 0;
+    private int cursorPosY = 0;
 
     private class Drag implements MouseMotionListener {
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            // TODO : Upgrade map dragging :p
-            dx = e.getX() - posX;
-            dy = e.getY() - posY;
+            setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+            int dx = e.getX() - cursorPosX;
+            int dy = e.getY() - cursorPosY;
 
-
-            decX += dx;
-            decY += dy;
+            System.out.println(dx);
+            decX = dx + posX;
+            decY = dy + posY;
             repaint();
         }
 
@@ -62,13 +61,15 @@ public class MapView extends JPanel{
 
         @Override
         public void mousePressed(MouseEvent e) {
-            posX = e.getX();
-            posY = e.getY();
+            cursorPosX = e.getX();
+            cursorPosY = e.getY();
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            posX = decX;
+            posY = decY;
         }
 
         @Override
@@ -88,13 +89,12 @@ public class MapView extends JPanel{
         this.addMouseMotionListener(new Drag());
 
         JButton test = new JButton("Reset Position !");
-        test.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                decX = 0;
-                decY = 0;
-                repaint();
-            }
+        test.addActionListener(e -> {
+            posX = 0;
+            posY = 0;
+            decX = 0;
+            decY = 0;
+            repaint();
         });
 
         add(test);
