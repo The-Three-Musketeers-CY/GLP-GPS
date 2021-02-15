@@ -12,11 +12,11 @@ public class MapView extends JPanel{
 
     private Map map ;
 
-    private int decX = 0;
-    private int decY = 0;
+    private int newDecX = 0;
+    private int newDecY = 0;
 
-    private int posX = 0;
-    private int posY = 0;
+    private int decPosX = 0;
+    private int decPosY = 0;
 
     private int cursorPosX = 0;
     private int cursorPosY = 0;
@@ -30,8 +30,8 @@ public class MapView extends JPanel{
             int dy = e.getY() - cursorPosY;
 
             System.out.println(dx);
-            decX = dx + posX;
-            decY = dy + posY;
+            newDecX = dx + decPosX;
+            newDecY = dy + decPosY;
             repaint();
         }
 
@@ -49,8 +49,8 @@ public class MapView extends JPanel{
             int y = e.getY();
 
             for(Node node : map.getNodes().values()){
-                if(node.getPosition().getX() + decX <= x+6 && node.getPosition().getX() + decX >= x-6
-                        && node.getPosition().getY() + decY <= y+6 && node.getPosition().getY() + decY >= y-6){
+                if(node.getPosition().getX() + newDecX <= x+6 && node.getPosition().getX() + newDecX >= x-6
+                        && node.getPosition().getY() + newDecY <= y+6 && node.getPosition().getY() + newDecY >= y-6){
                     System.out.println("OKKK !");
                     if(node.isPOI())
                     JOptionPane.showMessageDialog(MapView.this,node.getPoi().getName());
@@ -68,8 +68,8 @@ public class MapView extends JPanel{
         @Override
         public void mouseReleased(MouseEvent e) {
             setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            posX = decX;
-            posY = decY;
+            decPosX = newDecX;
+            decPosY = newDecY;
         }
 
         @Override
@@ -90,10 +90,10 @@ public class MapView extends JPanel{
 
         JButton test = new JButton("Reset Position !");
         test.addActionListener(e -> {
-            posX = 0;
-            posY = 0;
-            decX = 0;
-            decY = 0;
+            decPosX = 0;
+            decPosY = 0;
+            newDecX = 0;
+            newDecY = 0;
             repaint();
         });
 
@@ -110,13 +110,13 @@ public class MapView extends JPanel{
                for(String nodeId2 : network.getWays().get(nodeId1).keySet()){
                    Node node2 = map.getNodes().get(nodeId2);
                    g2d.setStroke(new BasicStroke(5));
-                   g2d.drawLine(node1.getPosition().getX() + decX,node1.getPosition().getY() + decY, node2.getPosition().getX() + decX, node2.getPosition().getY() + decY);
+                   g2d.drawLine(node1.getPosition().getX() + newDecX,node1.getPosition().getY() + newDecY, node2.getPosition().getX() + newDecX, node2.getPosition().getY() + newDecY);
                }
            }
         }
         for(Node node : map.getNodes().values()){
             g.setColor(nodeColorType(node));
-            g.fillOval(node.getPosition().getX()-6 + decX,node.getPosition().getY()-6 + decY,12,12);
+            g.fillOval(node.getPosition().getX()-6 + newDecX,node.getPosition().getY()-6 + newDecY,12,12);
         }
     }
     private Color nodeColorType(Node node){
