@@ -1,24 +1,59 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <map>
-    <node id="1" x="40" y="1">
-        <poi type="STATION">Gare du Nord</poi>
-        <adjacentNode id="4" type="METRO" />
+    <node id="1" x="100" y="0">
+        <adjacentNode id="2" type="URBAN_ROAD" />
     </node>
-    <node id="2" x="2" y="36">
-        <poi type="BUILDING">Gendarmerie</poi>
-        <adjacentNode id="4" type="METRO" />
+    <node id="2" x="50" y="45">
+        <adjacentNode id="3" type="URBAN_ROAD" />
     </node>
-    <node id="3" x="70" y="56">
-        <poi type="BUILDING">Hôtel de ville</poi>
-        <adjacentNode id="1" type="METRO" />
+    <node id="3" x="50" y="85">
+        <adjacentNode id="4" type="URBAN_ROAD" />
     </node>
-    <node id="4" x="6" y="21">
-        <poi type="STATION">La Défense - Métro</poi>
-        <adjacentNode id="1" type="METRO" />
-        <adjacentNode id="5" type="BUS_LANE" />
+    <node id="4" x="150" y="85">
+        <adjacentNode id="5" type="URBAN_ROAD" />
+        <adjacentNode id ="6" type="URBAN_ROAD"/>
     </node>
-    <node id="5" x="10" y="10">
-        <poi type="ATTRACTION">Tour Eiffel</poi>
-        <adjacentNode id="4" type="ROAD" />
+    <node id="5" x="100" y="150">
+        <adjacentNode id="4" type="URBAN_ROAD" />
+        <adjacentNode id="7" type="URBAN_ROAD" />
     </node>
+    <node id="6" x="250" y="85">
+        <adjacentNode id="4" type="URBAN_ROAD" />
+    </node>
+    <node id="7" x="100" y="250">
+        <adjacentNode id="5" type="URBAN_ROAD" />
+        <adjacentNode id="8" type="URBAN_ROAD" />
+        <adjacentNode id="9" type="URBAN_ROAD" />
+    </node>
+    <node id="8" x="0" y="250">
+        <adjacentNode id="7" type="URBAN_ROAD" />
+    </node>
+    <node id="9" x="200" y="250">
+        <adjacentNode id="7" type="URBAN_ROAD" />
+    </node>
+    <node id="10" x="300" y="300">
+        <adjacentNode id="9" type="URBAN_ROAD" />
+    </node>
+    <node id="11" x="350" y="200">
+        <adjacentNode id="10" type="URBAN_ROAD" />
+    </node>
+    <node id="12" x="250" y="150">
+        <adjacentNode id="11" type="URBAN_ROAD" />
+        <adjacentNode id="6" type="URBAN_ROAD" />
+        <adjacentNode id="9" type="URBAN_ROAD" />
+    </node>
+    <node id="13" x="450" y="250">
+        <adjacentNode id="11" type="URBAN_ROAD" />
+    </node>
+    <node id="14" x="500" y="150">
+        <adjacentNode id="13" type="URBAN_ROAD" />
+    </node>
+    <node id="15" x="500" y="80">
+        <adjacentNode id="14" type="URBAN_ROAD" />
+    </node>
+    <node id="16" x="350" y="85">
+        <adjacentNode id="15" type="URBAN_ROAD" />
+        <adjacentNode id="6" type="URBAN_ROAD" />
+    </node>
+
 </map>

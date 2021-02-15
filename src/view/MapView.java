@@ -58,7 +58,7 @@ public class MapView extends JPanel{
 
     public MapView(Map map){
         this.map = map ;
-        zoom = 5;
+        zoom = 1;
         this.addMouseListener(new Click());
     }
     @Override
@@ -82,22 +82,24 @@ public class MapView extends JPanel{
         }
     }
     private Color nodeColorType(Node node){
-        Color color ;
-        switch (node.getPoi().getType()){
-            case ATTRACTION:{
-                color = Color.ORANGE ;
-                break;
+        Color color = Color.BLACK;
+        if(node.getPoi().getType() != null) {
+            switch (node.getPoi().getType()) {
+                case ATTRACTION: {
+                    color = Color.ORANGE;
+                    break;
+                }
+                case BUILDING: {
+                    color = Color.BLUE;
+                    break;
+                }
+                case STATION: {
+                    color = Color.GRAY;
+                    break;
+                }
+                default:
+                    color = Color.BLACK;
             }
-            case BUILDING:{
-                color = Color.BLUE;
-                break;
-            }
-            case STATION:{
-                color = Color.GRAY;
-                break;
-            }
-            default:
-                color = Color.BLACK;
         }
         return color;
     }
