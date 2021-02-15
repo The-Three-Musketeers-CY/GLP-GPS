@@ -112,6 +112,7 @@ public class MapView extends JPanel{
         resetButton.addActionListener(new ResetDefaultPosButtonListener());
         add(resetButton);
     }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -128,11 +129,12 @@ public class MapView extends JPanel{
            }
         }
         for(Node node : map.getNodes().values()){
-            g.setColor(nodeColorType(node));
+            g.setColor(getNodeTypeColor(node));
             g.fillOval(node.getPosition().getX()-6 + newDecX,node.getPosition().getY()-6 + newDecY,12,12);
         }
     }
-    private Color nodeColorType(Node node){
+
+    private Color getNodeTypeColor(Node node){
         Color color = Color.BLACK;
         if(node.getPoi() != null) {
             switch (node.getPoi().getType()) {
