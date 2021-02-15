@@ -45,13 +45,14 @@ public class MapBuilder {
                     String posY = elt.getAttribute("y");
                     String id = elt.getAttribute("id");
                     Element poi = (Element) elt.getElementsByTagName("poi").item(0);
-                    String type = null;
-                    String name = null;
+                    model.Node node;
                     if(poi != null){
-                        type = poi.getAttribute("type");
-                        name = poi.getTextContent();
+                        String type = poi.getAttribute("type");
+                        String name = poi.getTextContent();
+                        node = NodeFactory.creatNode(id, Integer.parseInt(posX),Integer.parseInt(posY), name, (type != null) ? POIIdentifier.valueOf(type) : null);
+                    } else {
+                        node = NodeFactory.creatNode(id, Integer.parseInt(posX), Integer.parseInt(posY));
                     }
-                    model.Node node = NodeFactory.creatNode(id, Integer.parseInt(posX),Integer.parseInt(posY), name, (type != null) ? POIIdentifier.valueOf(type) : null);
                     mapRepository.addNode(node);
                 }
             }

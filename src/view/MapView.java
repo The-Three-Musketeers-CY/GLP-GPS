@@ -83,7 +83,7 @@ public class MapView extends JPanel{
     }
     private Color nodeColorType(Node node){
         Color color = Color.BLACK;
-        if(node.getPoi().getType() != null) {
+        if(node.getPoi() != null) {
             switch (node.getPoi().getType()) {
                 case ATTRACTION: {
                     color = Color.ORANGE;
