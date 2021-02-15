@@ -15,8 +15,6 @@ import java.awt.event.MouseListener;
 public class MapView extends JPanel{
 
     private Map map ;
-    private int zoom ;
-
 
     private class Click implements MouseListener {
 
@@ -26,8 +24,8 @@ public class MapView extends JPanel{
             int y = e.getY();
 
             for(Node node : map.getNodes().values()){
-                if(node.getPosition().getX()*zoom <= x+7 && node.getPosition().getX()*zoom>= x-7
-                        && node.getPosition().getY()*zoom <= y+7 && node.getPosition().getY()*zoom >= y-7){
+                if(node.getPosition().getX() <= x+7 && node.getPosition().getX()>= x-7
+                        && node.getPosition().getY() <= y+7 && node.getPosition().getY() >= y-7){
                     if(node.isPOI())
                     JOptionPane.showMessageDialog(MapView.this,node.getPoi().getName());
                     else JOptionPane.showMessageDialog(MapView.this,"Ce n'est pas un POI");
@@ -58,7 +56,6 @@ public class MapView extends JPanel{
 
     public MapView(Map map){
         this.map = map ;
-        zoom = 1;
         this.addMouseListener(new Click());
     }
     @Override
@@ -71,14 +68,14 @@ public class MapView extends JPanel{
                Node node1 = map.getNodes().get(nodeId1);
                for(String nodeId2 : network.getWays().get(nodeId1).keySet()){
                    Node node2 = map.getNodes().get(nodeId2);
-                   g2d.setStroke(new BasicStroke(15));
-                   g2d.drawLine(node1.getPosition().getX() *zoom,node1.getPosition().getY()*zoom, node2.getPosition().getX() *zoom, node2.getPosition().getY() *zoom);
+                   g2d.setStroke(new BasicStroke(10));
+                   g2d.drawLine(node1.getPosition().getX(),node1.getPosition().getY(), node2.getPosition().getX(), node2.getPosition().getY());
                }
            }
         }
         for(Node node : map.getNodes().values()){
             g.setColor(nodeColorType(node));
-            g.fillOval(node.getPosition().getX() * zoom-7,node.getPosition().getY() * zoom-7,14,14);
+            g.fillOval(node.getPosition().getX()-7,node.getPosition().getY()-7,14,14);
         }
     }
     private Color nodeColorType(Node node){
