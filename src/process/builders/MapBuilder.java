@@ -43,6 +43,7 @@ public class MapBuilder {
                     Element elt = (Element)nd;
                     String posX = elt.getAttribute("x");
                     String posY = elt.getAttribute("y");
+                    String id = elt.getAttribute("id");
                     Element poi = (Element) elt.getElementsByTagName("poi").item(0);
                     String type = null;
                     String name = null;
@@ -50,7 +51,7 @@ public class MapBuilder {
                         type = poi.getAttribute("type");
                         name = poi.getTextContent();
                     }
-                    model.Node node = NodeFactory.creatNode(Integer.parseInt(posX),Integer.parseInt(posY), name, (type != null) ? POIIdentifier.valueOf(type) : null);
+                    model.Node node = NodeFactory.creatNode(id, Integer.parseInt(posX),Integer.parseInt(posY), name, (type != null) ? POIIdentifier.valueOf(type) : null);
                     mapRepository.addNode(node);
                 }
             }
@@ -67,10 +68,9 @@ public class MapBuilder {
                             Node ndAdjacent = nodeList.item(indexAdjacentNode);
                             if (ndAdjacent.getNodeType() == Node.ELEMENT_NODE) {
                                 Element eltAdjacent = (Element) ndAdjacent;
-                                String posNDAdjacentX = eltAdjacent.getAttribute("x");
-                                String posNDAdjacentY = eltAdjacent.getAttribute("y");
+                                String id = eltAdjacent.getAttribute("id");
                                 String typeAdjacent = eltAdjacent.getAttribute("type");
-                                model.Node adjNode = mapRepository.getNode(Float.parseFloat(posNDAdjacentX), Float.parseFloat(posNDAdjacentY));
+                                model.Node adjNode = mapRepository.getNode(id);
                                 mapRepository.addWayToNode(node.getId(), adjNode.getId(), WayIdentifier.valueOf(typeAdjacent));
                             }
                         }

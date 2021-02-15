@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <map>
-    <node x="40" y="1">
+    <node id="1" x="40" y="1">
         <poi type="STATION">Gare du Nord</poi>
-        <adjacentNode x="6" y="21" type="METRO" />
+        <adjacentNode id="4" type="METRO" />
     </node>
-    <node x="2" y="36">
+    <node id="2" x="2" y="36">
         <poi type="BUILDING">Gendarmerie</poi>
-        <adjacentNode x="6" y="21" type="METRO" />
+        <adjacentNode id="4" type="METRO" />
     </node>
-    <node x="70" y="56">
+    <node id="3" x="70" y="56">
         <poi type="BUILDING">Hôtel de ville</poi>
-        <adjacentNode x="40" y="1" type="METRO" />
+        <adjacentNode id="1" type="METRO" />
     </node>
-    <node x="6" y="21">
+    <node id="4" x="6" y="21">
         <poi type="STATION">La Défense - Métro</poi>
-        <adjacentNode x="40" y="1" type="METRO" />
-        <adjacentNode x="10" y="10" type="BUS_LANE" />
+        <adjacentNode id="1" type="METRO" />
+        <adjacentNode id="5" type="BUS_LANE" />
     </node>
-    <node x="10" y="10">
+    <node id="5" x="10" y="10">
         <poi type="ATTRACTION">Tour Eiffel</poi>
-        <adjacentNode x="6" y="21" type="ROAD" />
+        <adjacentNode id="4" type="ROAD" />
     </node>
 </map>
