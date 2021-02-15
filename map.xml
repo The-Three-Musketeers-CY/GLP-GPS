@@ -13,7 +13,7 @@
         <adjacentNode x="40" y="1" type="METRO" />
     </node>
     <node x="6" y="21">
-        <poi type="STATION">La Défense</poi>
+        <poi type="STATION">La Défense - Métro</poi>
         <adjacentNode x="40" y="1" type="METRO" />
         <adjacentNode x="10" y="10" type="BUS_LANE" />
     </node>
