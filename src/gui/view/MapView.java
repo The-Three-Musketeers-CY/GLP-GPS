@@ -17,14 +17,28 @@ public class MapView extends JPanel{
     private int decPosX = 0;
     private int decPosY = 0;
 
+    // TODO : just some tests :p
+    private JLabel test = new JLabel("Echelle |");
+    private JLabel testX = new JLabel("X : " + newDecX);
+    private JLabel testY = new JLabel("Y : " + newDecY);
+
     public MapView(Map map){
         this.map = map;
+
+        // TODO : just some tests :p
+        add(test);
+        add(testX);
+        add(testY);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g.create();
+
+        // TODO : just some tests :p
+        testX.setText("X : " + newDecX);
+        testY.setText("Y : " + newDecY);
 
         for (Network network : map.getNetworks().values()){
            for(String nodeId1 : network.getWays().keySet()){
