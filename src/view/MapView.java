@@ -29,7 +29,6 @@ public class MapView extends JPanel{
             int dx = e.getX() - cursorPosX;
             int dy = e.getY() - cursorPosY;
 
-            System.out.println(dx);
             newDecX = dx + decPosX;
             newDecY = dy + decPosY;
             repaint();
@@ -51,7 +50,6 @@ public class MapView extends JPanel{
             for(Node node : map.getNodes().values()){
                 if(node.getPosition().getX() + newDecX <= x+6 && node.getPosition().getX() + newDecX >= x-6
                         && node.getPosition().getY() + newDecY <= y+6 && node.getPosition().getY() + newDecY >= y-6){
-                    System.out.println("OKKK !");
                     if(node.isPOI())
                     JOptionPane.showMessageDialog(MapView.this,node.getPoi().getName());
                     else JOptionPane.showMessageDialog(MapView.this,"Ce n'est pas un POI", "PAS POI", JOptionPane.ERROR_MESSAGE);
