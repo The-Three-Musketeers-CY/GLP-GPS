@@ -7,14 +7,40 @@ import process.builders.MapBuilder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 public class MapView extends JPanel{
 
     private Map map ;
+
+    private int decX = 0;
+    private int decY = 0;
+
+    private int dx = 0;
+    private int dy = 0;
+
+    private int posX = 0;
+    private int posY = 0;
+
+    private class Drag implements MouseMotionListener {
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            // TODO : Upgrade map dragging :p
+            dx = e.getX() - posX;
+            dy = e.getY() - posY;
+
+
+            decX += dx;
+            decY += dy;
+            repaint();
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
+
+        }
+    }
 
     private class Click implements MouseListener {
 
@@ -24,8 +50,9 @@ public class MapView extends JPanel{
             int y = e.getY();
 
             for(Node node : map.getNodes().values()){
-                if(node.getPosition().getX() <= x+6 && node.getPosition().getX()>= x-6
-                        && node.getPosition().getY() <= y+6 && node.getPosition().getY() >= y-6){
+                if(node.getPosition().getX() + decX <= x+6 && node.getPosition().getX() + decX >= x-6
+                        && node.getPosition().getY() + decY <= y+6 && node.getPosition().getY() + decY >= y-6){
+                    System.out.println("OKKK !");
                     if(node.isPOI())
                     JOptionPane.showMessageDialog(MapView.this,node.getPoi().getName());
                     else JOptionPane.showMessageDialog(MapView.this,"Ce n'est pas un POI", "PAS POI", JOptionPane.ERROR_MESSAGE);
@@ -35,7 +62,8 @@ public class MapView extends JPanel{
 
         @Override
         public void mousePressed(MouseEvent e) {
-
+            posX = e.getX();
+            posY = e.getY();
         }
 
         @Override
@@ -57,6 +85,19 @@ public class MapView extends JPanel{
     public MapView(Map map){
         this.map = map ;
         this.addMouseListener(new Click());
+        this.addMouseMotionListener(new Drag());
+
+        JButton test = new JButton("Reset Position !");
+        test.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                decX = 0;
+                decY = 0;
+                repaint();
+            }
+        });
+
+        add(test);
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -69,13 +110,13 @@ public class MapView extends JPanel{
                for(String nodeId2 : network.getWays().get(nodeId1).keySet()){
                    Node node2 = map.getNodes().get(nodeId2);
                    g2d.setStroke(new BasicStroke(5));
-                   g2d.drawLine(node1.getPosition().getX(),node1.getPosition().getY(), node2.getPosition().getX(), node2.getPosition().getY());
+                   g2d.drawLine(node1.getPosition().getX() + decX,node1.getPosition().getY() + decY, node2.getPosition().getX() + decX, node2.getPosition().getY() + decY);
                }
            }
         }
         for(Node node : map.getNodes().values()){
             g.setColor(nodeColorType(node));
-            g.fillOval(node.getPosition().getX()-6,node.getPosition().getY()-6,12,12);
+            g.fillOval(node.getPosition().getX()-6 + decX,node.getPosition().getY()-6 + decY,12,12);
         }
     }
     private Color nodeColorType(Node node){
