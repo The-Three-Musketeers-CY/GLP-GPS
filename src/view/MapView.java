@@ -128,14 +128,16 @@ public class MapView extends JPanel{
     }
 
     public MapView(Map map){
-        this.map = map ;
+        this.map = map;
+
+        setLayout(new BorderLayout());
 
         addMouseListener(new POIClickListener());
         addMouseMotionListener(new MapDraggedListener());
         addMouseListener(new MapDraggedListener());
 
         resetButton.addActionListener(new ResetDefaultPosButtonListener());
-        add(resetButton);
+        add(BorderLayout.SOUTH, resetButton);
     }
 
     @Override
