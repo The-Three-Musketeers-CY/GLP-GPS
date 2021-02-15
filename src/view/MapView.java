@@ -28,7 +28,7 @@ public class MapView extends JPanel{
 
     private JButton resetButton = new JButton("Reset default position");
 
-    private class MapDraggedListener implements MouseMotionListener {
+    private class MapDraggedListener implements MouseMotionListener, MouseListener {
 
         @Override
         public void mouseDragged(MouseEvent e) {
@@ -46,6 +46,33 @@ public class MapView extends JPanel{
 
         }
 
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            cursorPosX = e.getX();
+            cursorPosY = e.getY();
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            decPosX = newDecX;
+            decPosY = newDecY;
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 
     private class POIClickListener implements MouseListener {
@@ -67,15 +94,12 @@ public class MapView extends JPanel{
 
         @Override
         public void mousePressed(MouseEvent e) {
-            cursorPosX = e.getX();
-            cursorPosY = e.getY();
+
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            decPosX = newDecX;
-            decPosY = newDecY;
+
         }
 
         @Override
@@ -108,6 +132,7 @@ public class MapView extends JPanel{
 
         addMouseListener(new POIClickListener());
         addMouseMotionListener(new MapDraggedListener());
+        addMouseListener(new MapDraggedListener());
 
         resetButton.addActionListener(new ResetDefaultPosButtonListener());
         add(resetButton);
