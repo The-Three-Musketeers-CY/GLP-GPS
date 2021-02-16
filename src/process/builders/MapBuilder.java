@@ -49,9 +49,9 @@ public class MapBuilder {
                     if(poi != null){
                         String type = poi.getAttribute("type");
                         String name = poi.getTextContent();
-                        node = NodeFactory.creatNode(id, Integer.parseInt(posX),Integer.parseInt(posY), name, (type != null) ? POIIdentifier.valueOf(type) : null);
+                        node = NodeFactory.create(id, Integer.parseInt(posX),Integer.parseInt(posY), name, (type != null) ? POIIdentifier.valueOf(type) : null);
                     } else {
-                        node = NodeFactory.creatNode(id, Integer.parseInt(posX), Integer.parseInt(posY));
+                        node = NodeFactory.create(id, Integer.parseInt(posX), Integer.parseInt(posY));
                     }
                     mapRepository.addNode(node);
                 }

@@ -23,7 +23,7 @@ public class TransportBuilder {
     }
 
     private Transport buildTransport(model.identifiers.TransportIdentifier identifier) {
-        Transport transportIdentifier = null;
+        Transport transportIdentifier;
         switch (identifier) {
             case CAR:
                 transportIdentifier = new Transport(identifier, DEFAULT_CAR_COST, false);
@@ -45,6 +45,9 @@ public class TransportBuilder {
             case PLANE:
                 transportIdentifier = new Transport(identifier, DEFAULT_PLANE_COST, true);
                 break;
+            default:
+                // Renverrai une exception
+                return null;
         }
 
         return transportIdentifier;

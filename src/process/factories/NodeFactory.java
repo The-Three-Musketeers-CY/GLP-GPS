@@ -15,11 +15,11 @@ public class NodeFactory {
         return new POI(name, type);
     }
 
-    public static Node creatNode(String id, int x, int y, String name, POIIdentifier type){
+    public static Node create(String id, int x, int y, String name, POIIdentifier type){
         return new Node(id, creatPoint(x, y), creatPOI(name, type));
     }
 
-    public static Node creatNode(String id, int x, int y){
+    public static Node create(String id, int x, int y){
         return new Node(id, creatPoint(x, y));
     }
 
