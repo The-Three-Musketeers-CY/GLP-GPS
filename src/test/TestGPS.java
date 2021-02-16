@@ -6,7 +6,7 @@ public class TestGPS {
 
     public static void main(String[] args) {
 
-        new MainGUI("Test GPS !", "map.xml");
+        new MainGUI("Test GPS - v1 !", "map.xml");
 
     }
 
