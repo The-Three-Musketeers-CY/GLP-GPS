@@ -1,5 +1,7 @@
 package gui.view;
 
+import config.GPSConfig;
+import gui.PaintStrategy;
 import model.Map;
 import model.Network;
 import model.Node;
@@ -9,6 +11,8 @@ import java.awt.*;
 
 public class MapView extends JPanel{
 
+    private static final long serialVersionUID = 1L;
+
     private Map map ;
 
     private int newDecX = 0;
@@ -17,10 +21,12 @@ public class MapView extends JPanel{
     private int decPosX = 0;
     private int decPosY = 0;
 
+    private PaintStrategy paintStrategy = new PaintStrategy(this);
+
     // TODO : just some tests :p
-    private JLabel test = new JLabel("Echelle |");
-    private JLabel testX = new JLabel("X : " + newDecX);
-    private JLabel testY = new JLabel("Y : " + newDecY);
+    private JLabel test = new JLabel("Décalage |");
+    private JLabel testX = new JLabel();
+    private JLabel testY = new JLabel();
 
     public MapView(Map map){
         this.map = map;
@@ -37,46 +43,21 @@ public class MapView extends JPanel{
         Graphics2D g2d = (Graphics2D)g.create();
 
         // TODO : just some tests :p
-        testX.setText("X : " + newDecX);
-        testY.setText("Y : " + newDecY);
+        testX.setText("X : " + (GPSConfig.MAP_SIZE_WIDTH - (GPSConfig.MAP_SIZE_WIDTH + newDecX)));
+        testY.setText("Y : " + (GPSConfig.MAP_SIZE_WIDTH - (GPSConfig.MAP_SIZE_WIDTH + newDecX)));
 
         for (Network network : map.getNetworks().values()){
            for(String nodeId1 : network.getWays().keySet()){
                Node node1 = map.getNodes().get(nodeId1);
                for(String nodeId2 : network.getWays().get(nodeId1).keySet()){
                    Node node2 = map.getNodes().get(nodeId2);
-                   g2d.setStroke(new BasicStroke(5));
-                   g2d.drawLine(node1.getPosition().getX() + newDecX,node1.getPosition().getY() + newDecY, node2.getPosition().getX() + newDecX, node2.getPosition().getY() + newDecY);
+                   paintStrategy.paint(node1, node2, g2d);
                }
            }
         }
         for(Node node : map.getNodes().values()){
-            g.setColor(getNodeTypeColor(node));
-            g.fillOval(node.getPosition().getX()-6 + newDecX,node.getPosition().getY()-6 + newDecY,12,12);
+            paintStrategy.paint(node, g);
         }
-    }
-
-    private Color getNodeTypeColor(Node node){
-        Color color = Color.BLACK;
-        if(node.getPoi() != null) {
-            switch (node.getPoi().getType()) {
-                case ATTRACTION: {
-                    color = Color.ORANGE;
-                    break;
-                }
-                case BUILDING: {
-                    color = Color.BLUE;
-                    break;
-                }
-                case STATION: {
-                    color = Color.GRAY;
-                    break;
-                }
-                default:
-                    color = Color.BLACK;
-            }
-        }
-        return color;
     }
 
     public int getDecPosX() {
