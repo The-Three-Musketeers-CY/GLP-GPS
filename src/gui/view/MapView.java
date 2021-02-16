@@ -21,7 +21,7 @@ public class MapView extends JPanel{
     private int decPosX = 0;
     private int decPosY = 0;
 
-    private PaintStrategy paintStrategy = new PaintStrategy(this);
+    private PaintStrategy paintStrategy = new PaintStrategy();
 
     // TODO : just some tests :p
     private JLabel test = new JLabel("Décalage |");
@@ -51,12 +51,12 @@ public class MapView extends JPanel{
                Node node1 = map.getNodes().get(nodeId1);
                for(String nodeId2 : network.getWays().get(nodeId1).keySet()){
                    Node node2 = map.getNodes().get(nodeId2);
-                   paintStrategy.paint(node1, node2, g2d);
+                   paintStrategy.paint(node1, node2, newDecX, newDecY, g2d);
                }
            }
         }
         for(Node node : map.getNodes().values()){
-            paintStrategy.paint(node, g);
+            paintStrategy.paint(node, newDecX, newDecY, g);
         }
     }
 

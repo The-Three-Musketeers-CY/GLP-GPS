@@ -7,20 +7,14 @@ import java.awt.*;
 
 public class PaintStrategy {
 
-    private MapView mapView;
-
-    public PaintStrategy(MapView mapView) {
-        this.mapView = mapView;
-    }
-
-    public void paint(Node node, Graphics graphics) {
+    public void paint(Node node, int decX, int decY, Graphics graphics) {
         graphics.setColor(getNodeTypeColor(node));
-        graphics.fillOval(node.getPosition().getX() - 6 + mapView.getNewDecX(),node.getPosition().getY() - 6 + mapView.getNewDecY(),12,12);
+        graphics.fillOval(node.getPosition().getX() - 6 + decX,node.getPosition().getY() - 6 + decX,12,12);
     }
 
-    public void paint(Node node1, Node node2, Graphics2D g2d) {
+    public void paint(Node node1, Node node2, int decX, int decY, Graphics2D g2d) {
         g2d.setStroke(new BasicStroke(5));
-        g2d.drawLine(node1.getPosition().getX() + mapView.getNewDecX(),node1.getPosition().getY() + mapView.getNewDecY(), node2.getPosition().getX() + mapView.getNewDecX(), node2.getPosition().getY() + mapView.getNewDecY());
+        g2d.drawLine(node1.getPosition().getX() + decX,node1.getPosition().getY() + decY, node2.getPosition().getX() + decX, node2.getPosition().getY() + decY);
     }
 
     private Color getNodeTypeColor(Node node){
