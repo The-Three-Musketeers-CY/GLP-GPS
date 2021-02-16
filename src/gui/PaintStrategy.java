@@ -9,7 +9,7 @@ public class PaintStrategy {
 
     public void paint(Node node, int decX, int decY, Graphics graphics) {
         graphics.setColor(getNodeTypeColor(node));
-        graphics.fillOval(node.getPosition().getX() - 6 + decX,node.getPosition().getY() - 6 + decX,12,12);
+        graphics.fillOval(node.getPosition().getX() - 6 + decX,node.getPosition().getY() - 6 + decY,12,12);
     }
 
     public void paint(Node node1, Node node2, int decX, int decY, Graphics2D g2d) {
