@@ -74,8 +74,12 @@ public class MainGUI extends JFrame {
             int dx = e.getX() - cursorPosX;
             int dy = e.getY() - cursorPosY;
 
-            if (dx + mapView.getDecPosX() <= MAX_DEC_POS_X && dx + mapView.getDecPosX() >= MIN_DEC_POS_X) mapView.setNewDecX(dx + mapView.getDecPosX());
-            if (dy + mapView.getDecPosY() <= MAX_DEC_POS_Y && dy + mapView.getDecPosY() >= MIN_DEC_POS_Y) mapView.setNewDecY(dy + mapView.getDecPosY());
+            if (dx + mapView.getDecPosX() < MAX_DEC_POS_X && dx + mapView.getDecPosX() > MIN_DEC_POS_X) mapView.setNewDecX(dx + mapView.getDecPosX());
+            else if (dx + mapView.getDecPosX() >= MAX_DEC_POS_X) mapView.setNewDecX(MAX_DEC_POS_X);
+            else if (dx + mapView.getDecPosX() <= MIN_DEC_POS_X) mapView.setNewDecX(MIN_DEC_POS_X);
+            if (dy + mapView.getDecPosY() < MAX_DEC_POS_Y && dy + mapView.getDecPosY() > MIN_DEC_POS_Y) mapView.setNewDecY(dy + mapView.getDecPosY());
+            else if (dy + mapView.getDecPosY() >= MAX_DEC_POS_Y) mapView.setNewDecY(MAX_DEC_POS_Y);
+            else if (dy + mapView.getDecPosY() <= MIN_DEC_POS_Y) mapView.setNewDecY(MIN_DEC_POS_Y);
             repaint();
         }
 
