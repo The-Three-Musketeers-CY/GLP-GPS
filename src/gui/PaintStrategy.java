@@ -1,6 +1,5 @@
 package gui;
 
-import gui.view.MapView;
 import model.Node;
 
 import java.awt.*;
