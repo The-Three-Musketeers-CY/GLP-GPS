@@ -44,7 +44,7 @@ public class MapView extends JPanel{
 
         // TODO : just some tests :p
         testX.setText("X : " + (GPSConfig.MAP_SIZE_WIDTH - (GPSConfig.MAP_SIZE_WIDTH + newDecX)));
-        testY.setText("Y : " + (GPSConfig.MAP_SIZE_WIDTH - (GPSConfig.MAP_SIZE_WIDTH + newDecX)));
+        testY.setText("Y : " + (GPSConfig.MAP_SIZE_HEIGHT - (GPSConfig.MAP_SIZE_HEIGHT + newDecY)));
 
         for (Network network : map.getNetworks().values()){
            for(String nodeId1 : network.getWays().keySet()){
