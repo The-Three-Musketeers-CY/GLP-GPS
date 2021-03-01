@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Arrays;
-
 public class Itinerary {
 
     private int total ;
@@ -14,9 +12,13 @@ public class Itinerary {
 
     @Override
     public String toString() {
-        return "Itinerary{" +
+        String res = "Itinerary{" +
                 "total=" + total +
-                ", itineraryNodes=" + Arrays.toString(itineraryNodes) +
-                '}';
+                ", itineraryNodes=" + "\n";
+        for (Node node : itineraryNodes) {
+            res += node.toString() + "\n";
+        }
+        res += "}";
+        return res;
     }
 }
