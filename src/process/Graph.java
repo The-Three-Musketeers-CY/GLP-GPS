@@ -14,52 +14,57 @@ public class Graph {
 
         HashMap<String,CoveredNode> coveredNodes ;
         HashMap<String,Integer> weights ;
+        HashMap<String, Node> previousNodeForNodes;
 
         coveredNodes = new HashMap<>();
         weights = new HashMap<>();
+        previousNodeForNodes = new HashMap<>();
 
-        coveredNodes.put(startingNode.getId(),new CoveredNode(startingNode,null,0));
+        coveredNodes.put(startingNode.getId(), new CoveredNode(startingNode,null,0));
 
         while (!coveredNodes.containsKey(arrivalNode.getId())){
-
-
 
             //Etape 1 : Noeuds adjacents
             for (Network network : map.getNetworks().values()){
                 if(network.getWaysFromNode(currentNode) != null) {
                     System.out.println(currentNode.toString());
                     for (String idNode : network.getWaysFromNode(currentNode).keySet()) {
-                        Node node = map.getNodes().get(idNode);
-                        WayType wayType = network.getWaysFromNode(currentNode).get(node.getId());
-                        int time = calculateTime(calculateDistance(currentNode, node), wayType.getHigherSpeed());
-                        updateWeight(time, node, weights);
+                        if (!coveredNodes.containsKey(idNode)) {
+                            Node node = map.getNodes().get(idNode);
+                            WayType wayType = network.getWaysFromNode(currentNode).get(node.getId());
+                            int time = calculateTime(calculateDistance(currentNode, node), wayType.getHigherSpeed());
+                            updateWeight(time + coveredNodes.get(currentNode.getId()).getWeight(), node, weights);
+                            previousNodeForNodes.put(node.getId(), currentNode);
+                        }
                     }
                 }
             }
             //Etape 2 : plus petit poids
-            int minWeight = (int) weights.values().toArray()[0];
-            Node previousNode = null ;
+            int minWeight = -1;
+            Node node;
             for (String idNode : weights.keySet()){
-                previousNode = map.getNodes().get(idNode);
-                int weight = weights.get(previousNode.getId());
-                if(weight < minWeight){
-                    currentNode = previousNode ;
+                node = map.getNodes().get(idNode);
+                int weight = weights.get(node.getId());
+                if(weight < minWeight || minWeight == -1){
+                    currentNode = node ;
                     minWeight = weight ;
                 }
             }
-            coveredNodes.put(currentNode.getId(),new CoveredNode(currentNode,previousNode,minWeight));
+            coveredNodes.put(currentNode.getId(),new CoveredNode(currentNode,previousNodeForNodes.get(currentNode.getId()),minWeight));
             weights.remove(currentNode.getId());
-
         }
         Stack<Node> nodeStack = new Stack<>();
-        int total = 0;
-        while (currentNode.getId() != startingNode.getId()){
-            System.out.println("PUTE 2");
+        int total = coveredNodes.get(currentNode.getId()).getWeight();
+        while (currentNode != null){
             nodeStack.push(coveredNodes.get(currentNode.getId()).getNode()) ;
-            total+= coveredNodes.get(currentNode.getId()).getWeight() ;
             currentNode = coveredNodes.get(currentNode.getId()).getPreviousNode() ;
         }
-        Itinerary itinerary = new Itinerary(total, (Node[]) nodeStack.toArray());
+        ArrayList<Node> nodeList = new ArrayList<>();
+        while (nodeStack.size() != 0) {
+            nodeList.add(nodeStack.peek());
+            nodeStack.pop();
+        }
+        Itinerary itinerary = new Itinerary(total, nodeList.toArray(new Node[0]));
         return itinerary ;
     }
 
