@@ -1,8 +1,10 @@
 package gui;
 
 import config.GPSConfig;
+import model.Itinerary;
 import model.Map;
 import model.Node;
+import process.Graph;
 import process.builders.MapBuilder;
 import gui.view.MapView;
 
@@ -26,6 +28,7 @@ public class MainGUI extends JFrame {
     private MapView mapView ;
 
     private JButton resetButton = new JButton("Reset default position");
+    private JButton calculateItinerary = new JButton("Calculate") ;
 
     public MainGUI(String title, String mapPath) {
         super(title);
@@ -52,7 +55,9 @@ public class MainGUI extends JFrame {
 
         ResetDefaultPosButtonListener resetDefaultPosButtonListener = new ResetDefaultPosButtonListener();
         resetButton.addActionListener(resetDefaultPosButtonListener);
+        calculateItinerary.addActionListener(new CalculateItineraryListener());
         contentPane.add(BorderLayout.SOUTH, resetButton);
+        contentPane.add(BorderLayout.SOUTH, calculateItinerary);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
@@ -167,6 +172,15 @@ public class MainGUI extends JFrame {
             mapView.repaint();
         }
 
+    }
+
+    private class CalculateItineraryListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Itinerary itinerary = Graph.calculateItinerary(map.getNodes().get("3"),map.getNodes().get("12"),map);
+            JOptionPane.showMessageDialog(mapView,itinerary.toString());
+        }
     }
 
 }

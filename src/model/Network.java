@@ -43,6 +43,10 @@ public class Network {
         return ways;
     }
 
+    public HashMap<String,WayType> getWaysFromNode(Node node){
+        return ways.get(node.getId());
+    }
+
     public HashMap<String, Line> getLines() {
         return lines;
     }
@@ -53,6 +57,7 @@ public class Network {
         }
         return false;
     }
+
 
     @Override
     public String toString() {

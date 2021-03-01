@@ -31,6 +31,14 @@ public class WayType {
         this.speed.put(identifier, speed);
     }
 
+    public int getHigherSpeed() {
+        int maxSpeed = 0 ;
+        for(int speed : speed.values()){
+            if(speed>maxSpeed) maxSpeed = speed ;
+        }
+        return maxSpeed ;
+    }
+
     public HashMap<TransportIdentifier, Integer> getSpeeds() {
         return (HashMap<TransportIdentifier, Integer>) Collections.unmodifiableMap(speed);
     }
