@@ -38,6 +38,7 @@
         <adjacentNode id="7" type="URBAN_ROAD" />
         <adjacentNode id="12" type="URBAN_ROAD" />
         <adjacentNode id="10" type="URBAN_ROAD" />
+        <adjacentNode id="22" type="ROAD" />
     </node>
     <node id="10" x="300" y="300">
         <adjacentNode id="9" type="URBAN_ROAD" />
@@ -56,6 +57,7 @@
     <node id="13" x="450" y="250">
         <adjacentNode id="11" type="URBAN_ROAD" />
         <adjacentNode id="14" type="URBAN_ROAD" />
+        <adjacentNode id="25" type="ROAD" />
     </node>
     <node id="14" x="500" y="150">
         <adjacentNode id="13" type="URBAN_ROAD" />
@@ -68,18 +70,19 @@
     <node id="16" x="350" y="85">
         <adjacentNode id="15" type="URBAN_ROAD" />
         <adjacentNode id="6" type="URBAN_ROAD" />
+        <adjacentNode id="17" type="ROAD" />
     </node>
     <node id="17" x="500" y="0">
-        <adjacentNode id="16" type="URBAN_ROAD" />
-        <adjacentNode id="18" type="HIGHWAY" />
+        <adjacentNode id="16" type="ROAD" />
+        <adjacentNode id="18" type="ROAD" />
     </node>
     <node id="18" x="630" y="100">
-        <adjacentNode id="17" type="URBAN_ROAD" />
+        <adjacentNode id="17" type="ROAD" />
         <adjacentNode id="19" type="HIGHWAY" />
-        <adjacentNode id="24" type="URBAN_ROAD" />
+        <adjacentNode id="24" type="ROAD" />
     </node>
     <node id="19" x="750" y="150">
-        <adjacentNode id="18" type="URBAN_ROAD" />
+        <adjacentNode id="18" type="HIGHWAY" />
         <adjacentNode id="20" type="HIGHWAY" />
     </node>
     <node id="20" x="850" y="300">
@@ -99,6 +102,11 @@
         <adjacentNode id="22" type="HIGHWAY" />
     </node>
     <node id="24" x="600" y="200">
-        <adjacentNode id="18" type="URBAN_ROAD" />
+        <adjacentNode id="18" type="ROAD" />
+        <adjacentNode id="25" type="ROAD" />
+    </node>
+    <node id="25" x="500" y="300">
+        <adjacentNode id="13" type="ROAD" />
+        <adjacentNode id="24" type="ROAD" />
     </node>
 </map>
