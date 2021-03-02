@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class Graph {
+public class Dijkstra {
 
     public static Itinerary calculateItinerary(Node startingNode, Node arrivalNode, Map map){
 
@@ -28,11 +28,11 @@ public class Graph {
             for (Network network : map.getNetworks().values()){
                 if(network.getWaysFromNode(currentNode) != null) {
                     System.out.println(currentNode.toString());
-                    for (String idNode : network.getWaysFromNode(currentNode).keySet()) {
+                    for (String idNode : network.getWaysFromNode(currentNode).getWays().keySet()) {
                         if (!coveredNodes.containsKey(idNode)) {
                             Node node = map.getNodes().get(idNode);
-                            WayType wayType = network.getWaysFromNode(currentNode).get(node.getId());
-                            int time = calculateTime(calculateDistance(currentNode, node), wayType.getHigherSpeed());
+                            Way way = network.getWaysFromNode(currentNode).getWays().get(node.getId());
+                            int time = calculateTime(calculateDistance(currentNode, node), way.getHigherSpeed());
                             updateWeight(time + coveredNodes.get(currentNode.getId()).getWeight(), node, weights);
                             previousNodeForNodes.put(node.getId(), currentNode);
                         }

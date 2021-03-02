@@ -4,7 +4,7 @@ import config.GPSConfig;
 import model.Itinerary;
 import model.Map;
 import model.Node;
-import process.Graph;
+import process.Dijkstra;
 import process.builders.MapBuilder;
 import gui.view.MapView;
 
@@ -134,7 +134,7 @@ public class MainGUI extends JFrame {
                         && node.getPosition().getY() + mapView.getNewDecY() <= y+6 && node.getPosition().getY() + mapView.getNewDecY() >= y-6){
                     if(node.isPOI())
                         JOptionPane.showMessageDialog(mapView, node.getPoi().getName() + " | Type : " + node.getPoi().getType().toString(), "POI Info", JOptionPane.PLAIN_MESSAGE);
-                    else JOptionPane.showMessageDialog(mapView,"Ce n'est pas un POI", "PAS POI", JOptionPane.ERROR_MESSAGE);
+                    else JOptionPane.showMessageDialog(mapView,node.toString(), "PAS POI", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
@@ -178,7 +178,7 @@ public class MainGUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Itinerary itinerary = Graph.calculateItinerary(map.getNodes().get("3"),map.getNodes().get("12"),map);
+            Itinerary itinerary = Dijkstra.calculateItinerary(map.getNodes().get("3"),map.getNodes().get("14"),map);
             JOptionPane.showMessageDialog(mapView,itinerary.toString());
         }
     }

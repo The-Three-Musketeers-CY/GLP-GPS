@@ -104,13 +104,13 @@ public class MapBuilder {
 
         // Putting all ways into all concerned networks
         for (model.Node node : mapRepository.getNodes().values()) {
-            HashMap<String, WayIdentifier> ways = mapRepository.getNodeWays(node.getId());
+            NodeWays ways = mapRepository.getNodeWays(node.getId());
             if (ways != null)
-                for (String adjNodeID : ways.keySet()) {
-                    WayIdentifier way = ways.get(adjNodeID);
+                for (String adjNodeID : ways.getWays().keySet()) {
+                    Way way = ways.getWays().get(adjNodeID);
                     for (Network network : map.getNetworks().values()) {
-                        if (network.isAcceptedWay(way)) {
-                            network.addWay(WayTypeRepository.getInstance().getWayTypes().get(way), node, map.getNodes().get(adjNodeID));
+                        if (network.isAcceptedWay(way.getIdentifier())) {
+                            network.addWay(way.getIdentifier(), node, map.getNodes().get(adjNodeID));
                         }
                     }
                 }

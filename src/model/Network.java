@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Network {
 
     private NetworkIdentifier type ;
-    private HashMap<String,HashMap<String,WayType>> ways;
+    private HashMap<String,NodeWays> ways;
     private HashMap<String,Line> lines;
     private WayIdentifier[] acceptedWays;
 
@@ -30,20 +30,21 @@ public class Network {
         line.addStation(node);
     }
 
-    public void addWay(WayType type, Node node1, Node node2){
-        ways.putIfAbsent(node1.getId(), new HashMap<>());
-        ways.get(node1.getId()).put(node2.getId(), type);
+    public void addWay(WayIdentifier identifier, Node node1, Node node2){
+        Way way = new Way(identifier, node1, node2);
+        ways.putIfAbsent(node1.getId(), new NodeWays(node1));
+        ways.get(node1.getId()).getWays().put(node2.getId(), way);
     }
 
     public NetworkIdentifier getType() {
         return type;
     }
 
-    public HashMap<String,HashMap<String,WayType>> getWays() {
+    public HashMap<String,NodeWays> getNodeWays() {
         return ways;
     }
 
-    public HashMap<String,WayType> getWaysFromNode(Node node){
+    public NodeWays getWaysFromNode(Node node){
         return ways.get(node.getId());
     }
 

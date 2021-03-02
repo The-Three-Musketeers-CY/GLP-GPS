@@ -2,9 +2,7 @@ package gui.view;
 
 import config.GPSConfig;
 import gui.PaintStrategy;
-import model.Map;
-import model.Network;
-import model.Node;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,10 +45,10 @@ public class MapView extends JPanel{
         testY.setText("Y : " + (GPSConfig.MAP_SIZE_HEIGHT - (GPSConfig.MAP_SIZE_HEIGHT + newDecY)));
 
         for (Network network : map.getNetworks().values()){
-           for(String nodeId1 : network.getWays().keySet()){
-               Node node1 = map.getNodes().get(nodeId1);
-               for(String nodeId2 : network.getWays().get(nodeId1).keySet()){
-                   Node node2 = map.getNodes().get(nodeId2);
+           for(NodeWays nodeWays : network.getNodeWays().values()){
+               Node node1 = nodeWays.getNode();
+               for(Way way : nodeWays.getWays().values()){
+                   Node node2 = way.getNode2();
                    paintStrategy.paint(node1, node2, newDecX, newDecY, g2d);
                }
            }

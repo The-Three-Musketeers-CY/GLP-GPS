@@ -1,6 +1,8 @@
 package process.repositories;
 
 import model.Node;
+import model.NodeWays;
+import model.Way;
 import model.identifiers.WayIdentifier;
 
 import java.util.HashMap;
@@ -9,7 +11,7 @@ public class MapRepository {
 
     private HashMap<String, Node> nodes;
     private static MapRepository instance = new MapRepository();
-    private HashMap<String,HashMap<String, WayIdentifier>> ways;
+    private HashMap<String, NodeWays> ways;
 
     private MapRepository(){
         nodes = new HashMap<>();
@@ -24,13 +26,9 @@ public class MapRepository {
         nodes.put(node.getId(), node);
     }
 
-    public void addWayToNode(String idNodeA, String idNodeB, WayIdentifier way){
-        ways.putIfAbsent(idNodeA, new HashMap<>());
-        ways.get(idNodeA).put(idNodeB, way);
-    }
-
-    public void addNodeWays(String idNodeA, HashMap<String, WayIdentifier> ways) {
-        this.ways.put(idNodeA, ways);
+    public void addWayToNode(String idNodeA, String idNodeB, WayIdentifier identifier){
+        ways.putIfAbsent(idNodeA, new NodeWays(nodes.get(idNodeA)));
+        ways.get(idNodeA).getWays().put(idNodeB, new Way(identifier, nodes.get(idNodeA), nodes.get(idNodeB)));
     }
 
     public Node getNode(String id){
@@ -50,7 +48,7 @@ public class MapRepository {
         return nodes;
     }
 
-    public HashMap<String, WayIdentifier> getNodeWays(String nodeID) {
+    public NodeWays getNodeWays(String nodeID) {
         return ways.get(nodeID);
     }
 
