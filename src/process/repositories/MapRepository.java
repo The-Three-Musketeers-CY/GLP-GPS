@@ -26,9 +26,9 @@ public class MapRepository {
         nodes.put(node.getId(), node);
     }
 
-    public void addWayToNode(String idNodeA, String idNodeB, WayIdentifier identifier){
-        ways.putIfAbsent(idNodeA, new NodeWays(nodes.get(idNodeA)));
-        ways.get(idNodeA).getWays().put(idNodeB, new Way(identifier, nodes.get(idNodeA), nodes.get(idNodeB)));
+    public void addWayToNode(Way way){
+        ways.putIfAbsent(way.getNode1().getId(), new NodeWays(way.getNode1()));
+        ways.get(way.getNode1().getId()).getWays().put(way.getNode2().getId(), way);
     }
 
     public Node getNode(String id){

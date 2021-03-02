@@ -72,7 +72,8 @@ public class MapBuilder {
                                 String id = eltAdjacent.getAttribute("id");
                                 String typeAdjacent = eltAdjacent.getAttribute("type");
                                 model.Node adjNode = mapRepository.getNode(id);
-                                mapRepository.addWayToNode(node.getId(), adjNode.getId(), WayIdentifier.valueOf(typeAdjacent));
+                                Way way = new Way(WayIdentifier.valueOf(typeAdjacent), node, adjNode);
+                                mapRepository.addWayToNode(way);
                             }
                         }
                     }

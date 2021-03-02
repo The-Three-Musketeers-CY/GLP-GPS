@@ -1,19 +1,31 @@
 package gui;
 
 import model.Node;
+import model.Way;
+import model.WayType;
 
 import java.awt.*;
 
 public class PaintStrategy {
+
+    public static final Color DEFAULT_NODE_COLOR = Color.BLACK;
+    public static final Color DEFAULT_WAY_COLOR = Color.DARK_GRAY;
+
+    public static final Color DEFAULT_ATTRACTION_NODE_COLOR = Color.ORANGE;
+    public static final Color DEFAULT_BUILDING_NODE_COLOR = Color.BLUE;
+    public static final Color DEFAULT_STATION_NODE_COLOR = Color.GRAY;
+
+    public static final Color DEFAULT_HIGHWAY_WAY_COLOR = Color.RED;
 
     public void paint(Node node, int decX, int decY, Graphics graphics) {
         graphics.setColor(getNodeTypeColor(node));
         graphics.fillOval(node.getPosition().getX() - 6 + decX,node.getPosition().getY() - 6 + decY,12,12);
     }
 
-    public void paint(Node node1, Node node2, int decX, int decY, Graphics2D g2d) {
+    public void paint(Way way, int decX, int decY, Graphics2D g2d) {
         g2d.setStroke(new BasicStroke(5));
-        g2d.drawLine(node1.getPosition().getX() + decX,node1.getPosition().getY() + decY, node2.getPosition().getX() + decX, node2.getPosition().getY() + decY);
+        g2d.setColor(getWayTypeColor(way.getType()));
+        g2d.drawLine(way.getNode1().getPosition().getX() + decX,way.getNode1().getPosition().getY() + decY, way.getNode2().getPosition().getX() + decX, way.getNode2().getPosition().getY() + decY);
     }
 
     private Color getNodeTypeColor(Node node){
@@ -21,20 +33,32 @@ public class PaintStrategy {
         if(node.getPoi() != null) {
             switch (node.getPoi().getType()) {
                 case ATTRACTION: {
-                    color = Color.ORANGE;
+                    color = DEFAULT_ATTRACTION_NODE_COLOR;
                     break;
                 }
                 case BUILDING: {
-                    color = Color.BLUE;
+                    color = DEFAULT_BUILDING_NODE_COLOR;
                     break;
                 }
                 case STATION: {
-                    color = Color.GRAY;
+                    color = DEFAULT_STATION_NODE_COLOR;
                     break;
                 }
                 default:
-                    color = Color.BLACK;
+                    color = DEFAULT_NODE_COLOR;
             }
+        }
+        return color;
+    }
+
+    private Color getWayTypeColor(WayType wayType) {
+        Color color;
+        switch (wayType.getIdentifier()) {
+            case HIGHWAY:
+                color = DEFAULT_HIGHWAY_WAY_COLOR;
+                break;
+            default:
+                color = DEFAULT_WAY_COLOR;
         }
         return color;
     }

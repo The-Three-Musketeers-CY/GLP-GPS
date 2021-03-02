@@ -3,6 +3,7 @@ package gui.view;
 import config.GPSConfig;
 import gui.PaintStrategy;
 import model.*;
+import model.identifiers.WayIdentifier;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,10 +47,8 @@ public class MapView extends JPanel{
 
         for (Network network : map.getNetworks().values()){
            for(NodeWays nodeWays : network.getNodeWays().values()){
-               Node node1 = nodeWays.getNode();
                for(Way way : nodeWays.getWays().values()){
-                   Node node2 = way.getNode2();
-                   paintStrategy.paint(node1, node2, newDecX, newDecY, g2d);
+                   if (way.getIdentifier() != WayIdentifier.FOOT) paintStrategy.paint(way, newDecX, newDecY, g2d);
                }
            }
         }

@@ -7,6 +7,8 @@ import model.repositories.WayTypeRepository;
 
 public class WayTypeBuilder {
 
+    public static final int DEFAULT_FOOT_SPEED = 5;
+
     public static final int DEFAULT_ROAD_CAR_SPEED = 80;
     public static final int DEFAULT_ROAD_BICYCLE_SPEED = 10;
     public static final int DEFAULT_ROAD_BUS_SPEED = 70;
@@ -37,8 +39,10 @@ public class WayTypeBuilder {
         WayType wayType;
         TransportIdentifier[] transports;
         switch (identifier) {
-            case NONE:
-                return null;
+            case FOOT:
+                transports = new TransportIdentifier[] { TransportIdentifier.FOOT };
+                wayType = new WayType(identifier, transports);
+                wayType.setSpeed(TransportIdentifier.FOOT, DEFAULT_FOOT_SPEED);
             case METRO:
                 transports = new TransportIdentifier[] { TransportIdentifier.METRO };
                 wayType = new WayType(identifier, transports);
