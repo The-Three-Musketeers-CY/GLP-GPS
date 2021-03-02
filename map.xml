@@ -39,14 +39,6 @@
         <adjacentNode id="12" type="URBAN_ROAD" />
         <adjacentNode id="10" type="URBAN_ROAD" />
     </node>
-    <node id="10" x="300" y="300">
-        <adjacentNode id="9" type="URBAN_ROAD" />
-        <adjacentNode id="11" type="URBAN_ROAD" />
-    </node>
-    <node id="11" x="350" y="200">
-        <adjacentNode id="10" type="URBAN_ROAD" />
-        <adjacentNode id="13" type="URBAN_ROAD" />
-    </node>
     <node id="12" x="250" y="150">
         <poi type="BUILDING">La Défense</poi>
         <adjacentNode id="11" type="URBAN_ROAD" />
@@ -63,9 +55,42 @@
     </node>
     <node id="15" x="500" y="80">
         <adjacentNode id="14" type="URBAN_ROAD" />
+        <adjacentNode id="16" type="URBAN_ROAD" />
     </node>
     <node id="16" x="350" y="85">
         <adjacentNode id="15" type="URBAN_ROAD" />
         <adjacentNode id="6" type="URBAN_ROAD" />
+    </node>
+    <node id="17" x="500" y="0">
+        <adjacentNode id="16" type="URBAN_ROAD" />
+        <adjacentNode id="18" type="HIGHWAY" />
+    </node>
+    <node id="18" x="630" y="100">
+        <adjacentNode id="17" type="URBAN_ROAD" />
+        <adjacentNode id="19" type="HIGHWAY" />
+        <adjacentNode id="24" type="URBAN_ROAD" />
+    </node>
+    <node id="19" x="750" y="150">
+        <adjacentNode id="18" type="URBAN_ROAD" />
+        <adjacentNode id="20" type="HIGHWAY" />
+    </node>
+    <node id="20" x="850" y="300">
+        <adjacentNode id="19" type="HIGHWAY" />
+        <adjacentNode id="21" type="HIGHWAY" />
+    </node>
+    <node id="21" x="680" y="480">
+        <adjacentNode id="20" type="HIGHWAY" />
+        <adjacentNode id="22" type="HIGHWAY" />
+    </node>
+    <node id="22" x="250" y="380">
+        <adjacentNode id="21" type="HIGHWAY" />
+        <adjacentNode id="23" type="HIGHWAY" />
+        <adjacentNode id="9" type="URBAN_ROAD" />
+    </node>
+    <node id="23" x="0" y="450">
+        <adjacentNode id="22" type="HIGHWAY" />
+    </node>
+    <node id="24" x="600" y="200">
+        <adjacentNode id="18" type="URBAN_ROAD" />
     </node>
 </map>
