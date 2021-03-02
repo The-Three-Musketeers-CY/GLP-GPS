@@ -3,7 +3,6 @@ package process.repositories;
 import model.Node;
 import model.NodeWays;
 import model.Way;
-import model.identifiers.WayIdentifier;
 
 import java.util.HashMap;
 

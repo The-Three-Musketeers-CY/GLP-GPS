@@ -39,6 +39,14 @@
         <adjacentNode id="12" type="URBAN_ROAD" />
         <adjacentNode id="10" type="URBAN_ROAD" />
     </node>
+    <node id="10" x="300" y="300">
+        <adjacentNode id="9" type="URBAN_ROAD" />
+        <adjacentNode id="11" type="URBAN_ROAD" />
+    </node>
+    <node id="11" x="350" y="200">
+        <adjacentNode id="10" type="URBAN_ROAD" />
+        <adjacentNode id="13" type="URBAN_ROAD" />
+    </node>
     <node id="12" x="250" y="150">
         <poi type="BUILDING">La Défense</poi>
         <adjacentNode id="11" type="URBAN_ROAD" />
