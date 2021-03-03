@@ -3,6 +3,7 @@ package gui;
 import model.Node;
 import model.Way;
 import model.WayType;
+import model.identifiers.WayIdentifier;
 
 import java.awt.*;
 
@@ -23,7 +24,8 @@ public class PaintStrategy {
     }
 
     public void paint(Way way, int decX, int decY, Graphics2D g2d) {
-        g2d.setStroke(new BasicStroke(5));
+        if (way.getType().getIdentifier() != WayIdentifier.FOOT) g2d.setStroke(new BasicStroke(5));
+        else g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
         g2d.setColor(getWayTypeColor(way.getType()));
         g2d.drawLine(way.getNode1().getPosition().getX() + decX,way.getNode1().getPosition().getY() + decY, way.getNode2().getPosition().getX() + decX, way.getNode2().getPosition().getY() + decY);
     }

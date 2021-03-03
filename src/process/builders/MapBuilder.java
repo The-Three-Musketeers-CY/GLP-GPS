@@ -123,13 +123,13 @@ public class MapBuilder {
                 }
         }
 
-        // Putting foot ways between POI's only if there is no way already there
+        // Putting foot ways between Node's only if there is no way already there
         for (Network network : map.getNetworks().values()) {
             for (NodeWays nodeWays : network.getNodeWays().values()) {
                 if (nodeWays.getNode().isPOI()) {
                     for (String nodeID : network.getNodeWays().keySet()) {
                         model.Node node = map.getNodes().get(nodeID);
-                        if (node.isPOI() && !nodeWays.getWays().containsKey(nodeID)) {
+                        if (!nodeWays.getWays().containsKey(nodeID)) {
                             nodeWays.getWays().put(node.getId(), new Way(WayIdentifier.FOOT, nodeWays.getNode(), node));
                         }
                     }

@@ -34,10 +34,10 @@ public class Way {
         return node2;
     }
 
-    public int getDistance() {
+    public float getDistance() {
         Point node1Position = node1.getPosition();
         Point node2Position = node2.getPosition();
-        return (int) Math.abs(Math.sqrt(Math.pow(node2Position.getX() - node1Position.getX(), 2) + Math.pow(node2Position.getY() - node1Position.getY(), 2)));
+        return (float) Math.abs(Math.sqrt(Math.pow(node2Position.getX() - node1Position.getX(), 2) + Math.pow(node2Position.getY() - node1Position.getY(), 2)));
     }
 
     public int getHigherSpeed() {

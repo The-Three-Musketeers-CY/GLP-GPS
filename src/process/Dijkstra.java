@@ -34,7 +34,6 @@ public class Dijkstra {
         coveredNodes.add(startingNode.getId());
         accessibleNodes.put(startingNode.getId(),new AccessibleNode(startingNode,null,0));
 
-
         while (!coveredNodes.contains(arrivalNode.getId())){
 
             //FIRST STEP : find all the adjacent nodes to the current node and update their weight
@@ -47,7 +46,7 @@ public class Dijkstra {
                             //Get the adjacent node's way
                             Way way = network.getWaysFromNode(currentNode).getWays().get(node.getId());
                             //Calculate the travel time of this way with the higher speed
-                            float time = calculateTime(calculateDistance(currentNode, node), way.getHigherSpeed());
+                            float time = calculateTime(way.getDistance(), way.getHigherSpeed());
                             //Update weight of the node, the node is now accessible
                             updateWeight(time + accessibleNodes.get(currentNode.getId()).getWeight(), node,currentNode,accessibleNodes);
                         }
@@ -90,21 +89,7 @@ public class Dijkstra {
         //Return the best itinerary
         return new Itinerary(total, nodeList.toArray(new Node[0]));
     }
-    /**
-     * this method calculates distance between two points
-     * @param node1 starting point
-     * @param node2 arrival point
-     * @return the distance between the two points
-     */
-    private static float calculateDistance(Node node1, Node node2){
-        int x1,x2,y1,y2;
-        x1 = node1.getPosition().getX();
-        x2 = node2.getPosition().getX();
-        y1 = node1.getPosition().getY();
-        y2 = node2.getPosition().getY();
 
-        return (float) Math.abs(Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2)));
-    }
     /**
      * this method calculates travel time
      * @param distance the distance between two points
