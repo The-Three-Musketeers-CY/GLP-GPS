@@ -43,6 +43,7 @@ public class WayTypeBuilder {
                 transports = new TransportIdentifier[] { TransportIdentifier.FOOT };
                 wayType = new WayType(identifier, transports);
                 wayType.setSpeed(TransportIdentifier.FOOT, DEFAULT_FOOT_SPEED);
+                break;
             case METRO:
                 transports = new TransportIdentifier[] { TransportIdentifier.METRO };
                 wayType = new WayType(identifier, transports);

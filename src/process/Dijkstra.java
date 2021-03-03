@@ -12,52 +12,62 @@ public class Dijkstra {
 
         Node currentNode = startingNode ;
 
-        HashMap<String,CoveredNode> coveredNodes ;
-        HashMap<String,Float> weights ;
-        HashMap<String, Node> previousNodeForNodes;
+        ArrayList<String> coveredNodes ;
+        HashMap<String,AccessibleNode> accessibleNodes ;
 
-        coveredNodes = new HashMap<>();
-        weights = new HashMap<>();
-        previousNodeForNodes = new HashMap<>();
+        coveredNodes = new ArrayList<>();
+        accessibleNodes = new HashMap<>();
 
-        coveredNodes.put(startingNode.getId(), new CoveredNode(startingNode,null,0));
+        //Init the starting node
+        coveredNodes.add(startingNode.getId());
+        accessibleNodes.put(startingNode.getId(),new AccessibleNode(startingNode,null,0));
 
-        while (!coveredNodes.containsKey(arrivalNode.getId())){
 
-            //Etape 1 : Noeuds adjacents
+        while (!coveredNodes.contains(arrivalNode.getId())){
+
+            //First step : find all the adjacent nodes to the current node and update their weight
             for (Network network : map.getNetworks().values()){
                 if(network.getWaysFromNode(currentNode) != null) {
-                    System.out.println(currentNode.toString());
                     for (String idNode : network.getWaysFromNode(currentNode).getWays().keySet()) {
-                        if (!coveredNodes.containsKey(idNode)) {
+                        if (!coveredNodes.contains(idNode)) {
+                            //Get the adjacent node
                             Node node = map.getNodes().get(idNode);
+                            //Get the adjacent node's way
                             Way way = network.getWaysFromNode(currentNode).getWays().get(node.getId());
+                            //Calculate the travel time of this way with the higher speed
                             float time = calculateTime(calculateDistance(currentNode, node), way.getHigherSpeed());
-                            updateWeight(time + coveredNodes.get(currentNode.getId()).getWeight(), node, weights);
-                            previousNodeForNodes.put(node.getId(), currentNode);
+                            //Update weight of the node, the node is now accessible
+                            updateWeight(time + accessibleNodes.get(currentNode.getId()).getWeight(), node,currentNode,accessibleNodes);
                         }
                     }
                 }
             }
-            //Etape 2 : plus petit poids
+            //Step 2 : get the smallest weight
             float minWeight = -1;
             Node node;
-            for (String idNode : weights.keySet()){
-                node = map.getNodes().get(idNode);
-                float weight = weights.get(node.getId());
-                if(weight < minWeight || minWeight == -1){
-                    currentNode = node ;
-                    minWeight = weight ;
+            //Browse all accessible nodes
+            for (String idNode : accessibleNodes.keySet()){
+                //Check if this node has not already been visited
+                if(!coveredNodes.contains(idNode)){
+                    float weight = accessibleNodes.get(idNode).getWeight() ;
+                    //Check if this weight is the smallest
+                    if(weight < minWeight || minWeight == -1){
+                        //Update the current node
+                        currentNode = accessibleNodes.get(idNode).getNode() ;
+                        minWeight = weight ;
+                    }
                 }
             }
-            coveredNodes.put(currentNode.getId(),new CoveredNode(currentNode,previousNodeForNodes.get(currentNode.getId()),minWeight));
-            weights.remove(currentNode.getId());
+            //Add the new current node to the covered nodes
+            coveredNodes.add(currentNode.getId());
         }
+
+        //Get the itinerary
         Stack<Node> nodeStack = new Stack<>();
-        float total = coveredNodes.get(currentNode.getId()).getWeight();
+        float total = accessibleNodes.get(currentNode.getId()).getWeight();
         while (currentNode != null){
-            nodeStack.push(coveredNodes.get(currentNode.getId()).getNode()) ;
-            currentNode = coveredNodes.get(currentNode.getId()).getPreviousNode() ;
+            nodeStack.push(accessibleNodes.get(currentNode.getId()).getNode()) ;
+            currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
         }
         ArrayList<Node> nodeList = new ArrayList<>();
         while (nodeStack.size() != 0) {
@@ -80,13 +90,14 @@ public class Dijkstra {
     private static float calculateTime(float distance, float speed){
         return distance/speed ;
     }
-    private static void updateWeight(float value, Node node, HashMap<String,Float> weights){
-        if(weights.containsKey(node.getId())){
-            if(value < weights.get(node.getId())){
-                weights.replace(node.getId(),value);
-            }
+    private static void updateWeight(float value, Node node, Node previousNode , HashMap<String,AccessibleNode> accessibleNodes){
+        if(accessibleNodes.containsKey(node.getId())){
+                if(value < accessibleNodes.get(node.getId()).getWeight()){
+                    accessibleNodes.get(node.getId()).setWeight(value);
+                    accessibleNodes.get(node.getId()).setPreviousNode(previousNode);
+                }
         }else{
-            weights.put(node.getId(),value);
+            accessibleNodes.put(node.getId(), new AccessibleNode(node,previousNode,value));
         }
     }
 
