@@ -7,27 +7,32 @@ import model.repositories.WayTypeRepository;
 
 public class WayTypeBuilder {
 
-    public static final int DEFAULT_FOOT_SPEED = 5;
+    // Way's speed
+    private static final int DEFAULT_FOOT_SPEED = 5;
 
-    public static final int DEFAULT_ROAD_CAR_SPEED = 80;
+    private static final int DEFAULT_ROAD_CAR_SPEED = 80;
     public static final int DEFAULT_ROAD_BICYCLE_SPEED = 10;
     public static final int DEFAULT_ROAD_BUS_SPEED = 70;
 
-    public static final int DEFAULT_URBAN_ROAD_CAR_SPEED = 50;
-    public static final int DEFAULT_URBAN_ROAD_BICYCLE_SPEED = 10;
-    public static final int DEFAULT_URBAN_ROAD_BUS_SPEED = 35;
+    private static final int DEFAULT_URBAN_ROAD_CAR_SPEED = 50;
+    private static final int DEFAULT_URBAN_ROAD_BICYCLE_SPEED = 10;
+    private static final int DEFAULT_URBAN_ROAD_BUS_SPEED = 35;
 
-    public static final int DEFAULT_HIGHWAY_CAR_SPEED = 130;
-    public static final int DEFAULT_BUS_LANE_BUS_SPEED = 40;
-    public static final int DEFAULT_CYCLE_LANE_BICYCLE_SPEED = 15;
+    private static final int DEFAULT_HIGHWAY_CAR_SPEED = 130;
+    private static final int DEFAULT_BUS_LANE_BUS_SPEED = 40;
+    private static final int DEFAULT_CYCLE_LANE_BICYCLE_SPEED = 15;
 
-    public static final int DEFAULT_METRO_SPEED = 60;
-    public static final int DEFAULT_BOAT_SPEED = 20;
-    public static final int DEFAULT_PLANE_SPEED = 700;
-    public static final int DEFAULT_TRAIN_SPEED = 230;
+    private static final int DEFAULT_METRO_SPEED = 60;
+    private static final int DEFAULT_BOAT_SPEED = 20;
+    private static final int DEFAULT_PLANE_SPEED = 700;
+    private static final int DEFAULT_TRAIN_SPEED = 230;
 
     private WayTypeRepository wayTypeRepository = WayTypeRepository.getInstance();
 
+    /**
+     * This method built all way types
+     * @see WayIdentifier
+     */
     public void buildWayTypes() {
         for (WayIdentifier identifier : WayIdentifier.values()) {
             WayType wayType = buildWayType(identifier);
@@ -94,7 +99,7 @@ public class WayTypeBuilder {
                 wayType.setSpeed(TransportIdentifier.BUS, DEFAULT_URBAN_ROAD_BUS_SPEED);
                 break;
             default:
-                // Relever une exception
+                // TODO lever une exception
                 return null;
         }
 

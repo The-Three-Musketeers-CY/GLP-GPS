@@ -24,6 +24,10 @@ public class MapBuilder {
 
     private MapRepository mapRepository = MapRepository.getInstance();
 
+    /**
+     * Create a MapBuilder
+     * @param path the map file's path
+     */
     public MapBuilder(String path){
         File file = new File(path);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -85,7 +89,9 @@ public class MapBuilder {
             System.err.println("Veuillez entrer une valeur correct : " + e.getMessage());
         }
     }
-
+    /**
+     * This method built a new map with its different nodes, ways, networks
+     */
     public Map buildMap() {
         // Initializing map
         Map map = new Map();

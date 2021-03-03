@@ -7,6 +7,10 @@ import model.identifiers.WayIdentifier;
 
 public class NetworkBuilder {
 
+    /**
+     * This method built network for each network type
+     * @see NetworkIdentifier
+     */
     public void buildNetworks(Map map) {
         for (NetworkIdentifier type : NetworkIdentifier.values()) {
             Network network = buildNetwork(type);

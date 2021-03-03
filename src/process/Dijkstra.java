@@ -6,13 +6,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+/**
+ * This class contains all the processes to find the best itinerary using Dijkstra algorithm
+ */
 public class Dijkstra {
 
+    /**
+     * This method calculate the best itinerary in terms of time between two specific points
+     * @param startingNode the starting node of the itinerary
+     * @param arrivalNode the arrival node of the itinerary
+     * @param map the main map
+     * @return the best itinerary
+     */
     public static Itinerary calculateItinerary(Node startingNode, Node arrivalNode, Map map){
 
+        //The node currently covered
         Node currentNode = startingNode ;
-
+        //All nodes previously covered
         ArrayList<String> coveredNodes ;
+        //All nodes who are accessible for the itinerary
         HashMap<String,AccessibleNode> accessibleNodes ;
 
         coveredNodes = new ArrayList<>();
@@ -25,7 +37,7 @@ public class Dijkstra {
 
         while (!coveredNodes.contains(arrivalNode.getId())){
 
-            //First step : find all the adjacent nodes to the current node and update their weight
+            //FIRST STEP : find all the adjacent nodes to the current node and update their weight
             for (Network network : map.getNetworks().values()){
                 if(network.getWaysFromNode(currentNode) != null) {
                     for (String idNode : network.getWaysFromNode(currentNode).getWays().keySet()) {
@@ -42,9 +54,8 @@ public class Dijkstra {
                     }
                 }
             }
-            //Step 2 : get the smallest weight
+            //STEP 2 : get the smallest weight
             float minWeight = -1;
-            Node node;
             //Browse all accessible nodes
             for (String idNode : accessibleNodes.keySet()){
                 //Check if this node has not already been visited
@@ -69,15 +80,22 @@ public class Dijkstra {
             nodeStack.push(accessibleNodes.get(currentNode.getId()).getNode()) ;
             currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
         }
+
         ArrayList<Node> nodeList = new ArrayList<>();
         while (nodeStack.size() != 0) {
             nodeList.add(nodeStack.peek());
             nodeStack.pop();
         }
-        Itinerary itinerary = new Itinerary(total, nodeList.toArray(new Node[0]));
-        return itinerary ;
-    }
 
+        //Return the best itinerary
+        return new Itinerary(total, nodeList.toArray(new Node[0]));
+    }
+    /**
+     * this method calculates distance between two points
+     * @param node1 starting point
+     * @param node2 arrival point
+     * @return the distance between the two points
+     */
     private static float calculateDistance(Node node1, Node node2){
         int x1,x2,y1,y2;
         x1 = node1.getPosition().getX();
@@ -87,9 +105,22 @@ public class Dijkstra {
 
         return (float) Math.abs(Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2)));
     }
+    /**
+     * this method calculates travel time
+     * @param distance the distance between two points
+     * @param speed the average speed between the two points
+     * @return the travel time between the two points
+     */
     private static float calculateTime(float distance, float speed){
         return distance/speed ;
     }
+    /**
+     * this methode update accessible node's weight
+     * @param value the new weight
+     * @param node the node to update
+     * @param previousNode the previous node
+     * @param accessibleNodes all the accessible nodes
+     */
     private static void updateWeight(float value, Node node, Node previousNode , HashMap<String,AccessibleNode> accessibleNodes){
         if(accessibleNodes.containsKey(node.getId())){
                 if(value < accessibleNodes.get(node.getId()).getWeight()){

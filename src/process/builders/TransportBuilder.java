@@ -5,16 +5,19 @@ import model.repositories.TransportRepository;
 
 public class TransportBuilder {
 
-    public static final int FREE_COST = 0;
+    private static final float FREE_COST = 0;
 
-    public static final int DEFAULT_CAR_COST = 2;
-    public static final float DEFAULT_METRO_BUS_COST = (float) 1.9;
-    public static final int DEFAULT_TRAIN_COST = 60;
-    public static final int DEFAULT_BOAT_COST = 40;
-    public static final int DEFAULT_PLANE_COST = 120;
+    private static final float DEFAULT_CAR_COST = 2;
+    private static final float DEFAULT_METRO_BUS_COST = (float) 1.9;
+    private static final float DEFAULT_TRAIN_COST = 60;
+    private static final float DEFAULT_BOAT_COST = 40;
+    private static final float DEFAULT_PLANE_COST = 120;
 
     private TransportRepository transportRepository = TransportRepository.getInstance();
-
+    /**
+     * This method built all transports types
+     * @see model.identifiers.TransportIdentifier
+     */
     public void buildTransports() {
         for (model.identifiers.TransportIdentifier identifier : model.identifiers.TransportIdentifier.values()) {
             Transport transportIdentifier = buildTransport(identifier);
@@ -46,7 +49,7 @@ public class TransportBuilder {
                 transportIdentifier = new Transport(identifier, DEFAULT_PLANE_COST, true);
                 break;
             default:
-                // Renverrai une exception
+                // TODO lever une exception
                 return null;
         }
 
