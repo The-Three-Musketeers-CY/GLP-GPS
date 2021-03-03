@@ -178,7 +178,7 @@ public class MainGUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Itinerary itinerary = Dijkstra.calculateItinerary(map.getNodes().get("3"),map.getNodes().get("14"),map);
+            Itinerary itinerary = Dijkstra.calculateItinerary(map.getNodes().get("3"),map.getNodes().get("5"),map);
             JOptionPane.showMessageDialog(mapView,itinerary.toString());
         }
     }

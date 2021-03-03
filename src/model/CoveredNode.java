@@ -4,9 +4,9 @@ public class CoveredNode {
 
     private Node node ;
     private Node previousNode ;
-    private int weight ;
+    private float weight ;
 
-    public CoveredNode(Node node, Node previousNode, int weight){
+    public CoveredNode(Node node, Node previousNode, float weight){
         this.node = node ;
         this.previousNode = previousNode ;
         this.weight = weight ;
@@ -20,7 +20,7 @@ public class CoveredNode {
         return previousNode;
     }
 
-    public int getWeight() {
+    public float getWeight() {
         return weight;
     }
 }

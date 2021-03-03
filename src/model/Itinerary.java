@@ -2,10 +2,10 @@ package model;
 
 public class Itinerary {
 
-    private int total ;
+    private float total ;
     private Node[] itineraryNodes ;
 
-    public Itinerary(int total, Node[] itineraryNodes){
+    public Itinerary(float total, Node[] itineraryNodes){
         this.total = total ;
         this.itineraryNodes = itineraryNodes ;
     }

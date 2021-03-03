@@ -13,7 +13,7 @@ public class Dijkstra {
         Node currentNode = startingNode ;
 
         HashMap<String,CoveredNode> coveredNodes ;
-        HashMap<String,Integer> weights ;
+        HashMap<String,Float> weights ;
         HashMap<String, Node> previousNodeForNodes;
 
         coveredNodes = new HashMap<>();
@@ -32,7 +32,7 @@ public class Dijkstra {
                         if (!coveredNodes.containsKey(idNode)) {
                             Node node = map.getNodes().get(idNode);
                             Way way = network.getWaysFromNode(currentNode).getWays().get(node.getId());
-                            int time = calculateTime(calculateDistance(currentNode, node), way.getHigherSpeed());
+                            float time = calculateTime(calculateDistance(currentNode, node), way.getHigherSpeed());
                             updateWeight(time + coveredNodes.get(currentNode.getId()).getWeight(), node, weights);
                             previousNodeForNodes.put(node.getId(), currentNode);
                         }
@@ -40,11 +40,11 @@ public class Dijkstra {
                 }
             }
             //Etape 2 : plus petit poids
-            int minWeight = -1;
+            float minWeight = -1;
             Node node;
             for (String idNode : weights.keySet()){
                 node = map.getNodes().get(idNode);
-                int weight = weights.get(node.getId());
+                float weight = weights.get(node.getId());
                 if(weight < minWeight || minWeight == -1){
                     currentNode = node ;
                     minWeight = weight ;
@@ -54,7 +54,7 @@ public class Dijkstra {
             weights.remove(currentNode.getId());
         }
         Stack<Node> nodeStack = new Stack<>();
-        int total = coveredNodes.get(currentNode.getId()).getWeight();
+        float total = coveredNodes.get(currentNode.getId()).getWeight();
         while (currentNode != null){
             nodeStack.push(coveredNodes.get(currentNode.getId()).getNode()) ;
             currentNode = coveredNodes.get(currentNode.getId()).getPreviousNode() ;
@@ -68,19 +68,19 @@ public class Dijkstra {
         return itinerary ;
     }
 
-    private static int calculateDistance(Node node1, Node node2){
+    private static float calculateDistance(Node node1, Node node2){
         int x1,x2,y1,y2;
         x1 = node1.getPosition().getX();
         x2 = node2.getPosition().getX();
         y1 = node1.getPosition().getY();
         y2 = node2.getPosition().getY();
 
-        return (int) Math.abs(Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2)));
+        return (float) Math.abs(Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2)));
     }
-    private static int calculateTime(int distance, int speed){
+    private static float calculateTime(float distance, float speed){
         return distance/speed ;
     }
-    private static void updateWeight(int value, Node node, HashMap<String,Integer> weights){
+    private static void updateWeight(float value, Node node, HashMap<String,Float> weights){
         if(weights.containsKey(node.getId())){
             if(value < weights.get(node.getId())){
                 weights.replace(node.getId(),value);
