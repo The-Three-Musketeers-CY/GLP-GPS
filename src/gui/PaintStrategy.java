@@ -30,6 +30,13 @@ public class PaintStrategy {
         g2d.drawLine(way.getNode1().getPosition().getX() + decX,way.getNode1().getPosition().getY() + decY, way.getNode2().getPosition().getX() + decX, way.getNode2().getPosition().getY() + decY);
     }
 
+    public void paint(Node node1, Node node2, int decX, int decY, Graphics2D g2d){
+        if(node1 != null && node2 != null) {
+            g2d.setColor(Color.YELLOW);
+            g2d.drawLine(node1.getPosition().getX() + decX, node1.getPosition().getY() + decY, node2.getPosition().getX() + decX, node2.getPosition().getY() + decY);
+        }
+    }
+
     private Color getNodeTypeColor(Node node){
         Color color = Color.BLACK;
         if(node.getPoi() != null) {

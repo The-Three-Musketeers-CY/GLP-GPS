@@ -10,11 +10,19 @@ public class Itinerary {
         this.itineraryNodes = itineraryNodes ;
     }
 
+    public float getTotal() {
+        return total;
+    }
+
+    public Node[] getItineraryNodes() {
+        return itineraryNodes;
+    }
+
     @Override
     public String toString() {
-        String res = "Itinerary{" +
-                "total=" + total +
-                ", itineraryNodes=" + "\n";
+        String res = "Meilleur itinéraire trouvé !\n" +
+                "Durée totale : " + total +
+                "\nPassage par : " + "\n";
         for (Node node : itineraryNodes) {
             res += node.toString() + "\n";
         }

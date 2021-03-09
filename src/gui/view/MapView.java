@@ -13,6 +13,7 @@ public class MapView extends JPanel{
     private static final long serialVersionUID = 1L;
 
     private Map map ;
+    private Itinerary itinerary ;
 
     private int newDecX = 0;
     private int newDecY = 0;
@@ -56,6 +57,21 @@ public class MapView extends JPanel{
         for(Node node : map.getNodes().values()){
             paintStrategy.paint(node, newDecX, newDecY, g);
         }
+
+        //Draw itinerary
+        if(itinerary!=null) {
+            Node previousNode = null;
+            Node currentNode = null;
+            for (Node node : itinerary.getItineraryNodes()) {
+                if (previousNode == null) {
+                    previousNode = node;
+                } else {
+                    previousNode = currentNode;
+                    currentNode = node;
+                    paintStrategy.paint(previousNode, currentNode, newDecX, newDecY,g2d);
+                }
+            }
+        }
     }
 
     public int getDecPosX() {
@@ -74,6 +90,10 @@ public class MapView extends JPanel{
         return newDecY;
     }
 
+    public Itinerary getItinerary() {
+        return itinerary;
+    }
+
     public void setDecPosX(int decPosX) {
         this.decPosX = decPosX;
     }
@@ -90,4 +110,7 @@ public class MapView extends JPanel{
         this.newDecY = newDecY;
     }
 
+    public void setItinerary(Itinerary itinerary) {
+        this.itinerary = itinerary;
+    }
 }

@@ -216,6 +216,8 @@ public class MainGUI extends JFrame {
                 JOptionPane.showMessageDialog(mapView,"Saisissez tous les champs !","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
             }else if(map.getNodes().containsKey(start) && map.getNodes().containsKey(arrival)){
                 Itinerary itinerary = Dijkstra.calculateItinerary(map.getNodes().get(start),map.getNodes().get(arrival),map);
+                mapView.setItinerary(itinerary);
+                mapView.repaint();
                 JOptionPane.showMessageDialog(mapView,itinerary.toString());
             }else{
                 JOptionPane.showMessageDialog(mapView,"Destination inconnue","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
