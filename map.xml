@@ -101,6 +101,7 @@
         <adjacentNode id="17" type="ROAD" />
         <adjacentNode id="19" type="HIGHWAY" />
         <adjacentNode id="24" type="ROAD" />
+        <adjacentNode id="76" type="ROAD" />
     </node>
     <node id="19" x="750" y="150">
         <adjacentNode id="18" type="HIGHWAY" />
@@ -111,6 +112,7 @@
         <adjacentNode id="19" type="HIGHWAY" />
         <adjacentNode id="21" type="HIGHWAY" />
         <adjacentNode id="53" type="URBAN_ROAD" />
+        <adjacentNode id="78" type="URBAN_ROAD" />
     </node>
     <node id="21" x="680" y="480">
         <adjacentNode id="20" type="HIGHWAY" />
@@ -145,6 +147,7 @@
     <node id="27" x="530" y="500">
         <adjacentNode id="26" type="ROAD" />
         <adjacentNode id="28" type="ROAD" />
+        <adjacentNode id="79" type="ROAD" />
     </node>
     <node id="28" x="600" y="530">
         <adjacentNode id="27" type="ROAD" />
@@ -293,6 +296,7 @@
     </node>
     <node id="57" x="900" y="0">
         <adjacentNode id="58" type="BOAT_LANE" />
+        <adjacentNode id="77" type="ROAD" />
     </node>
     <node id="58" x="980" y="150">
         <adjacentNode id="57" type="BOAT_LANE" />
@@ -305,6 +309,7 @@
     <node id="60" x="1000" y="300">
         <adjacentNode id="59" type="BOAT_LANE" />
         <adjacentNode id="61" type="BOAT_LANE" />
+        <adjacentNode id="78" type="URBAN_ROAD" />
     </node>
     <node id="61" x="1050" y="350">
         <adjacentNode id="60" type="BOAT_LANE" />
@@ -345,6 +350,7 @@
     <node id="70" x="480" y="600">
         <adjacentNode id="69" type="BOAT_LANE" />
         <adjacentNode id="71" type="BOAT_LANE" />
+        <adjacentNode id="79" type="ROAD" />
     </node>
     <node id="71" x="380" y="700">
         <adjacentNode id="70" type="BOAT_LANE" />
@@ -356,5 +362,29 @@
     </node>
     <node id="73" x="180" y="720">
         <adjacentNode id="72" type="BOAT_LANE" />
+        <adjacentNode id="74" type="BOAT_LANE" />
+    </node>
+    <node id="74" x="80" y="700">
+        <adjacentNode id="73" type="BOAT_LANE" />
+        <adjacentNode id="75" type="BOAT_LANE" />
+    </node>
+    <node id="75" x="0" y="580">
+        <adjacentNode id="74" type="BOAT_LANE" />
+    </node>
+    <node id="76" x="700" y="50">
+        <adjacentNode id="18" type="ROAD" />
+        <adjacentNode id="77" type="ROAD" />
+    </node>
+    <node id="77" x="800" y="50">
+        <adjacentNode id="76" type="ROAD" />
+        <adjacentNode id="57" type="ROAD" />
+    </node>
+    <node id="78" x="920" y="350">
+        <adjacentNode id="20" type="URBAN_ROAD" />
+        <adjacentNode id="60" type="URBAN_ROAD" />
+    </node>
+    <node id="79" x="500" y="550">
+        <adjacentNode id="70" type="ROAD" />
+        <adjacentNode id="27" type="ROAD" />
     </node>
 </map>

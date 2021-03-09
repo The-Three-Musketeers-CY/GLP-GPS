@@ -62,6 +62,9 @@ public class PaintStrategy {
             case ROAD:
                 color = Color.PINK;
                 break;
+            case BOAT_LANE:
+                color = Color.blue;
+                break;
             default:
                 color = DEFAULT_WAY_COLOR;
         }
