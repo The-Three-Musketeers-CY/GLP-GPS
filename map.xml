@@ -383,7 +383,7 @@
         <adjacentNode id="20" type="URBAN_ROAD" />
         <adjacentNode id="60" type="URBAN_ROAD" />
     </node>
-    <node id="79" x="500" y="550">
+    <node id="79" x="510" y="550">
         <adjacentNode id="70" type="ROAD" />
         <adjacentNode id="27" type="ROAD" />
     </node>
