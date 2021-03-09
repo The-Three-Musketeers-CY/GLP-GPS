@@ -55,7 +55,7 @@ public class MapView extends JPanel{
            }
         }
         for(Node node : map.getNodes().values()){
-            paintStrategy.paint(node, newDecX, newDecY, g);
+            if (node.isPOI()) paintStrategy.paint(node, newDecX, newDecY, g);
         }
 
         //Draw itinerary

@@ -9,10 +9,7 @@ import process.builders.MapBuilder;
 import gui.view.MapView;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -37,7 +34,9 @@ public class MainGUI extends JFrame {
 
     private JTextField startNode = new JTextField();
     private JTextField arrivalNode = new JTextField();
+
     private JPanel testItinerary = new JPanel();
+    private JPanel mapPanel = new JPanel();
 
     public MainGUI(String title, String mapPath) {
         super(title);
@@ -58,35 +57,56 @@ public class MainGUI extends JFrame {
         mapView.addMouseMotionListener(mapDraggedListener);
         POIClickListener poiClickListener = new POIClickListener();
         mapView.addMouseListener(poiClickListener);
-
         mapView.setPreferredSize(IDEAL_MAPVIEW_DIMENSION);
-        contentPane.add(BorderLayout.WEST, mapView);
 
+        mapPanel.setLayout(new BorderLayout());
+        mapPanel.add(BorderLayout.NORTH, mapView);
         ResetDefaultPosButtonListener resetDefaultPosButtonListener = new ResetDefaultPosButtonListener();
         resetButton.addActionListener(resetDefaultPosButtonListener);
-        calculateItinerary.addActionListener(new CalculateItineraryListener());
-        contentPane.add(BorderLayout.SOUTH, resetButton);
+        mapPanel.add(BorderLayout.SOUTH, resetButton);
+        contentPane.add(BorderLayout.WEST, mapPanel);
 
+        SpringLayout layout = new SpringLayout();
 
-        testItinerary.setLayout(new BoxLayout(testItinerary,BoxLayout.Y_AXIS));
+        testItinerary.setLayout(layout);
         testItinerary.setPreferredSize(IDEAL_ITINERARY_PANEL_DIMENSION);
         testItinerary.setBackground(Color.WHITE);
         testItinerary.setBorder(new EmptyBorder(new Insets(5, 20, 0, 20)));
 
-        startNode.setMaximumSize(new Dimension(400,30));
-        arrivalNode.setMaximumSize(new Dimension(400,30));
-        calculateItinerary.setMaximumSize(new Dimension(200,30));
+        startNode.setPreferredSize(new Dimension(210,30));
+        startNode.setMaximumSize(startNode.getPreferredSize());
+        arrivalNode.setPreferredSize(new Dimension(210,30));
+        arrivalNode.setMaximumSize(arrivalNode.getPreferredSize());
 
-        testItinerary.add(new JLabel("Saisissez un point de départ :"));
+        JLabel itineraryLabel = new JLabel("Itinéraire");
+        itineraryLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+        testItinerary.add(itineraryLabel);
+
+        JLabel startLabel = new JLabel("Saisissez un point de départ :");
+        testItinerary.add(startLabel);
         testItinerary.add(Box.createRigidArea(new Dimension(0, 2)));
         testItinerary.add(startNode);
+
         testItinerary.add(Box.createRigidArea(new Dimension(0, 10)));
-        testItinerary.add(new JLabel("Saisissez un point de d'arrivée :"));
+
+        JLabel arrivalLabel = new JLabel("Saisissez un point de d'arrivée :");
+        testItinerary.add(arrivalLabel);
         testItinerary.add(Box.createRigidArea(new Dimension(0, 2)));
         testItinerary.add(arrivalNode);
+
         testItinerary.add(Box.createRigidArea(new Dimension(0, 10)));
-        calculateItinerary.setHorizontalAlignment(SwingConstants.CENTER);
+
+        calculateItinerary.setPreferredSize(new Dimension(210, 30));
+        calculateItinerary.setMaximumSize(calculateItinerary.getPreferredSize());
+        calculateItinerary.addActionListener(new CalculateItineraryListener());
         testItinerary.add(calculateItinerary);
+
+        layout.putConstraint(SpringLayout.NORTH, itineraryLabel, 5, SpringLayout.NORTH, contentPane);
+        layout.putConstraint(SpringLayout.NORTH, startLabel, 10, SpringLayout.SOUTH, itineraryLabel);
+        layout.putConstraint(SpringLayout.NORTH, startNode, 2, SpringLayout.SOUTH, startLabel);
+        layout.putConstraint(SpringLayout.NORTH, arrivalLabel, 10, SpringLayout.SOUTH, startNode);
+        layout.putConstraint(SpringLayout.NORTH, arrivalNode, 2, SpringLayout.SOUTH, arrivalLabel);
+        layout.putConstraint(SpringLayout.NORTH, calculateItinerary, 10, SpringLayout.SOUTH, arrivalNode);
         contentPane.add(BorderLayout.EAST,testItinerary);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -115,7 +135,7 @@ public class MainGUI extends JFrame {
             if (dy + mapView.getDecPosY() < MAX_DEC_POS_Y && dy + mapView.getDecPosY() > MIN_DEC_POS_Y) mapView.setNewDecY(dy + mapView.getDecPosY());
             else if (dy + mapView.getDecPosY() >= MAX_DEC_POS_Y) mapView.setNewDecY(MAX_DEC_POS_Y);
             else if (dy + mapView.getDecPosY() <= MIN_DEC_POS_Y) mapView.setNewDecY(MIN_DEC_POS_Y);
-            repaint();
+            mapView.repaint();
         }
 
         @Override
