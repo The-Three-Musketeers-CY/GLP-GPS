@@ -34,6 +34,7 @@ public class MapView extends JPanel{
         add(test);
         add(testX);
         add(testY);
+
     }
 
     @Override

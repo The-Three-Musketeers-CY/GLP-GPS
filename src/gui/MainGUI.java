@@ -9,6 +9,10 @@ import process.builders.MapBuilder;
 import gui.view.MapView;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -17,7 +21,8 @@ public class MainGUI extends JFrame {
     private static final long serialVersionUID = 1L;
 
     private static final Dimension IDEAL_MAIN_DIMENSION = new Dimension(GPSConfig.WINDOW_WIDTH, GPSConfig.WINDOW_HEIGHT);
-    private static final Dimension IDEAL_MAPVIEW_DIMENSION = new Dimension(GPSConfig.WINDOW_WIDTH, GPSConfig.WINDOW_HEIGHT);
+    private static final Dimension IDEAL_MAPVIEW_DIMENSION = new Dimension(GPSConfig.MAPVIEW_WIDTH, GPSConfig.MAPVIEW_HEIGHT);
+    private static final Dimension IDEAL_ITINERARY_PANEL_DIMENSION = new Dimension(GPSConfig.ITINERARY_PANEL_WIDTH, GPSConfig.ITINERARY_PANEL_HEIGHT);
 
     private static final int MIN_DEC_POS_X = Math.min(GPSConfig.WINDOW_WIDTH - GPSConfig.MAP_SIZE_WIDTH, 0);
     private static final int MIN_DEC_POS_Y = Math.min(GPSConfig.WINDOW_HEIGHT - GPSConfig.MAP_SIZE_HEIGHT, 0);
@@ -29,6 +34,10 @@ public class MainGUI extends JFrame {
 
     private JButton resetButton = new JButton("Reset default position");
     private JButton calculateItinerary = new JButton("Calculate") ;
+
+    private JTextField startNode = new JTextField();
+    private JTextField arrivalNode = new JTextField();
+    private JPanel testItinerary = new JPanel();
 
     public MainGUI(String title, String mapPath) {
         super(title);
@@ -57,7 +66,28 @@ public class MainGUI extends JFrame {
         resetButton.addActionListener(resetDefaultPosButtonListener);
         calculateItinerary.addActionListener(new CalculateItineraryListener());
         contentPane.add(BorderLayout.SOUTH, resetButton);
-        contentPane.add(BorderLayout.SOUTH, calculateItinerary);
+
+
+        testItinerary.setLayout(new BoxLayout(testItinerary,BoxLayout.Y_AXIS));
+        testItinerary.setPreferredSize(IDEAL_ITINERARY_PANEL_DIMENSION);
+        testItinerary.setBackground(Color.WHITE);
+        testItinerary.setBorder(new EmptyBorder(new Insets(5, 20, 0, 20)));
+
+        startNode.setMaximumSize(new Dimension(400,30));
+        arrivalNode.setMaximumSize(new Dimension(400,30));
+        calculateItinerary.setMaximumSize(new Dimension(200,30));
+
+        testItinerary.add(new JLabel("Saisissez un point de départ :"));
+        testItinerary.add(Box.createRigidArea(new Dimension(0, 2)));
+        testItinerary.add(startNode);
+        testItinerary.add(Box.createRigidArea(new Dimension(0, 10)));
+        testItinerary.add(new JLabel("Saisissez un point de d'arrivée :"));
+        testItinerary.add(Box.createRigidArea(new Dimension(0, 2)));
+        testItinerary.add(arrivalNode);
+        testItinerary.add(Box.createRigidArea(new Dimension(0, 10)));
+        calculateItinerary.setHorizontalAlignment(SwingConstants.CENTER);
+        testItinerary.add(calculateItinerary);
+        contentPane.add(BorderLayout.EAST,testItinerary);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
@@ -178,8 +208,19 @@ public class MainGUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Itinerary itinerary = Dijkstra.calculateItinerary(map.getNodes().get("3"),map.getNodes().get("5"),map);
-            JOptionPane.showMessageDialog(mapView,itinerary.toString());
+            String start = startNode.getText() ;
+            String arrival = arrivalNode.getText() ;
+
+            //Check
+            if(start.isEmpty() || arrival.isEmpty()){
+                JOptionPane.showMessageDialog(mapView,"Saisissez tous les champs !","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
+            }else if(map.getNodes().containsKey(start) && map.getNodes().containsKey(arrival)){
+                Itinerary itinerary = Dijkstra.calculateItinerary(map.getNodes().get(start),map.getNodes().get(arrival),map);
+                JOptionPane.showMessageDialog(mapView,itinerary.toString());
+            }else{
+                JOptionPane.showMessageDialog(mapView,"Destination inconnue","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
+            }
+
         }
     }
 
