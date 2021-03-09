@@ -34,18 +34,15 @@ public class PaintStrategy {
         Color color = Color.BLACK;
         if(node.getPoi() != null) {
             switch (node.getPoi().getType()) {
-                case ATTRACTION: {
+                case ATTRACTION:
                     color = DEFAULT_ATTRACTION_NODE_COLOR;
                     break;
-                }
-                case BUILDING: {
+                case BUILDING:
                     color = DEFAULT_BUILDING_NODE_COLOR;
                     break;
-                }
-                case STATION: {
+                case STATION:
                     color = DEFAULT_STATION_NODE_COLOR;
                     break;
-                }
                 default:
                     color = DEFAULT_NODE_COLOR;
             }
@@ -58,6 +55,12 @@ public class PaintStrategy {
         switch (wayType.getIdentifier()) {
             case HIGHWAY:
                 color = DEFAULT_HIGHWAY_WAY_COLOR;
+                break;
+            case METRO:
+                color = Color.GREEN;
+                break;
+            case ROAD:
+                color = Color.PINK;
                 break;
             default:
                 color = DEFAULT_WAY_COLOR;
