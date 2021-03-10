@@ -116,6 +116,13 @@ public class MainGUI extends JFrame {
         addStep.addActionListener(new AddStepListener());
         testItinerary.add(addStep);
 
+        JLabel copyrightsWallethChevalierLabel = new JLabel("Benjamin Walleth | Paul Chevalier");
+        JLabel copyrightsDenoyerLabel = new JLabel("William Denoyer");
+        JLabel copyrightsGLPLabel = new JLabel("GLP GPS - 2021");
+        testItinerary.add(copyrightsWallethChevalierLabel);
+        testItinerary.add(copyrightsDenoyerLabel);
+        testItinerary.add(copyrightsGLPLabel);
+
         layout.putConstraint(SpringLayout.NORTH, itineraryLabel, 5, SpringLayout.NORTH, contentPane);
         layout.putConstraint(SpringLayout.NORTH, startLabel, 10, SpringLayout.SOUTH, itineraryLabel);
         layout.putConstraint(SpringLayout.NORTH, startNode, 2, SpringLayout.SOUTH, startLabel);
@@ -123,6 +130,9 @@ public class MainGUI extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, arrivalNode, 2, SpringLayout.SOUTH, arrivalLabel);
         layout.putConstraint(SpringLayout.NORTH, calculateItinerary, 10, SpringLayout.SOUTH, arrivalNode);
         layout.putConstraint(SpringLayout.NORTH,addStep,10,SpringLayout.SOUTH,calculateItinerary);
+        layout.putConstraint(SpringLayout.SOUTH, copyrightsWallethChevalierLabel, -50, SpringLayout.SOUTH, contentPane);
+        layout.putConstraint(SpringLayout.NORTH, copyrightsDenoyerLabel, 2, SpringLayout.SOUTH, copyrightsWallethChevalierLabel);
+        layout.putConstraint(SpringLayout.NORTH, copyrightsGLPLabel, 2, SpringLayout.SOUTH, copyrightsDenoyerLabel);
         contentPane.add(BorderLayout.EAST,testItinerary);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -294,6 +304,12 @@ public class MainGUI extends JFrame {
             int marginTop = 10 ;
             int blockHeight = height + marginTop ;
             int numberStep = steps.size() ;
+
+            if (numberStep > 7) {
+                return;
+            } else if (numberStep == 7) {
+                addStep.setVisible(false);
+            }
 
             //Get the layout
             SpringLayout layout = (SpringLayout) testItinerary.getLayout();
