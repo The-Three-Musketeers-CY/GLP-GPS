@@ -46,7 +46,7 @@ public class Dijkstra {
                             //Get the adjacent node's way
                             Way way = network.getWaysFromNode(currentNode).getWays().get(node.getId());
                             //Calculate the travel time of this way with the higher speed
-                            float time = calculateTime(way.getDistance(), way.getHigherSpeed());
+                            float time = calculateTime(way.getDistance() * 2, way.getHigherSpeed());
                             //Update weight of the node, the node is now accessible
                             updateWeight(time + accessibleNodes.get(currentNode.getId()).getWeight(), node,currentNode,accessibleNodes);
                         }
@@ -99,6 +99,7 @@ public class Dijkstra {
     private static float calculateTime(float distance, float speed){
         return distance/speed ;
     }
+
     /**
      * this methode update accessible node's weight
      * @param value the new weight

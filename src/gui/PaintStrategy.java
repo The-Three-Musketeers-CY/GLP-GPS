@@ -13,8 +13,8 @@ public class PaintStrategy {
     public static final Color DEFAULT_WAY_COLOR = Color.WHITE;
 
     public static final Color DEFAULT_ATTRACTION_NODE_COLOR = Color.ORANGE;
-    public static final Color DEFAULT_BUILDING_NODE_COLOR = Color.BLUE;
-    public static final Color DEFAULT_STATION_NODE_COLOR = Color.GRAY;
+    public static final Color DEFAULT_BUILDING_NODE_COLOR = new Color(112, 112, 112);
+    public static final Color DEFAULT_STATION_NODE_COLOR = new Color(69, 69, 69);
 
     public static final Color DEFAULT_HIGHWAY_WAY_COLOR = new Color(255,255,86);
 
@@ -32,7 +32,8 @@ public class PaintStrategy {
 
     public void paint(Node node1, Node node2, int decX, int decY, Graphics2D g2d){
         if(node1 != null && node2 != null) {
-            g2d.setColor(Color.YELLOW);
+            g2d.setStroke(new BasicStroke(7));
+            g2d.setColor(new Color(124, 0, 187));
             g2d.drawLine(node1.getPosition().getX() + decX, node1.getPosition().getY() + decY, node2.getPosition().getX() + decX, node2.getPosition().getY() + decY);
         }
     }

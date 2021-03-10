@@ -307,6 +307,7 @@
         <adjacentNode id="60" type="BOAT_LANE" />
     </node>
     <node id="60" x="1000" y="300">
+        <poi type="STATION">Bateau</poi>
         <adjacentNode id="59" type="BOAT_LANE" />
         <adjacentNode id="61" type="BOAT_LANE" />
         <adjacentNode id="78" type="URBAN_ROAD" />
