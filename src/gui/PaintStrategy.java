@@ -93,6 +93,9 @@ public class PaintStrategy {
     private Color getWayTypeColor(WayType wayType) {
         Color color;
         switch (wayType.getIdentifier()) {
+            case FOOT:
+                color = Color.orange;
+                break;
             case HIGHWAY:
                 color = DEFAULT_HIGHWAY_WAY_COLOR;
                 break;

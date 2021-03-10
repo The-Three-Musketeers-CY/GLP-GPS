@@ -124,12 +124,15 @@ public class MapBuilder {
                 }
         }
 
-        // Putting foot ways between Node's only if there is no way already there
+        // Putting foot ways
         Network footNetwork = map.getNetworks().get(NetworkIdentifier.FOOT);
         for (model.Node node1 : map.getNodes().values()) {
-            footNetwork.getNodeWays().put(node1.getId(), new NodeWays(node1));
-            for (model.Node node2 : map.getNodes().values()) {
-                footNetwork.getNodeWays().get(node1.getId()).getWays().put(node2.getId(), new Way(WayIdentifier.FOOT, node1, node2));
+            if (node1.isPOI()) {
+                footNetwork.getNodeWays().put(node1.getId(), new NodeWays(node1));
+                for (model.Node node2 : map.getNodes().values()) {
+                    if (node2.isPOI())
+                        footNetwork.getNodeWays().get(node1.getId()).getWays().put(node2.getId(), new Way(WayIdentifier.FOOT, node1, node2));
+                }
             }
         }
 
