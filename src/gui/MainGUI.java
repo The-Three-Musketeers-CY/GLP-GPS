@@ -12,6 +12,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+
 
 public class MainGUI extends JFrame {
 
@@ -97,6 +101,8 @@ public class MainGUI extends JFrame {
         testItinerary.add(Box.createRigidArea(new Dimension(0, 10)));
 
         calculateItinerary.setPreferredSize(new Dimension(210, 30));
+        calculateItinerary.setBackground(new Color(200,200,200));
+        calculateItinerary.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         calculateItinerary.setMaximumSize(calculateItinerary.getPreferredSize());
         calculateItinerary.addActionListener(new CalculateItineraryListener());
         testItinerary.add(calculateItinerary);
@@ -231,14 +237,27 @@ public class MainGUI extends JFrame {
             String start = startNode.getText() ;
             String arrival = arrivalNode.getText() ;
 
-            //Check
+            //Get all node's name
+            ArrayList<String> nodeNames = new ArrayList<>();
+            for(Node node : map.getNodes().values()){
+                if(node.isPOI()) nodeNames.add(node.getPoi().getName());
+            }
+            //Check nodes
             if(start.isEmpty() || arrival.isEmpty()){
                 JOptionPane.showMessageDialog(mapView,"Saisissez tous les champs !","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
-            }else if(map.getNodes().containsKey(start) && map.getNodes().containsKey(arrival)){
-                Itinerary itinerary = Dijkstra.calculateItinerary(map.getNodes().get(start),map.getNodes().get(arrival),map);
+            }else if((map.getNodes().containsKey(start) || nodeNames.contains(start)) && (map.getNodes().containsKey(arrival) || nodeNames.contains(arrival))) {
+
+                Node startingNode, arrivalNode;
+                startingNode = map.getNodeFromId(start);
+                arrivalNode = map.getNodeFromId(arrival);
+
+                if(startingNode == null) startingNode = map.getNodeFromName(start);
+                if(arrivalNode == null) arrivalNode = map.getNodeFromName(arrival);
+
+                Itinerary itinerary = Dijkstra.calculateItinerary(startingNode, arrivalNode, map);
                 mapView.setItinerary(itinerary);
                 mapView.repaint();
-                JOptionPane.showMessageDialog(mapView,itinerary.toString());
+                JOptionPane.showMessageDialog(mapView, itinerary.toString());
             }else{
                 JOptionPane.showMessageDialog(mapView,"Destination inconnue","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
             }

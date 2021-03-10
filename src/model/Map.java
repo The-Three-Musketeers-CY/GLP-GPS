@@ -18,6 +18,16 @@ public class Map {
          return nodes;
     }
 
+    public Node getNodeFromId(String id){
+        return nodes.get(id);
+    }
+    public Node getNodeFromName(String nodeName){
+        for(Node node : nodes.values()){
+            if(node.isPOI() && node.getPoi().getName().equals(nodeName)) return node ;
+        }
+        return null ;
+    }
+
     public HashMap<NetworkIdentifier, Network> getNetworks() {
         return networks;
     }
