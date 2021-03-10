@@ -32,10 +32,15 @@ public class MainGUI extends JFrame {
     private MapView mapView ;
 
     private JButton resetButton = new JButton("Reset default position");
-    private JButton calculateItinerary = new JButton("Calculate") ;
+    private JButton calculateItinerary = new JButton("Rechercher") ;
+    private JButton addStep = new JButton("Ajouter une étape");
 
     private JTextField startNode = new JTextField();
     private JTextField arrivalNode = new JTextField();
+    private ArrayList<JTextField> steps ;
+
+    private JLabel startLabel = new JLabel("Saisissez un point de départ :");
+    private JLabel arrivalLabel = new JLabel("Saisissez un point de d'arrivée :");
 
     private JPanel testItinerary = new JPanel();
     private JPanel mapPanel = new JPanel();
@@ -47,6 +52,7 @@ public class MainGUI extends JFrame {
         map = mapBuilder.buildMap();
         mapView = new MapView(map);
 
+        steps = new ArrayList<>();
         init();
     }
 
@@ -84,14 +90,12 @@ public class MainGUI extends JFrame {
         itineraryLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         testItinerary.add(itineraryLabel);
 
-        JLabel startLabel = new JLabel("Saisissez un point de départ :");
         testItinerary.add(startLabel);
         testItinerary.add(Box.createRigidArea(new Dimension(0, 2)));
         testItinerary.add(startNode);
 
         testItinerary.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JLabel arrivalLabel = new JLabel("Saisissez un point de d'arrivée :");
         testItinerary.add(arrivalLabel);
         testItinerary.add(Box.createRigidArea(new Dimension(0, 2)));
         testItinerary.add(arrivalNode);
@@ -105,12 +109,20 @@ public class MainGUI extends JFrame {
         calculateItinerary.addActionListener(new CalculateItineraryListener());
         testItinerary.add(calculateItinerary);
 
+        addStep.setPreferredSize(new Dimension(210, 30));
+        addStep.setBackground(new Color(240,240,240));
+        addStep.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        addStep.setMaximumSize(calculateItinerary.getPreferredSize());
+        addStep.addActionListener(new AddStepListener());
+        testItinerary.add(addStep);
+
         layout.putConstraint(SpringLayout.NORTH, itineraryLabel, 5, SpringLayout.NORTH, contentPane);
         layout.putConstraint(SpringLayout.NORTH, startLabel, 10, SpringLayout.SOUTH, itineraryLabel);
         layout.putConstraint(SpringLayout.NORTH, startNode, 2, SpringLayout.SOUTH, startLabel);
         layout.putConstraint(SpringLayout.NORTH, arrivalLabel, 10, SpringLayout.SOUTH, startNode);
         layout.putConstraint(SpringLayout.NORTH, arrivalNode, 2, SpringLayout.SOUTH, arrivalLabel);
         layout.putConstraint(SpringLayout.NORTH, calculateItinerary, 10, SpringLayout.SOUTH, arrivalNode);
+        layout.putConstraint(SpringLayout.NORTH,addStep,10,SpringLayout.SOUTH,calculateItinerary);
         contentPane.add(BorderLayout.EAST,testItinerary);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -268,6 +280,41 @@ public class MainGUI extends JFrame {
             }else{
                 JOptionPane.showMessageDialog(mapView,"Destination inconnue","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
             }
+
+        }
+    }
+
+    private class AddStepListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            //Variables
+            int height = 30 ;
+            int marginTop = 10 ;
+            int blockHeight = height + marginTop ;
+            int numberStep = steps.size() ;
+
+            //Get the layout
+            SpringLayout layout = (SpringLayout) testItinerary.getLayout();
+
+            //Add the new component
+            JTextField newStep = new JTextField();
+            newStep.setPreferredSize(new Dimension(210,height));
+            newStep.setMaximumSize(newStep.getPreferredSize());
+            testItinerary.add(newStep);
+            steps.add(newStep);
+            //Add Label if it's first step
+            if(numberStep == 0) {
+                JLabel jLabel = new JLabel("Etapes intérmédiaires");
+                testItinerary.add(jLabel);
+                layout.putConstraint(SpringLayout.NORTH,jLabel,10,SpringLayout.SOUTH,startNode);
+            }
+            layout.putConstraint(SpringLayout.NORTH,newStep,numberStep*blockHeight + marginTop + 20,SpringLayout.SOUTH,startNode);
+            layout.putConstraint(SpringLayout.NORTH,arrivalLabel,(numberStep+1)*blockHeight + marginTop + 20,SpringLayout.SOUTH,startNode);
+
+            testItinerary.revalidate();
+
 
         }
     }
