@@ -24,10 +24,42 @@ public class PaintStrategy {
     }
 
     public void paint(Way way, int decX, int decY, Graphics2D g2d) {
-        if (way.getType().getIdentifier() != WayIdentifier.FOOT) g2d.setStroke(new BasicStroke(5));
+        if (way.getType().getIdentifier() != WayIdentifier.FOOT) g2d.setStroke(new BasicStroke(3));
         else g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
         g2d.setColor(getWayTypeColor(way.getType()));
-        g2d.drawLine(way.getNode1().getPosition().getX() + decX,way.getNode1().getPosition().getY() + decY, way.getNode2().getPosition().getX() + decX, way.getNode2().getPosition().getY() + decY);
+        int x1 = way.getNode1().getPosition().getX() + decX;
+        int x2 = way.getNode2().getPosition().getX() + decX;
+        int y1 = way.getNode1().getPosition().getY() + decY;
+        int y2 = way.getNode2().getPosition().getY() + decY;
+        if (y1 > y2) {
+            y1 = y1 + 1;
+            y2 = y2 + 1;
+        } else {
+            y1 = y1 - 1;
+            y2 = y2 - 1;
+        }
+        if (x1 > x2) {
+            x1 = x1 - 1;
+            x2 = x2 - 1;
+        } else {
+            x1 = x1 + 1;
+            x2 = x2 + 1;
+        }
+        if (x1 == x2 && y1 > y2) {
+            x1 = x1 + 1;
+            x2 = x2 + 1;
+        } else if (x1 == x2 && y1 < y2) {
+            x1 = x1 - 1;
+            x2 = x2 - 1;
+        }
+        if (y1 == y2 && x1 > x2) {
+            y1 = y1 - 1;
+            y2 = y2 - 1;
+        } else if (y1 == y2 && x1 < x2) {
+            y1 = y1 + 1;
+            y2 = y2 + 1;
+        }
+        g2d.drawLine(x1,y1, x2, y2);
     }
 
     public void paint(Node node1, Node node2, int decX, int decY, Graphics2D g2d){

@@ -31,6 +31,7 @@
         <adjacentNode id="4" type="URBAN_ROAD" />
         <adjacentNode id="16" type="URBAN_ROAD" />
         <adjacentNode id="33" type="URBAN_ROAD" />
+        <adjacentNode id="12" type="URBAN_ROAD" />
     </node>
     <node id="7" x="100" y="250">
         <adjacentNode id="5" type="URBAN_ROAD" />
@@ -62,6 +63,7 @@
     <node id="11" x="350" y="200">
         <adjacentNode id="10" type="URBAN_ROAD" />
         <adjacentNode id="13" type="URBAN_ROAD" />
+        <adjacentNode id="12" type="URBAN_ROAD" />
     </node>
     <node id="12" x="250" y="150">
         <poi type="BUILDING">La Défense</poi>
@@ -137,7 +139,7 @@
         <adjacentNode id="13" type="URBAN_ROAD" />
         <adjacentNode id="24" type="ROAD" />
         <adjacentNode id="26" type="ROAD" />
-        <adjacentNode id="31" type="URBAN_ROAD" />
+        <adjacentNode id="31" type="ROAD" />
         <adjacentNode id="49" type="URBAN_ROAD" />
     </node>
     <node id="26" x="530" y="380">
@@ -170,7 +172,7 @@
         <adjacentNode id="30" type="METRO" />
         <adjacentNode id="13" type="METRO" />
         <adjacentNode id="10" type="URBAN_ROAD" />
-        <adjacentNode id="25" type="URBAN_ROAD" />
+        <adjacentNode id="25" type="HIGHWAY" />
     </node>
     <node id="32" x="420" y="120">
         <poi type="STATION">Villiers</poi>
