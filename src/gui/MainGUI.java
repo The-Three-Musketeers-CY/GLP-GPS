@@ -13,8 +13,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 
 
 public class MainGUI extends JFrame {
@@ -188,9 +186,18 @@ public class MainGUI extends JFrame {
             for(Node node : map.getNodes().values()){
                 if(node.getPosition().getX() + mapView.getNewDecX() <= x+6 && node.getPosition().getX() + mapView.getNewDecX() >= x-6
                         && node.getPosition().getY() + mapView.getNewDecY() <= y+6 && node.getPosition().getY() + mapView.getNewDecY() >= y-6){
-                    if(node.isPOI())
-                        JOptionPane.showMessageDialog(mapView, node.getPoi().getName() + " | Type : " + node.getPoi().getType().toString(), "POI Info", JOptionPane.PLAIN_MESSAGE);
-                    else JOptionPane.showMessageDialog(mapView,node.toString(), "PAS POI", JOptionPane.ERROR_MESSAGE);
+                    if(node.isPOI()) {
+                        String[] buttons = { "OK", "Départ","Arrivée"};
+                        int result = JOptionPane.showOptionDialog(mapView,  node.getPoi().getName() + " | Type : " + node.getPoi().getType().toString(), "Informations sur le lieu",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, null);
+
+                        if(result == 1){
+                            startNode.setText(node.getPoi().getName());
+                        }else if(result == 2){
+                            arrivalNode.setText(node.getPoi().getName());
+                        }
+
+                    }else JOptionPane.showMessageDialog(mapView,node.toString(), "PAS POI", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
