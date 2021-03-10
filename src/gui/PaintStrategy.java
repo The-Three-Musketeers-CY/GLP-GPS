@@ -10,13 +10,13 @@ import java.awt.*;
 public class PaintStrategy {
 
     public static final Color DEFAULT_NODE_COLOR = Color.BLACK;
-    public static final Color DEFAULT_WAY_COLOR = Color.DARK_GRAY;
+    public static final Color DEFAULT_WAY_COLOR = Color.WHITE;
 
     public static final Color DEFAULT_ATTRACTION_NODE_COLOR = Color.ORANGE;
     public static final Color DEFAULT_BUILDING_NODE_COLOR = Color.BLUE;
     public static final Color DEFAULT_STATION_NODE_COLOR = Color.GRAY;
 
-    public static final Color DEFAULT_HIGHWAY_WAY_COLOR = Color.RED;
+    public static final Color DEFAULT_HIGHWAY_WAY_COLOR = new Color(255,255,86);
 
     public void paint(Node node, int decX, int decY, Graphics graphics) {
         graphics.setColor(getNodeTypeColor(node));
@@ -67,10 +67,10 @@ public class PaintStrategy {
                 color = Color.GREEN;
                 break;
             case ROAD:
-                color = Color.PINK;
+                color = new Color(189,189,189);
                 break;
             case BOAT_LANE:
-                color = Color.blue;
+                color = new Color(38,196,236);
                 break;
             default:
                 color = DEFAULT_WAY_COLOR;
