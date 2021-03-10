@@ -32,11 +32,11 @@ public class PaintStrategy {
         int y1 = way.getNode1().getPosition().getY() + decY;
         int y2 = way.getNode2().getPosition().getY() + decY;
         if (y1 > y2) {
-            y1 = y1 - 1;
-            y2 = y2 - 1;
-        } else {
             y1 = y1 + 1;
             y2 = y2 + 1;
+        } else {
+            y1 = y1 - 1;
+            y2 = y2 - 1;
         }
         if (x1 > x2) {
             x1 = x1 - 1;
