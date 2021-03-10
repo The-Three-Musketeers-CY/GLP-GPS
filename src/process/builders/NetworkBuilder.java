@@ -21,6 +21,9 @@ public class NetworkBuilder {
     private Network buildNetwork(NetworkIdentifier type) {
         WayIdentifier[] acceptedWays = null;
         switch (type) {
+            case FOOT:
+                acceptedWays = new WayIdentifier[]{ WayIdentifier.FOOT };
+                break;
             case AIR:
                 acceptedWays = new WayIdentifier[]{ WayIdentifier.PLANE_LANE};
                 break;

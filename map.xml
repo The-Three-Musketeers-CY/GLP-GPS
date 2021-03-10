@@ -49,7 +49,7 @@
         <adjacentNode id="7" type="URBAN_ROAD" />
         <adjacentNode id="12" type="URBAN_ROAD" />
         <adjacentNode id="10" type="URBAN_ROAD" />
-        <adjacentNode id="22" type="ROAD" />
+        <adjacentNode id="22" type="URBAN_ROAD" />
         <adjacentNode id="29" type="METRO" />
         <adjacentNode id="30" type="METRO" />
         <adjacentNode id="43" type="URBAN_ROAD" />
@@ -141,7 +141,7 @@
         <adjacentNode id="13" type="URBAN_ROAD" />
         <adjacentNode id="24" type="ROAD" />
         <adjacentNode id="26" type="ROAD" />
-        <adjacentNode id="31" type="ROAD" />
+        <adjacentNode id="31" type="URBAN_ROAD" />
         <adjacentNode id="49" type="URBAN_ROAD" />
     </node>
     <node id="26" x="530" y="380">
@@ -174,7 +174,7 @@
         <adjacentNode id="30" type="METRO" />
         <adjacentNode id="13" type="METRO" />
         <adjacentNode id="10" type="URBAN_ROAD" />
-        <adjacentNode id="25" type="HIGHWAY" />
+        <adjacentNode id="25" type="URBAN_ROAD" />
     </node>
     <node id="32" x="420" y="120">
         <poi type="STATION">Villiers</poi>

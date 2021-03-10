@@ -1,6 +1,7 @@
 package process.builders;
 
 import model.*;
+import model.identifiers.NetworkIdentifier;
 import model.identifiers.POIIdentifier;
 import model.identifiers.WayIdentifier;
 import model.repositories.WayTypeRepository;
@@ -124,16 +125,11 @@ public class MapBuilder {
         }
 
         // Putting foot ways between Node's only if there is no way already there
-        for (Network network : map.getNetworks().values()) {
-            for (NodeWays nodeWays : network.getNodeWays().values()) {
-                if (nodeWays.getNode().isPOI()) {
-                    for (String nodeID : network.getNodeWays().keySet()) {
-                        model.Node node = map.getNodes().get(nodeID);
-                        if (!nodeWays.getWays().containsKey(nodeID)) {
-                            nodeWays.getWays().put(node.getId(), new Way(WayIdentifier.FOOT, nodeWays.getNode(), node));
-                        }
-                    }
-                }
+        Network footNetwork = map.getNetworks().get(NetworkIdentifier.FOOT);
+        for (model.Node node1 : map.getNodes().values()) {
+            footNetwork.getNodeWays().put(node1.getId(), new NodeWays(node1));
+            for (model.Node node2 : map.getNodes().values()) {
+                footNetwork.getNodeWays().get(node1.getId()).getWays().put(node2.getId(), new Way(WayIdentifier.FOOT, node1, node2));
             }
         }
 
