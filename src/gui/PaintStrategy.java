@@ -111,6 +111,9 @@ public class PaintStrategy {
             case BUS_LANE:
                 color = new Color(255, 155, 203);
                 break;
+            case CYCLE_LANE:
+                color = new Color(255, 128, 0 );
+                break;
             default:
                 color = DEFAULT_WAY_COLOR;
         }
