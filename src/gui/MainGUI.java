@@ -34,6 +34,7 @@ public class MainGUI extends JFrame {
     private JButton resetButton = new JButton("Reset default position");
     private JButton calculateItinerary = new JButton("Rechercher") ;
     private JButton addStep = new JButton("Ajouter une étape");
+    private JButton rmStep = new JButton("X");
 
     private JTextField startNode = new JTextField();
     private JTextField arrivalNode = new JTextField();
@@ -80,6 +81,35 @@ public class MainGUI extends JFrame {
         testItinerary.setPreferredSize(IDEAL_ITINERARY_PANEL_DIMENSION);
         testItinerary.setBackground(Color.WHITE);
         testItinerary.setBorder(new EmptyBorder(new Insets(5, 20, 0, 20)));
+        testItinerary.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                rmStep.setVisible(false);
+                for(JTextField jTextField : steps){
+                    jTextField.setPreferredSize(new Dimension(210,30));
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         startNode.setPreferredSize(new Dimension(210,30));
         startNode.setMaximumSize(startNode.getPreferredSize());
@@ -122,6 +152,11 @@ public class MainGUI extends JFrame {
         testItinerary.add(copyrightsWallethChevalierLabel);
         testItinerary.add(copyrightsDenoyerLabel);
         testItinerary.add(copyrightsGLPLabel);
+
+        rmStep.setPreferredSize(new Dimension(30, 30));
+        rmStep.setBackground(new Color(240,240,240));
+        rmStep.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        rmStep.setMaximumSize(calculateItinerary.getPreferredSize());
 
         layout.putConstraint(SpringLayout.NORTH, itineraryLabel, 5, SpringLayout.NORTH, contentPane);
         layout.putConstraint(SpringLayout.NORTH, startLabel, 10, SpringLayout.SOUTH, itineraryLabel);
@@ -316,17 +351,94 @@ public class MainGUI extends JFrame {
 
             //Add the new component
             JTextField newStep = new JTextField();
+            JPanel ctnStep = new JPanel();
+            ctnStep.setBackground(Color.WHITE);
+            ctnStep.add(newStep);
             newStep.setPreferredSize(new Dimension(210,height));
             newStep.setMaximumSize(newStep.getPreferredSize());
-            testItinerary.add(newStep);
+            testItinerary.add(ctnStep);
+            //Add the new text field to the steps list
             steps.add(newStep);
+
+            //TODO On peut supprimer celui-ci mais c'est moins fluide...
+            ctnStep.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    rmStep.setVisible(true);
+                    ctnStep.add(rmStep);
+                    newStep.setPreferredSize(new Dimension(180,30));
+                    //Reset size of previous TextFields
+                    for(JTextField jTextField : steps){
+                        if(!newStep.equals(jTextField)) jTextField.setPreferredSize(new Dimension(210,30));
+                    }
+                    testItinerary.revalidate();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+
+            newStep.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    //Here, it's second check for more fluidity
+                    rmStep.setVisible(true);
+                    if(!ctnStep.isAncestorOf(rmStep)) {
+                        ctnStep.add(rmStep);
+                        newStep.setPreferredSize(new Dimension(180, 30));
+                        testItinerary.revalidate();
+                    }
+                    //Reset size of previous TextFields
+                    for(JTextField jTextField : steps){
+                        if(!newStep.equals(jTextField)) jTextField.setPreferredSize(new Dimension(210,30));
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+
             //Add Label if it's first step
             if(numberStep == 0) {
                 JLabel jLabel = new JLabel("Etapes intérmédiaires");
                 testItinerary.add(jLabel);
                 layout.putConstraint(SpringLayout.NORTH,jLabel,10,SpringLayout.SOUTH,startNode);
             }
-            layout.putConstraint(SpringLayout.NORTH,newStep,numberStep*blockHeight + marginTop + 20,SpringLayout.SOUTH,startNode);
+            layout.putConstraint(SpringLayout.NORTH,ctnStep,numberStep*blockHeight + marginTop + 20,SpringLayout.SOUTH,startNode);
             layout.putConstraint(SpringLayout.NORTH,arrivalLabel,(numberStep+1)*blockHeight + marginTop + 20,SpringLayout.SOUTH,startNode);
 
             testItinerary.revalidate();
