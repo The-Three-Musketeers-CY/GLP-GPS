@@ -434,7 +434,16 @@ public class MainGUI extends JFrame {
                 if(startingNode == null) startingNode = map.getNodeFromName(start);
                 if(arrivalNode == null) arrivalNode = map.getNodeFromName(arrival);
 
-                Itinerary itinerary = Dijkstra.calculateItinerary(startingNode, arrivalNode, map);
+                ArrayList<Node> nodes = new ArrayList<>();
+                nodes.add(startingNode);
+                for(String stepNodeField : stepsString) {
+                    Node stepNode;
+                    stepNode = map.getNodeFromId(stepNodeField);
+                    if(stepNode == null) stepNode = map.getNodeFromName(stepNodeField);
+                    nodes.add(stepNode);
+                }
+                nodes.add(arrivalNode);
+                Itinerary itinerary = Dijkstra.calculateTotalItinerary(nodes, map);
                 mapView.setItinerary(itinerary);
                 mapView.repaint();
                 JOptionPane.showMessageDialog(mapView, itinerary.toString());

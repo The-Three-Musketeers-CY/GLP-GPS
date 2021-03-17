@@ -1,21 +1,23 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Itinerary {
 
     private float total ;
-    private Node[] itineraryNodes ;
+    private ArrayList<StepItinerary> stepItineraries;
 
-    public Itinerary(float total, Node[] itineraryNodes){
+    public Itinerary(float total, ArrayList<StepItinerary> stepItineraries){
         this.total = total ;
-        this.itineraryNodes = itineraryNodes ;
+        this.stepItineraries = stepItineraries ;
     }
 
     public float getTotal() {
         return total;
     }
 
-    public Node[] getItineraryNodes() {
-        return itineraryNodes;
+    public ArrayList<StepItinerary> getStepItineraries() {
+        return stepItineraries;
     }
 
     @Override
@@ -23,8 +25,10 @@ public class Itinerary {
         String res = "Meilleur itinéraire trouvé !\n" +
                 "Durée totale : " + total +
                 "\nPassage par : " + "\n";
-        for (Node node : itineraryNodes) {
-            res += node.toString() + "\n";
+        for (StepItinerary stepItinerary : stepItineraries) {
+            for (Node node : stepItinerary.getStepItineraryNodes()) {
+                res += node.toString() + "\n";
+            }
         }
         res += "}";
         return res;

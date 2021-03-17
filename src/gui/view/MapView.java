@@ -65,11 +65,13 @@ public class MapView extends JPanel{
         //Draw itinerary
         if(itinerary!=null) {
             Node previousNode = null;
-            for (Node node : itinerary.getItineraryNodes()) {
-                if (previousNode != null) {
-                    paintStrategy.paint(previousNode, node, newDecX, newDecY, g2d);
+            for (StepItinerary stepItinerary : itinerary.getStepItineraries()) {
+                for (Node node : stepItinerary.getStepItineraryNodes()) {
+                    if (previousNode != null) {
+                        paintStrategy.paint(previousNode, node, newDecX, newDecY, g2d);
+                    }
+                    previousNode = node;
                 }
-                previousNode = node;
             }
         }
 

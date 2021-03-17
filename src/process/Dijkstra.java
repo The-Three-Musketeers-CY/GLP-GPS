@@ -18,7 +18,7 @@ public class Dijkstra {
      * @param map the main map
      * @return the best itinerary
      */
-    public static Itinerary calculateItinerary(Node startingNode, Node arrivalNode, Map map){
+    private static StepItinerary calculateItinerary(Node startingNode, Node arrivalNode, Map map){
 
         //The node currently covered
         Node currentNode = startingNode ;
@@ -87,7 +87,7 @@ public class Dijkstra {
         }
 
         //Return the best itinerary
-        return new Itinerary(total, nodeList.toArray(new Node[0]));
+        return new StepItinerary(total, nodeList.toArray(new Node[0]));
     }
 
     /**
@@ -116,6 +116,25 @@ public class Dijkstra {
         }else{
             accessibleNodes.put(node.getId(), new AccessibleNode(node,previousNode,value));
         }
+    }
+
+    public static Itinerary calculateTotalItinerary(ArrayList<Node> nodes, Map map){
+        ArrayList<StepItinerary> stepItineraries = new ArrayList<>();
+        int i =  0;
+        while (i< nodes.size() -1){
+            Node nodeA = nodes.get(i);
+            Node nodeB = nodes.get(i + 1);
+            StepItinerary stepItinerary = calculateItinerary(nodeA, nodeB, map);
+            stepItineraries.add(stepItinerary);
+            i++;
+        }
+
+        float total = 0;
+        for (StepItinerary stepItinerary : stepItineraries) {
+            total += stepItinerary.getTotalStepNode();
+        }
+
+        return new Itinerary(total, stepItineraries);
     }
 
 }
