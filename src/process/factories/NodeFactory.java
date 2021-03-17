@@ -31,6 +31,7 @@ public class NodeFactory {
     public static Node create(String id, int x, int y, String name, POIIdentifier type){
         return new Node(id, createPoint(x, y), createPOI(name, type));
     }
+
     /**
      * This method built simple nodes
      * @param id the node's id

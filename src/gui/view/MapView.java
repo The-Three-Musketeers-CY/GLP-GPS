@@ -8,6 +8,9 @@ import model.identifiers.WayIdentifier;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class represents the map view panel of the GPS
+ */
 public class MapView extends JPanel{
 
     private static final long serialVersionUID = 1L;
@@ -28,6 +31,10 @@ public class MapView extends JPanel{
     private JLabel testX = new JLabel();
     private JLabel testY = new JLabel();
 
+    /**
+     * This methods construct the map view panel of the GPS from the GPS map
+     * @param map GPS map
+     */
     public MapView(Map map){
         this.map = map;
 
@@ -86,10 +93,6 @@ public class MapView extends JPanel{
 
     public int getNewDecY() {
         return newDecY;
-    }
-
-    public Itinerary getItinerary() {
-        return itinerary;
     }
 
     public void setDecPosX(int decPosX) {

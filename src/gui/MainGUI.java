@@ -8,10 +8,13 @@ import process.Dijkstra;
 import process.builders.MapBuilder;
 import gui.view.MapView;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -48,6 +51,12 @@ public class MainGUI extends JFrame {
 
     public MainGUI(String title, String mapPath) {
         super(title);
+
+        try {
+            setIconImage(new ImageIcon(ImageIO.read(new File("favicon.png"))).getImage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         MapBuilder mapBuilder = new MapBuilder(mapPath);
         map = mapBuilder.buildMap();

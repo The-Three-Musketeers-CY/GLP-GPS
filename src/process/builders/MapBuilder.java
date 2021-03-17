@@ -4,7 +4,6 @@ import model.*;
 import model.identifiers.NetworkIdentifier;
 import model.identifiers.POIIdentifier;
 import model.identifiers.WayIdentifier;
-import model.repositories.WayTypeRepository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,7 +17,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
 
 public class MapBuilder {
@@ -114,8 +112,8 @@ public class MapBuilder {
         for (model.Node node : mapRepository.getNodes().values()) {
             NodeWays ways = mapRepository.getNodeWays(node.getId());
             if (ways != null)
-                for (String adjNodeID : ways.getWays().keySet()) {
-                    Way way = ways.getWays().get(adjNodeID);
+                for (Way way : ways.getWays().values()) {
+                    String adjNodeID = way.getNodeB().getId();
                     for (Network network : map.getNetworks().values()) {
                         if (network.isAcceptedWay(way.getIdentifier())) {
                             network.addWay(way.getIdentifier(), node, map.getNodes().get(adjNodeID));

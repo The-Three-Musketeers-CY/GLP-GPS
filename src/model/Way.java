@@ -9,13 +9,13 @@ import java.util.HashMap;
 public class Way {
 
     private WayIdentifier identifier;
-    private Node node1;
-    private Node node2;
+    private Node nodeA;
+    private Node nodeB;
 
-    public Way(WayIdentifier identifier, Node node1, Node node2) {
+    public Way(WayIdentifier identifier, Node nodeA, Node nodeB) {
         this.identifier = identifier;
-        this.node1 = node1;
-        this.node2 = node2;
+        this.nodeA = nodeA;
+        this.nodeB = nodeB;
     }
 
     public WayIdentifier getIdentifier() {
@@ -26,17 +26,17 @@ public class Way {
         return WayTypeRepository.getInstance().getWayTypes().get(identifier);
     }
 
-    public Node getNode1() {
-        return node1;
+    public Node getNodeA() {
+        return nodeA;
     }
 
-    public Node getNode2() {
-        return node2;
+    public Node getNodeB() {
+        return nodeB;
     }
 
     public float getDistance() {
-        Point node1Position = node1.getPosition();
-        Point node2Position = node2.getPosition();
+        Point node1Position = nodeA.getPosition();
+        Point node2Position = nodeB.getPosition();
         return (float) Math.abs(Math.sqrt(Math.pow(node2Position.getX() - node1Position.getX(), 2) + Math.pow(node2Position.getY() - node1Position.getY(), 2)));
     }
 

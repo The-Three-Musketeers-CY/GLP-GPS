@@ -14,6 +14,7 @@ public class TransportBuilder {
     private static final float DEFAULT_PLANE_COST = 120;
 
     private TransportRepository transportRepository = TransportRepository.getInstance();
+
     /**
      * This method built all transports types
      * @see model.identifiers.TransportIdentifier

@@ -35,16 +35,14 @@ public class Dijkstra {
         accessibleNodes.put(startingNode.getId(),new AccessibleNode(startingNode,null,0));
 
         while (!coveredNodes.contains(arrivalNode.getId())){
-
             //FIRST STEP : find all the adjacent nodes to the current node and update their weight
             for (Network network : map.getNetworks().values()){
                 if(network.getWaysFromNode(currentNode) != null) {
-                    for (String idNode : network.getWaysFromNode(currentNode).getWays().keySet()) {
+                    for (Way way : network.getWaysFromNode(currentNode).getWays().values()) {
+                        String idNode = way.getNodeB().getId();
                         if (!coveredNodes.contains(idNode)) {
                             //Get the adjacent node
                             Node node = map.getNodes().get(idNode);
-                            //Get the adjacent node's way
-                            Way way = network.getWaysFromNode(currentNode).getWays().get(node.getId());
                             //Calculate the travel time of this way with the higher speed
                             float time = calculateTime(way.getDistance() * 2, way.getHigherSpeed());
                             //Update weight of the node, the node is now accessible
@@ -53,10 +51,12 @@ public class Dijkstra {
                     }
                 }
             }
+
             //STEP 2 : get the smallest weight
             float minWeight = -1;
             //Browse all accessible nodes
-            for (String idNode : accessibleNodes.keySet()){
+            for (AccessibleNode accessibleNode : accessibleNodes.values()){
+                String idNode = accessibleNode.getNode().getId();
                 //Check if this node has not already been visited
                 if(!coveredNodes.contains(idNode)){
                     float weight = accessibleNodes.get(idNode).getWeight() ;
