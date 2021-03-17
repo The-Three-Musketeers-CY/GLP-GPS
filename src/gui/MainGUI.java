@@ -11,11 +11,14 @@ import gui.view.MapView;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 
 public class MainGUI extends JFrame {
@@ -42,6 +45,8 @@ public class MainGUI extends JFrame {
     private JTextField startNode = new JTextField();
     private JTextField arrivalNode = new JTextField();
     private ArrayList<JTextField> steps ;
+
+    private JPanel autoCompletePanel = new JPanel();
 
     private JLabel startLabel = new JLabel("Saisissez un point de départ :");
     private JLabel arrivalLabel = new JLabel("Saisissez un point de d'arrivée :");
@@ -120,10 +125,16 @@ public class MainGUI extends JFrame {
             }
         });
 
+        AutoCompletion newListener = new AutoCompletion(startNode);
         startNode.setPreferredSize(new Dimension(210,30));
         startNode.setMaximumSize(startNode.getPreferredSize());
+        startNode.getDocument().addDocumentListener(newListener);
+        startNode.addFocusListener(newListener);
         arrivalNode.setPreferredSize(new Dimension(210,30));
         arrivalNode.setMaximumSize(arrivalNode.getPreferredSize());
+        newListener = new AutoCompletion(arrivalNode);
+        arrivalNode.getDocument().addDocumentListener(newListener);
+        arrivalNode.addFocusListener(newListener);
 
         JLabel itineraryLabel = new JLabel("Itinéraire");
         itineraryLabel.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -166,6 +177,8 @@ public class MainGUI extends JFrame {
         rmStep.setBackground(new Color(240,240,240));
         rmStep.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         rmStep.setMaximumSize(calculateItinerary.getPreferredSize());
+
+        autoCompletePanel.setLayout(new BoxLayout(autoCompletePanel,BoxLayout.Y_AXIS));
 
         layout.putConstraint(SpringLayout.NORTH, itineraryLabel, 5, SpringLayout.NORTH, contentPane);
         layout.putConstraint(SpringLayout.NORTH, startLabel, 10, SpringLayout.SOUTH, itineraryLabel);
@@ -290,6 +303,80 @@ public class MainGUI extends JFrame {
 
     }
 
+    private class AutoCompletion implements DocumentListener, FocusListener{
+
+        JTextField component ;
+
+        public AutoCompletion(JTextField component){
+            this.component = component ;
+            autoCompletePanel.setVisible(false);
+            testItinerary.add(autoCompletePanel);
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            autoCompletion();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            autoCompletion();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+        }
+
+        public void autoCompletion(){
+
+            ArrayList<String> nodeNames = map.getAllNodeNames();
+            String currentText = component.getText();
+
+            //Get the layout
+            SpringLayout layout = (SpringLayout) testItinerary.getLayout();
+            //Remove all old components
+            for(Component component : autoCompletePanel.getComponents()){
+                autoCompletePanel.remove(component);
+            }
+            //Set the panel constraints
+            layout.putConstraint(SpringLayout.NORTH,autoCompletePanel,0,SpringLayout.SOUTH,component);
+
+            //Show the panel
+            if(component.getText().isBlank()){
+                autoCompletePanel.setVisible(false);
+            }else {
+                autoCompletePanel.setVisible(true);
+            }
+
+            for(String nodeName : nodeNames){
+                if(nodeName.equals(currentText)){
+                    autoCompletePanel.setVisible(false);
+                }else if(Pattern.matches("(?i)"+currentText+".*",nodeName)){
+                    JLabel nodeNameLabel = new JLabel(nodeName);
+                    nodeNameLabel.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            super.mouseClicked(e);
+                            component.setText(nodeName);
+                        }
+                    });
+                    autoCompletePanel.add(nodeNameLabel);
+                    testItinerary.revalidate();
+                }
+            }
+        }
+
+        @Override
+        public void focusGained(FocusEvent e) {
+            autoCompletion();
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            autoCompletePanel.setVisible(false);
+        }
+    }
+
     private class ResetDefaultPosButtonListener implements ActionListener {
 
         @Override
@@ -309,12 +396,22 @@ public class MainGUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             String start = startNode.getText() ;
             String arrival = arrivalNode.getText() ;
+            ArrayList<String> stepsString = new ArrayList<>() ;
+
+            //Get all step's name and check it
+            for(JTextField jTextField : steps){
+                if(jTextField.getText().isBlank()) {
+                    JOptionPane.showMessageDialog(mapView,"Veuilliez saisir une étape intermédiaire valide","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
+                }else if(stepsString.contains(jTextField.getText())){
+                    JOptionPane.showMessageDialog(mapView,"Cette étape est déja saisie : "+jTextField.getText(),"Erreur de saisie",JOptionPane.ERROR_MESSAGE);
+                }else{
+                    stepsString.add(jTextField.getText());
+                }
+            }
 
             //Get all node's name
-            ArrayList<String> nodeNames = new ArrayList<>();
-            for(Node node : map.getNodes().values()){
-                if(node.isPOI()) nodeNames.add(node.getPoi().getName());
-            }
+            ArrayList<String> nodeNames = map.getAllNodeNames();
+
             //Check nodes
             if(start.isEmpty() || arrival.isEmpty()){
                 JOptionPane.showMessageDialog(mapView,"Saisissez tous les champs !","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
@@ -323,6 +420,7 @@ public class MainGUI extends JFrame {
                 Node startingNode, arrivalNode;
                 startingNode = map.getNodeFromId(start);
                 arrivalNode = map.getNodeFromId(arrival);
+
 
                 if(startingNode == null) startingNode = map.getNodeFromName(start);
                 if(arrivalNode == null) arrivalNode = map.getNodeFromName(arrival);
@@ -349,9 +447,10 @@ public class MainGUI extends JFrame {
             int blockHeight = height + marginTop ;
             int numberStep = steps.size() ;
 
-            if (numberStep > 7) {
+            //Add a limit : max 3 steps
+            if (numberStep > 2) {
                 return;
-            } else if (numberStep == 7) {
+            } else if (numberStep == 2) {
                 addStep.setVisible(false);
             }
 

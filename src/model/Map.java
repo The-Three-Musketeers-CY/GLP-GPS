@@ -2,6 +2,7 @@ package model;
 
 import model.identifiers.NetworkIdentifier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Map {
@@ -30,6 +31,17 @@ public class Map {
 
     public HashMap<NetworkIdentifier, Network> getNetworks() {
         return networks;
+    }
+
+    public ArrayList<String> getAllNodeNames(){
+
+        ArrayList<String> nodeNames = new ArrayList<>();
+
+        for(Node node : getNodes().values()){
+            if(node.isPOI()) nodeNames.add(node.getPoi().getName());
+        }
+
+        return nodeNames ;
     }
 
     @Override
