@@ -15,6 +15,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -156,14 +157,16 @@ public class MainGUI extends JFrame {
         calculateItinerary.setBackground(new Color(200,200,200));
         calculateItinerary.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         calculateItinerary.setMaximumSize(calculateItinerary.getPreferredSize());
-        calculateItinerary.addActionListener(new CalculateItineraryListener());
+        calculateItinerary.removeMouseListener(calculateItinerary.getMouseListeners()[0]);
+        calculateItinerary.addMouseListener(new CalculateItineraryListener());
         testItinerary.add(calculateItinerary);
 
         addStep.setPreferredSize(new Dimension(210, 30));
         addStep.setBackground(new Color(240,240,240));
         addStep.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         addStep.setMaximumSize(calculateItinerary.getPreferredSize());
-        addStep.addActionListener(new AddStepListener());
+        addStep.removeMouseListener(addStep.getMouseListeners()[0]);
+        addStep.addMouseListener(new AddStepListener());
         testItinerary.add(addStep);
 
         JLabel copyrightsWallethChevalierLabel = new JLabel("Benjamin Walleth | Paul Chevalier");
@@ -359,6 +362,12 @@ public class MainGUI extends JFrame {
                             super.mouseClicked(e);
                             component.setText(nodeName);
                         }
+
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            super.mouseEntered(e);
+                            e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                        }
                     });
                     autoCompletePanel.add(nodeNameLabel);
                     testItinerary.revalidate();
@@ -390,10 +399,10 @@ public class MainGUI extends JFrame {
 
     }
 
-    private class CalculateItineraryListener implements ActionListener {
+    private class CalculateItineraryListener implements MouseListener {
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void mouseClicked(MouseEvent e) {
             String start = startNode.getText() ;
             String arrival = arrivalNode.getText() ;
             ArrayList<String> stepsString = new ArrayList<>() ;
@@ -434,12 +443,32 @@ public class MainGUI extends JFrame {
             }
 
         }
-    }
-
-    private class AddStepListener implements ActionListener{
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
+    }
+
+    private class AddStepListener implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
 
             //Variables
             int height = 30 ;
@@ -550,8 +579,26 @@ public class MainGUI extends JFrame {
             layout.putConstraint(SpringLayout.NORTH,arrivalLabel,(numberStep+1)*blockHeight + marginTop + 20,SpringLayout.SOUTH,startNode);
 
             testItinerary.revalidate();
+        }
 
+        @Override
+        public void mousePressed(MouseEvent e) {
 
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }
 
