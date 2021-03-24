@@ -6,7 +6,6 @@ import model.WayType;
 import model.identifiers.WayIdentifier;
 
 import java.awt.*;
-import java.awt.geom.Line2D;
 
 /**
  * This class represents how we will draw elements on the map view
