@@ -3,11 +3,11 @@ package model;
 public class AccessibleNode {
 
     private Node node ;
-    private AccessibleNode previousNode ;
+    private Node previousNode ;
     private Transport transport;
     private float weight ;
 
-    public AccessibleNode(Node node, AccessibleNode previousNode,Transport transport, float weight){
+    public AccessibleNode(Node node, Node previousNode,Transport transport, float weight){
         this.node = node ;
         this.previousNode = previousNode ;
         this.transport = transport ;
@@ -18,7 +18,7 @@ public class AccessibleNode {
         return node;
     }
 
-    public AccessibleNode getPreviousNode() {
+    public Node getPreviousNode() {
         return previousNode;
     }
 
@@ -34,7 +34,7 @@ public class AccessibleNode {
         this.transport = transport;
     }
 
-    public void setPreviousNode(AccessibleNode previousNode) {
+    public void setPreviousNode(Node previousNode) {
         this.previousNode = previousNode;
     }
 

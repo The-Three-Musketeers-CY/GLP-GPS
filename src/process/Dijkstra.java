@@ -53,7 +53,7 @@ public class Dijkstra {
                             //Get the higher transport
                             Transport transport = way.getHigherTransport();
                             //Update weight of the node, the node is now accessible
-                            updateWeight(time + accessibleNodes.get(currentNode.getId()).getWeight(), node,accessibleNodes.get(currentNode.getId()),transport,accessibleNodes);
+                            updateWeight(time + accessibleNodes.get(currentNode.getId()).getWeight(), node,currentNode,transport,accessibleNodes);
                         }
                     }
                 }
@@ -70,15 +70,23 @@ public class Dijkstra {
                     float weight = accessibleNodes.get(idNode).getWeight() ;
                     //Check if this weight is the smallest
                     if(weight < minWeight || minWeight == -1){
-                        //chek if it's public transport and that the current accessible node is not reach with car or bike
+
+                        //chek if it's public transport is used during the itinerary
+
+                        boolean publicTransportUsed = false ;
                         AccessibleNode currentAccessibleNode = accessibleNode ;
                         while (!currentAccessibleNode.getNode().getId().equals(startingNode.getId())){
-                            if(currentAccessibleNode.getTransport().isPublicTransport() && (!accessibleNode.getTransport().isCar() || !accessibleNode.getTransport().isBicycle()) ){
-                                //Update the current node
-                                currentNode = accessibleNodes.get(idNode).getNode() ;
-                                minWeight = weight ;
-                            }
+                            if(currentAccessibleNode.getTransport().isPublicTransport()) publicTransportUsed = true;
                             currentAccessibleNode = accessibleNodes.get(currentAccessibleNode.getPreviousNode().getId()) ;
+                        }
+
+                        //Update the current node
+                        if(publicTransportUsed && !accessibleNode.getTransport().isBicycle() && !accessibleNode.getTransport().isCar()) {
+                            currentNode = accessibleNodes.get(idNode).getNode();
+                            minWeight = weight;
+                        }else if(!publicTransportUsed){
+                            currentNode = accessibleNodes.get(idNode).getNode();
+                            minWeight = weight;
                         }
 
                     }
@@ -131,7 +139,7 @@ public class Dijkstra {
      * @param previousNode the previous node
      * @param accessibleNodes all the accessible nodes
      */
-    private static void updateWeight(float value, Node node, AccessibleNode previousNode ,Transport higherTransport, HashMap<String,AccessibleNode> accessibleNodes){
+    private static void updateWeight(float value, Node node, Node previousNode ,Transport higherTransport, HashMap<String,AccessibleNode> accessibleNodes){
         if(accessibleNodes.containsKey(node.getId())){
                 if(value < accessibleNodes.get(node.getId()).getWeight()){
                     accessibleNodes.get(node.getId()).setWeight(value);
