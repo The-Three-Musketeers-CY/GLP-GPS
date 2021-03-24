@@ -15,7 +15,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.TextAttribute;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,16 +35,16 @@ public class MainGUI extends JFrame {
     private static final int MAX_DEC_POS_Y = 0;
 
     private Map map;
-    private MapView mapView ;
+    private MapView mapView;
 
     private JButton resetButton = new JButton("Reset default position");
-    private JButton calculateItinerary = new JButton("Rechercher") ;
+    private JButton calculateItinerary = new JButton("Rechercher");
     private JButton addStep = new JButton("Ajouter une étape");
     private JButton rmStep = new JButton("X");
 
     private JTextField startNode = new JTextField();
     private JTextField arrivalNode = new JTextField();
-    private ArrayList<JTextField> steps ;
+    private ArrayList<JTextField> steps;
 
     private JPanel autoCompletePanel = new JPanel();
 
@@ -61,14 +60,19 @@ public class MainGUI extends JFrame {
         try {
             setIconImage(new ImageIcon(ImageIO.read(new File("favicon.png"))).getImage());
         } catch (IOException e) {
-            e.printStackTrace();
+            // TODO : Gérer cette exception
         }
 
+        steps = new ArrayList<>();
+
+        // Building map
         MapBuilder mapBuilder = new MapBuilder(mapPath);
         map = mapBuilder.buildMap();
+
+        // Creating mapView with map info
         mapView = new MapView(map);
 
-        steps = new ArrayList<>();
+        // Initializing MainGUI components
         init();
     }
 
@@ -265,21 +269,21 @@ public class MainGUI extends JFrame {
             int x = e.getX();
             int y = e.getY();
 
-            for(Node node : map.getNodes().values()){
-                if(node.getPosition().getX() + mapView.getNewDecX() <= x+6 && node.getPosition().getX() + mapView.getNewDecX() >= x-6
-                        && node.getPosition().getY() + mapView.getNewDecY() <= y+6 && node.getPosition().getY() + mapView.getNewDecY() >= y-6){
-                    if(node.isPOI()) {
+            for (Node node : map.getNodes().values()) {
+                if (node.getPosition().getX() + mapView.getNewDecX() <= x+6 && node.getPosition().getX() + mapView.getNewDecX() >= x-6
+                        && node.getPosition().getY() + mapView.getNewDecY() <= y+6 && node.getPosition().getY() + mapView.getNewDecY() >= y-6) {
+                    if (node.isPOI()) {
                         String[] buttons = { "OK", "Départ","Arrivée"};
                         int result = JOptionPane.showOptionDialog(mapView,  node.getPoi().getName() + " | Type : " + node.getPoi().getType().toString(), "Informations sur le lieu",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, null);
 
-                        if(result == 1){
+                        if (result == 1) {
                             startNode.setText(node.getPoi().getName());
-                        }else if(result == 2){
+                        } else if(result == 2) {
                             arrivalNode.setText(node.getPoi().getName());
                         }
 
-                    }else JOptionPane.showMessageDialog(mapView,node.toString(), "PAS POI", JOptionPane.ERROR_MESSAGE);
+                    } else JOptionPane.showMessageDialog(mapView,node.toString(), "PAS POI", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
@@ -308,7 +312,7 @@ public class MainGUI extends JFrame {
 
     private class AutoCompletion implements DocumentListener, FocusListener{
 
-        JTextField component ;
+        private JTextField component;
 
         public AutoCompletion(JTextField component){
             this.component = component ;
@@ -318,19 +322,20 @@ public class MainGUI extends JFrame {
 
         @Override
         public void insertUpdate(DocumentEvent e) {
-            autoCompletion();
+            autoComplete();
         }
 
         @Override
         public void removeUpdate(DocumentEvent e) {
-            autoCompletion();
+            autoComplete();
         }
 
         @Override
         public void changedUpdate(DocumentEvent e) {
+            // Do nothing...
         }
 
-        public void autoCompletion(){
+        public void autoComplete(){
 
             ArrayList<String> nodeNames = map.getAllNodeNames();
             String currentText = component.getText();
@@ -345,16 +350,16 @@ public class MainGUI extends JFrame {
             layout.putConstraint(SpringLayout.NORTH,autoCompletePanel,0,SpringLayout.SOUTH,component);
 
             //Show the panel
-            if(component.getText().isBlank()){
+            if (component.getText().isBlank()) {
                 autoCompletePanel.setVisible(false);
-            }else {
+            } else {
                 autoCompletePanel.setVisible(true);
             }
 
-            for(String nodeName : nodeNames){
-                if(nodeName.equals(currentText)){
+            for(String nodeName : nodeNames) {
+                if (nodeName.equals(currentText)) {
                     autoCompletePanel.setVisible(false);
-                }else if(Pattern.matches("(?i)"+currentText+".*",nodeName)){
+                } else if (Pattern.matches("(?i)"+currentText+".*",nodeName)) {
                     JLabel nodeNameLabel = new JLabel(nodeName);
                     nodeNameLabel.addMouseListener(new MouseAdapter() {
                         @Override
@@ -377,7 +382,7 @@ public class MainGUI extends JFrame {
 
         @Override
         public void focusGained(FocusEvent e) {
-            autoCompletion();
+            autoComplete();
         }
 
         @Override
@@ -408,12 +413,12 @@ public class MainGUI extends JFrame {
             ArrayList<String> stepsString = new ArrayList<>() ;
 
             //Get all step's name and check it
-            for(JTextField jTextField : steps){
-                if(jTextField.getText().isBlank()) {
+            for (JTextField jTextField : steps){
+                if (jTextField.getText().isBlank()) {
                     JOptionPane.showMessageDialog(mapView,"Veuilliez saisir une étape intermédiaire valide","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
-                }else if(stepsString.contains(jTextField.getText())){
+                } else if (stepsString.contains(jTextField.getText())){
                     JOptionPane.showMessageDialog(mapView,"Cette étape est déja saisie : "+jTextField.getText(),"Erreur de saisie",JOptionPane.ERROR_MESSAGE);
-                }else{
+                } else {
                     stepsString.add(jTextField.getText());
                 }
             }
@@ -422,32 +427,32 @@ public class MainGUI extends JFrame {
             ArrayList<String> nodeNames = map.getAllNodeNames();
 
             //Check nodes
-            if(start.isEmpty() || arrival.isEmpty()){
+            if (start.isEmpty() || arrival.isEmpty()){
                 JOptionPane.showMessageDialog(mapView,"Saisissez tous les champs !","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
-            }else if((map.getNodes().containsKey(start) || nodeNames.contains(start)) && (map.getNodes().containsKey(arrival) || nodeNames.contains(arrival))) {
+            } else if ((map.getNodes().containsKey(start) || nodeNames.contains(start)) && (map.getNodes().containsKey(arrival) || nodeNames.contains(arrival))) {
 
                 Node startingNode, arrivalNode;
                 startingNode = map.getNodeFromId(start);
                 arrivalNode = map.getNodeFromId(arrival);
 
 
-                if(startingNode == null) startingNode = map.getNodeFromName(start);
-                if(arrivalNode == null) arrivalNode = map.getNodeFromName(arrival);
+                if (startingNode == null) startingNode = map.getNodeFromName(start);
+                if (arrivalNode == null) arrivalNode = map.getNodeFromName(arrival);
 
                 ArrayList<Node> nodes = new ArrayList<>();
                 nodes.add(startingNode);
-                for(String stepNodeField : stepsString) {
+                for (String stepNodeField : stepsString) {
                     Node stepNode;
                     stepNode = map.getNodeFromId(stepNodeField);
-                    if(stepNode == null) stepNode = map.getNodeFromName(stepNodeField);
+                    if (stepNode == null) stepNode = map.getNodeFromName(stepNodeField);
                     nodes.add(stepNode);
                 }
                 nodes.add(arrivalNode);
-                Itinerary itinerary = Dijkstra.calculateTotalItinerary(nodes, map);
+                Itinerary itinerary = Dijkstra.calculateItinerary(nodes, map);
                 mapView.setItinerary(itinerary);
                 mapView.repaint();
                 JOptionPane.showMessageDialog(mapView, itinerary.toString());
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(mapView,"Destination inconnue","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
             }
 
@@ -480,10 +485,10 @@ public class MainGUI extends JFrame {
         public void mouseClicked(MouseEvent e) {
 
             //Variables
-            int height = 30 ;
-            int marginTop = 10 ;
-            int blockHeight = height + marginTop ;
-            int numberStep = steps.size() ;
+            int height = 30;
+            int marginTop = 10;
+            int blockHeight = height + marginTop;
+            int numberStep = steps.size();
 
             //Add a limit : max 3 steps
             if (numberStep > 2) {
@@ -502,6 +507,9 @@ public class MainGUI extends JFrame {
             ctnStep.add(newStep);
             newStep.setPreferredSize(new Dimension(210,height));
             newStep.setMaximumSize(newStep.getPreferredSize());
+            AutoCompletion newListener = new AutoCompletion(newStep);
+            newStep.getDocument().addDocumentListener(newListener);
+            newStep.addFocusListener(newListener);
             testItinerary.add(ctnStep);
             //Add the new text field to the steps list
             steps.add(newStep);

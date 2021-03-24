@@ -63,7 +63,7 @@ public class MapView extends JPanel{
         }
 
         //Draw itinerary
-        if(itinerary!=null) {
+        if (itinerary != null) {
             Node previousNode = null;
             for (StepItinerary stepItinerary : itinerary.getStepItineraries()) {
                 for (Node node : stepItinerary.getStepItineraryNodes()) {
@@ -75,7 +75,7 @@ public class MapView extends JPanel{
             }
         }
 
-        for(Node node : map.getNodes().values()){
+        for (Node node : map.getNodes().values()) {
             if (node.isPOI()) paintStrategy.paint(node, newDecX, newDecY, g);
         }
 

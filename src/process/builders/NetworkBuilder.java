@@ -36,6 +36,10 @@ public class NetworkBuilder {
             case MARITIME:
                 acceptedWays = new WayIdentifier[]{ WayIdentifier.BOAT_LANE };
                 break;
+            default:
+                // TODO : Lever une exception
+                return null;
+
         }
 
         return new Network(type, acceptedWays);

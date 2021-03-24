@@ -16,9 +16,9 @@ public class Dijkstra {
      * @param startingNode the starting node of the itinerary
      * @param arrivalNode the arrival node of the itinerary
      * @param map the main map
-     * @return the best itinerary
+     * @return the best itinerary between the two points
      */
-    private static StepItinerary calculateItinerary(Node startingNode, Node arrivalNode, Map map){
+    private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map){
 
         //The node currently covered
         Node currentNode = startingNode ;
@@ -118,13 +118,19 @@ public class Dijkstra {
         }
     }
 
-    public static Itinerary calculateTotalItinerary(ArrayList<Node> nodes, Map map){
+    /**
+     * This method calculate the best itinerary in terms of time between all points given by the user
+     * @param nodes Collection of all points into the itinerary path
+     * @param map the main map
+     * @return the best itinerary between all points
+     */
+    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map){
         ArrayList<StepItinerary> stepItineraries = new ArrayList<>();
         int i =  0;
         while (i< nodes.size() -1){
             Node nodeA = nodes.get(i);
             Node nodeB = nodes.get(i + 1);
-            StepItinerary stepItinerary = calculateItinerary(nodeA, nodeB, map);
+            StepItinerary stepItinerary = calculateStepItinerary(nodeA, nodeB, map);
             stepItineraries.add(stepItinerary);
             i++;
         }
