@@ -2,6 +2,7 @@ package model;
 
 import model.identifiers.TransportIdentifier;
 import model.identifiers.WayIdentifier;
+import model.repositories.TransportRepository;
 import model.repositories.WayTypeRepository;
 
 import java.util.HashMap;
@@ -47,6 +48,22 @@ public class Way {
             if(speed>maxSpeed) maxSpeed = speed ;
         }
         return maxSpeed ;
+    }
+
+    public Transport getHigherTransport(){
+        HashMap<TransportIdentifier, Integer> speeds = getType().getSpeeds();
+
+        int maxSpeed = 0 ;
+        TransportIdentifier identifierHigherSpeed = null ;
+
+        for(TransportIdentifier identifier : speeds.keySet()){
+            if(speeds.get(identifier) > maxSpeed){
+                maxSpeed = speeds.get(identifier) ;
+                identifierHigherSpeed = identifier ;
+            }
+        }
+
+        return TransportRepository.getInstance().getTransports().get(identifierHigherSpeed);
     }
 
 }

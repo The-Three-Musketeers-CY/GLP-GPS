@@ -1,6 +1,7 @@
 package model.repositories;
 
 import model.Transport;
+import model.identifiers.TransportIdentifier;
 
 import java.util.HashMap;
 
@@ -15,6 +16,10 @@ public class TransportRepository {
 
     public void addTransport(Transport transportIdentifier) {
         transports.put(transportIdentifier.getIdentifier(), transportIdentifier);
+    }
+
+    public HashMap<TransportIdentifier, Transport> getTransports() {
+        return transports;
     }
 
     public static TransportRepository getInstance() {

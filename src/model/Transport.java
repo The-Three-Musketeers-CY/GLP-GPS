@@ -1,5 +1,7 @@
 package model;
 
+import model.identifiers.TransportIdentifier;
+
 public class Transport {
 
     private model.identifiers.TransportIdentifier name;
@@ -24,4 +26,20 @@ public class Transport {
         return isPublicTransport;
     }
 
+    @Override
+    public String toString() {
+        return "Transport{" +
+                "name=" + name +
+                ", coast=" + coast +
+                ", isPublicTransport=" + isPublicTransport +
+                '}';
+    }
+
+    public boolean isCar() {
+        return name.equals(TransportIdentifier.CAR) ;
+    }
+
+    public boolean isBicycle() {
+        return name.equals(TransportIdentifier.BICYCLE);
+    }
 }

@@ -2,11 +2,13 @@ package model;
 
 public class StepItinerary {
     private Node[] stepItineraryNodes;
+    private Transport[] transportsUsed ;
     private float totalStepNode ;
 
-    public StepItinerary(float totalStepNode, Node[] stepItineraryNodes) {
+    public StepItinerary(float totalStepNode, Node[] stepItineraryNodes, Transport[] transportsUsed) {
         this.totalStepNode = totalStepNode;
         this.stepItineraryNodes = stepItineraryNodes;
+        this.transportsUsed = transportsUsed ;
     }
 
     public float getTotalStepNode(){
@@ -16,5 +18,8 @@ public class StepItinerary {
     public Node[] getStepItineraryNodes(){
         return stepItineraryNodes;
     }
-    
+
+    public Transport[] getTransportsUsed() {
+        return transportsUsed;
+    }
 }

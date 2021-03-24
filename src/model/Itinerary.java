@@ -29,6 +29,9 @@ public class Itinerary {
             for (Node node : stepItinerary.getStepItineraryNodes()) {
                 res += node.toString() + "\n";
             }
+            for(Transport transport : stepItinerary.getTransportsUsed()){
+                if(transport != null) res+= transport.toString() + "\n";
+            }
         }
         res += "}";
         return res;

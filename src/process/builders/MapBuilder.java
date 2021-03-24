@@ -1,9 +1,11 @@
 package process.builders;
 
+import log.LoggerUtility;
 import model.*;
 import model.identifiers.NetworkIdentifier;
 import model.identifiers.POIIdentifier;
 import model.identifiers.WayIdentifier;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -23,6 +25,8 @@ public class MapBuilder {
 
     private MapRepository mapRepository = MapRepository.getInstance();
 
+    private Logger logger = LoggerUtility.getLogger(MapBuilder.class, "html");
+
     /**
      * Create a MapBuilder
      * @param path the map file's path
@@ -30,6 +34,9 @@ public class MapBuilder {
     public MapBuilder(String path){
         File file = new File(path);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        logger.info("Start map construction");
+
         try {
             // Parsing & Normalizing XML map
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -40,7 +47,8 @@ public class MapBuilder {
             NodeList nl = doc.getElementsByTagName("node");
 
             // Processing all nodes
-            for (int indexNode=0; indexNode<nl.getLength(); indexNode++){
+            int indexNode ;
+            for (indexNode = 0; indexNode<nl.getLength(); indexNode++){
                 Node nd = nl.item(indexNode);
                 if(nd.getNodeType()== Node.ELEMENT_NODE){
                     Element elt = (Element)nd;
@@ -59,9 +67,10 @@ public class MapBuilder {
                     mapRepository.addNode(node);
                 }
             }
+            logger.info("Read " + indexNode + " nodes from map file");
 
             // Processing all ways from nodes
-            for (int indexNode = 0; indexNode < nl.getLength(); indexNode++) {
+            for (indexNode = 0; indexNode < nl.getLength(); indexNode++) {
                 Node nd = nl.item(indexNode);
                 if(nd.getNodeType()== Node.ELEMENT_NODE) {
                     Element elt = (Element) nd;
@@ -82,6 +91,7 @@ public class MapBuilder {
                     }
                 }
             }
+
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
@@ -107,8 +117,11 @@ public class MapBuilder {
         for (model.Node node : mapRepository.getNodes().values()) {
             map.getNodes().put(node.getId(), node);
         }
+        logger.info("Add " + map.getNodes().size() + " nodes to the map");
+
 
         // Putting all ways into all concerned networks
+        int waysCounter = 0 ;
         for (model.Node node : mapRepository.getNodes().values()) {
             NodeWays ways = mapRepository.getNodeWays(node.getId());
             if (ways != null)
@@ -117,10 +130,13 @@ public class MapBuilder {
                     for (Network network : map.getNetworks().values()) {
                         if (network.isAcceptedWay(way.getIdentifier())) {
                             network.addWay(way.getIdentifier(), node, map.getNodes().get(adjNodeID));
+                            waysCounter ++ ;
                         }
                     }
                 }
         }
+        logger.info("Add " + waysCounter + " ways to the map");
+
 
         // Putting foot ways
         Network footNetwork = map.getNetworks().get(NetworkIdentifier.FOOT);
@@ -135,6 +151,7 @@ public class MapBuilder {
         }
 
         // Returning map after building it correctly
+        logger.info("Map built successfully");
         return map;
     }
 

@@ -1,9 +1,11 @@
 package process.builders;
 
+import log.LoggerUtility;
 import model.WayType;
 import model.identifiers.TransportIdentifier;
 import model.identifiers.WayIdentifier;
 import model.repositories.WayTypeRepository;
+import org.apache.log4j.Logger;
 
 public class WayTypeBuilder {
 
@@ -29,6 +31,8 @@ public class WayTypeBuilder {
 
     private WayTypeRepository wayTypeRepository = WayTypeRepository.getInstance();
 
+    private Logger logger = LoggerUtility.getLogger(WayTypeBuilder.class, "html");
+
     /**
      * This method built all way types
      * @see WayIdentifier
@@ -38,6 +42,7 @@ public class WayTypeBuilder {
             WayType wayType = buildWayType(identifier);
             wayTypeRepository.getWayTypes().put(identifier, wayType);
         }
+        logger.info(wayTypeRepository.getWayTypes().size() + " way types built successfully");
     }
 
     private WayType buildWayType(WayIdentifier identifier) {
