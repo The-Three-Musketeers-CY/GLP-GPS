@@ -45,6 +45,10 @@ public class MapView extends JPanel{
 
     }
 
+    /**
+     * This method draws the GPS map view with the offset on the x and y axes
+     * @param g Graphic component
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -81,38 +85,74 @@ public class MapView extends JPanel{
 
     }
 
+    /**
+     * This method retrieves the X-dec of the map view
+     * @return The X-dec of the map view
+     */
     public int getDecPosX() {
         return decPosX;
     }
 
+    /**
+     * This method retrieves the Y-dec of the map view
+     * @return The Y-dec of the map view
+     */
     public int getDecPosY() {
         return decPosY;
     }
 
+    /**
+     * This method retrieves the new X-dec of the map view
+     * @return The new X-dec of the map view
+     */
     public int getNewDecX() {
         return newDecX;
     }
 
+    /**
+     * This method retrieves the new Y-dec of the map view
+     * @return The new Y-dec of the map view
+     */
     public int getNewDecY() {
         return newDecY;
     }
 
+    /**
+     * This method sets the X-dec of the map view
+     * @param decPosX Offset of the X-coordinate
+     */
     public void setDecPosX(int decPosX) {
         this.decPosX = decPosX;
     }
 
+    /**
+     * This method sets the Y-dec of the map view
+     * @param decPosY Offset of the Y-coordinate
+     */
     public void setDecPosY(int decPosY) {
         this.decPosY = decPosY;
     }
 
+    /**
+     * This method sets the new X-dec of the map view
+     * @param newDecX
+     */
     public void setNewDecX(int newDecX) {
         this.newDecX = newDecX;
     }
 
+    /**
+     * This method sets the new Y-dec of the map view
+     * @param newDecY
+     */
     public void setNewDecY(int newDecY) {
         this.newDecY = newDecY;
     }
 
+    /**
+     * This method sets the itinerary
+     * @param itinerary
+     */
     public void setItinerary(Itinerary itinerary) {
         this.itinerary = itinerary;
     }

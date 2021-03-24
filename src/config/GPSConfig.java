@@ -1,5 +1,7 @@
 package config;
-
+/**
+ * This class contains the configuration of the GPS window
+ */
 public class GPSConfig {
 
     public static final int WINDOW_WIDTH = 1000;
