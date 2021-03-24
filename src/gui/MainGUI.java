@@ -286,6 +286,7 @@ public class MainGUI extends JFrame {
             this.component = component ;
             autoCompletePanel.setVisible(false);
             testItinerary.add(autoCompletePanel);
+            testItinerary.setComponentZOrder(autoCompletePanel, 0);
         }
 
         @Override
@@ -344,7 +345,7 @@ public class MainGUI extends JFrame {
                     });
                     autoCompletePanel.add(nodeNameLabel);
                 }
-                testItinerary.revalidate();
+                testItinerary.updateUI();
             }
 
         }
