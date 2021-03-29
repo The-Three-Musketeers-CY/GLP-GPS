@@ -4,6 +4,9 @@ import config.GPSConfig;
 import model.Itinerary;
 import model.Map;
 import model.Node;
+import model.Transport;
+import model.identifiers.TransportIdentifier;
+import model.repositories.TransportRepository;
 import process.Dijkstra;
 import process.builders.MapBuilder;
 import gui.view.MapView;
@@ -417,7 +420,10 @@ public class MainGUI extends JFrame {
                     nodes.add(stepNode);
                 }
                 nodes.add(arrivalNode);
-                Itinerary itinerary = Dijkstra.calculateItinerary(nodes, map);
+
+                ArrayList<Transport> transportsToAvoid = new ArrayList<>();
+                //transportsToAvoid.addAll(TransportRepository.getInstance().getIndividualTransports());
+                Itinerary itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid);
                 mapView.setItinerary(itinerary);
                 mapView.repaint();
                 JOptionPane.showMessageDialog(mapView, itinerary.toString());

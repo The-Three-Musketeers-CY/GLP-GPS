@@ -35,11 +35,7 @@ public class Transport {
                 '}';
     }
 
-    public boolean isCar() {
-        return name.equals(TransportIdentifier.CAR) ;
-    }
-
-    public boolean isBicycle() {
-        return name.equals(TransportIdentifier.BICYCLE);
+    public boolean isFoot() {
+        return name.equals(TransportIdentifier.FOOT) ;
     }
 }

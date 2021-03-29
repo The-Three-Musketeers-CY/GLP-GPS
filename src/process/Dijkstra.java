@@ -54,8 +54,8 @@ public class Dijkstra {
                             Node node = map.getNodes().get(idNode);
                             //Get transports used previously
                             ArrayList<Transport> transports = transportsUsed(accessibleNodes,coveredNodes);
+
                             //Transport constraints
-                            //ArrayList<Transport> transportsToAvoid = new ArrayList<>() ;
                             //TODO : here add user's transport constraints
 
                             //After car, only public transport
