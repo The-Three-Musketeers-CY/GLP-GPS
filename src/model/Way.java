@@ -5,6 +5,7 @@ import model.identifiers.WayIdentifier;
 import model.repositories.TransportRepository;
 import model.repositories.WayTypeRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Way {
@@ -41,23 +42,29 @@ public class Way {
         return (float) Math.abs(Math.sqrt(Math.pow(node2Position.getX() - node1Position.getX(), 2) + Math.pow(node2Position.getY() - node1Position.getY(), 2)));
     }
 
-    public int getHigherSpeed() {
+    public int getHigherSpeed(ArrayList<Transport> transportsToAvoid) {
+
         HashMap<TransportIdentifier, Integer> speeds = getType().getSpeeds();
+
         int maxSpeed = 0 ;
-        for(int speed : speeds.values()){
-            if(speed>maxSpeed) maxSpeed = speed ;
+
+        for(TransportIdentifier identifier : speeds.keySet()){
+            if(speeds.get(identifier) > maxSpeed && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
+                maxSpeed = speeds.get(identifier) ;
+            }
         }
+
         return maxSpeed ;
     }
 
-    public Transport getHigherTransport(){
+    public Transport getHigherTransport(ArrayList<Transport> transportsToAvoid){
         HashMap<TransportIdentifier, Integer> speeds = getType().getSpeeds();
 
         int maxSpeed = 0 ;
         TransportIdentifier identifierHigherSpeed = null ;
 
         for(TransportIdentifier identifier : speeds.keySet()){
-            if(speeds.get(identifier) > maxSpeed){
+            if(speeds.get(identifier) > maxSpeed && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
                 maxSpeed = speeds.get(identifier) ;
                 identifierHigherSpeed = identifier ;
             }

@@ -2,6 +2,8 @@ package process;
 
 import log.LoggerUtility;
 import model.*;
+import model.identifiers.TransportIdentifier;
+import model.repositories.TransportRepository;
 import org.apache.log4j.Logger;
 import process.builders.MapBuilder;
 
@@ -23,7 +25,7 @@ public class Dijkstra {
      * @param map the main map
      * @return the best itinerary between the two points
      */
-    private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map){
+    private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map, ArrayList<Transport> transportsToAvoid){
 
         //The node currently covered
         Node currentNode = startingNode ;
@@ -31,6 +33,8 @@ public class Dijkstra {
         ArrayList<String> coveredNodes ;
         //All nodes who are accessible for the itinerary
         HashMap<String,AccessibleNode> accessibleNodes ;
+        //All the transports
+        HashMap<TransportIdentifier,Transport> transportRepository = TransportRepository.getInstance().getTransports() ;
 
         coveredNodes = new ArrayList<>();
         accessibleNodes = new HashMap<>();
@@ -48,12 +52,34 @@ public class Dijkstra {
                         if (!coveredNodes.contains(idNode)) {
                             //Get the adjacent node
                             Node node = map.getNodes().get(idNode);
-                            //Calculate the travel time of this way with the higher speed
-                            float time = calculateTime(way.getDistance() * 2, way.getHigherSpeed());
-                            //Get the higher transport
-                            Transport transport = way.getHigherTransport();
+                            //Get transports used previously
+                            ArrayList<Transport> transports = transportsUsed(accessibleNodes,coveredNodes);
+                            //Transport constraints
+                            //ArrayList<Transport> transportsToAvoid = new ArrayList<>() ;
+                            //TODO : here add user's transport constraints
+
+                            //After car, only public transport
+                            if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
+                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+                            }
+                            //After foot, only public transport or foot
+                            if(transports.contains(transportRepository.get(TransportIdentifier.FOOT))){
+                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+                            }
+                            //After public transport, only public transport or foot
+                            if(transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
+                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+                            }
+
+                            //Calculate the travel time of this way with the higher speed without the transports to avoid
+                            float time = calculateTime(way.getDistance() * 2, way.getHigherSpeed(transportsToAvoid));
+                            //Get the higher transport without the transports to avoid
+                            Transport transport = way.getHigherTransport(transportsToAvoid);
                             //Update weight of the node, the node is now accessible
                             updateWeight(time + accessibleNodes.get(currentNode.getId()).getWeight(), node,currentNode,transport,accessibleNodes);
+
                         }
                     }
                 }
@@ -70,25 +96,8 @@ public class Dijkstra {
                     float weight = accessibleNodes.get(idNode).getWeight() ;
                     //Check if this weight is the smallest
                     if(weight < minWeight || minWeight == -1){
-
-                        //chek if it's public transport is used during the itinerary
-
-                        boolean publicTransportUsed = false ;
-                        AccessibleNode currentAccessibleNode = accessibleNode ;
-                        while (!currentAccessibleNode.getNode().getId().equals(startingNode.getId())){
-                            if(currentAccessibleNode.getTransport().isPublicTransport()) publicTransportUsed = true;
-                            currentAccessibleNode = accessibleNodes.get(currentAccessibleNode.getPreviousNode().getId()) ;
-                        }
-
-                        //Update the current node
-                        if(publicTransportUsed && !accessibleNode.getTransport().isBicycle() && !accessibleNode.getTransport().isCar()) {
-                            currentNode = accessibleNodes.get(idNode).getNode();
-                            minWeight = weight;
-                        }else if(!publicTransportUsed){
-                            currentNode = accessibleNodes.get(idNode).getNode();
-                            minWeight = weight;
-                        }
-
+                        currentNode = accessibleNodes.get(idNode).getNode();
+                        minWeight = weight;
                     }
                 }
             }
@@ -151,19 +160,36 @@ public class Dijkstra {
         }
     }
 
+    private static ArrayList<Transport> transportsUsed(HashMap<String,AccessibleNode> accessibleNodes, ArrayList<String> coveredNodes){
+
+        ArrayList<Transport> transportsUsed = new ArrayList<>();
+
+        for(AccessibleNode accessibleNode : accessibleNodes.values()){
+            //Check if the node is covered
+            if(coveredNodes.contains(accessibleNode.getNode().getId())){
+                //add the transport to the list
+                if(!transportsUsed.contains(accessibleNode.getTransport())){
+                    transportsUsed.add(accessibleNode.getTransport());
+                }
+            }
+        }
+        return transportsUsed ;
+    }
+
     /**
-     * This method calculate the best itinerary in terms of time between all points given by the user
+     * This method calculate the best itinerary in terms of time between all points given by the user with transport constraints
      * @param nodes Collection of all points into the itinerary path
      * @param map the main map
+     * @param transportsToAvoid The transports to avoid in the itinerary
      * @return the best itinerary between all points
      */
-    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map){
+    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid){
         ArrayList<StepItinerary> stepItineraries = new ArrayList<>();
         int i =  0;
         while (i< nodes.size() -1){
             Node nodeA = nodes.get(i);
             Node nodeB = nodes.get(i + 1);
-            StepItinerary stepItinerary = calculateStepItinerary(nodeA, nodeB, map);
+            StepItinerary stepItinerary = calculateStepItinerary(nodeA, nodeB, map, transportsToAvoid);
             stepItineraries.add(stepItinerary);
             i++;
         }
@@ -174,6 +200,15 @@ public class Dijkstra {
         }
 
         return new Itinerary(total, stepItineraries);
+    }
+    /**
+     * This method calculate the best itinerary in terms of time between all points given by the user
+     * @param nodes Collection of all points into the itinerary path
+     * @param map the main map
+     * @return the best itinerary between all points
+     */
+    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map){
+        return calculateItinerary(nodes,map,new ArrayList<>());
     }
 
 }
