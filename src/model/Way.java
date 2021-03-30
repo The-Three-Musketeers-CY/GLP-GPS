@@ -57,6 +57,21 @@ public class Way {
         return maxSpeed ;
     }
 
+    public float getBestPrice(ArrayList<Transport> transportsToAvoid){
+
+        TransportIdentifier[] transportIdentifiers = getType().getAvailableTransports();
+
+        float minCost = -1 ;
+
+        for(TransportIdentifier identifier : transportIdentifiers){
+            if((TransportRepository.getInstance().getTransports().get(identifier).getCoast() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
+                minCost = TransportRepository.getInstance().getTransports().get(identifier).getCoast();
+            }
+        }
+
+        return minCost;
+    }
+
     public Transport getHigherTransport(ArrayList<Transport> transportsToAvoid){
         HashMap<TransportIdentifier, Integer> speeds = getType().getSpeeds();
 
@@ -71,6 +86,24 @@ public class Way {
         }
 
         return TransportRepository.getInstance().getTransports().get(identifierHigherSpeed);
+    }
+
+    public Transport getCheaperTransport(ArrayList<Transport> transportsToAvoid){
+
+        TransportIdentifier[] transportIdentifiers = getType().getAvailableTransports();
+
+        float minCost = -1 ;
+        TransportIdentifier identifierCheaper = null ;
+
+        for(TransportIdentifier identifier : transportIdentifiers){
+            if((TransportRepository.getInstance().getTransports().get(identifier).getCoast() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
+                minCost = TransportRepository.getInstance().getTransports().get(identifier).getCoast();
+                identifierCheaper = identifier ;
+            }
+        }
+
+        return TransportRepository.getInstance().getTransports().get(identifierCheaper);
+
     }
 
 }
