@@ -428,12 +428,22 @@ public class MainGUI extends JFrame {
                 itineraryView.setLayout(itineraryLayout);
                 JLabel time = new JLabel();
                 JLabel cost = new JLabel();
-                JLabel previousLabel = cost;
+                JLabel itineraryStart = new JLabel();
+                JLabel itineraryFinal = new JLabel();
+                JLabel previousLabel = itineraryStart;
+                int cpt = 0;
                 for(StepItinerary stepItinerary : itinerary.getStepItineraries()){
-                    for(int i=0; i<stepItinerary.getStepItineraryNodes().length;i++){
+                    if(cpt != 0 && cpt < itinerary.getStepItineraries().size()){
+                        JLabel stepLabel = new JLabel();
+                        stepLabel.setText(stepItinerary.getStepItineraryNodes()[0].getPoi().getName());
+                        stepLabel.setIcon(new ImageIcon("src/img/round_place_black_24DP.png"));
+                        itineraryView.add(stepLabel);
+                        itineraryLayout.putConstraint(SpringLayout.NORTH, stepLabel, 15, SpringLayout.SOUTH, previousLabel);
+                        previousLabel = stepLabel;
+                    }
+                    for(int i=0; i<stepItinerary.getStepItineraryNodes().length-1;i++){
                         Node node = stepItinerary.getStepItineraryNodes()[i];
                         Transport transport = stepItinerary.getTransportsUsed()[i];
-                        System.out.println("transport : " + transport);
                         if(node.isPOI()){
                             POI poi = node.getPoi();
                             JLabel namePoi = new JLabel();
@@ -473,25 +483,41 @@ public class MainGUI extends JFrame {
                                         iconPath = null;
                                 }
                                 namePoi.setIcon(new ImageIcon(iconPath));
-                                //System.out.println("transport changement : " + stepItinerary.getTransportsUsed()[i+1]);
+                                itineraryLayout.putConstraint(SpringLayout.WEST, namePoi, 25, SpringLayout.WEST, itineraryStart);
                             }
                             else {
                                 namePoi.setIcon(new ImageIcon("src/img/dot.png"));
+                                itineraryLayout.putConstraint(SpringLayout.WEST, namePoi, 45, SpringLayout.WEST, itineraryStart);
                             }
                             itineraryView.add(namePoi);
-                            itineraryLayout.putConstraint(SpringLayout.NORTH, namePoi, 5, SpringLayout.SOUTH, previousLabel);
+                            itineraryLayout.putConstraint(SpringLayout.NORTH, namePoi, 15, SpringLayout.SOUTH, previousLabel);
                             previousLabel = namePoi;
                         }
                     }
+                    cpt++;
                 }
+                itineraryStart.setText(itinerary.getStepItineraries().get(0).getStepItineraryNodes()[0].getPoi().getName());
+                itineraryFinal.setText(itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes()[itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes().length-1].getPoi().getName());
                 time.setText((int)Math.ceil(itinerary.getTotal()) + " min de trajet");
                 cost.setText("- €");
+                itineraryView.add(itineraryStart);
+                itineraryView.add(itineraryFinal);
                 itineraryView.add(time);
                 itineraryView.add(cost);
-                itineraryLayout.putConstraint(SpringLayout.NORTH, time, 5,SpringLayout.NORTH, itineraryView);
-                itineraryLayout.putConstraint(SpringLayout.NORTH, cost, 5, SpringLayout.SOUTH, time);
+                ImageIcon icon = new ImageIcon("src/img/round_place_black_24dp.png");
+                itineraryStart.setIcon(icon);
+                itineraryFinal.setIcon(icon);
+                itineraryLayout.putConstraint(SpringLayout.NORTH, itineraryStart, 15, SpringLayout.SOUTH, cost);
+                itineraryLayout.putConstraint(SpringLayout.NORTH, itineraryFinal, 15, SpringLayout.SOUTH, previousLabel);
+                itineraryLayout.putConstraint(SpringLayout.NORTH, time, 15,SpringLayout.NORTH, itineraryView);
+                itineraryLayout.putConstraint(SpringLayout.NORTH, cost, 15, SpringLayout.SOUTH, time);
                 itineraryView.setPreferredSize(IDEAL_ITINERARY_PANEL_DIMENSION);
-                JOptionPane.showMessageDialog(mapView, itineraryView);
+                //JOptionPane.showMessageDialog(mapView, itineraryView);
+                itineraryView.setBackground(Color.WHITE);
+                itineraryView.setBorder(new EmptyBorder(new Insets(5, 20, 0, 20)));
+                getContentPane().add(BorderLayout.EAST, itineraryView);
+                testItinerary.setVisible(false);
+                revalidate();
             } else {
                 JOptionPane.showMessageDialog(mapView,"Destination inconnue","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
             }
