@@ -1,10 +1,7 @@
 package gui;
 
 import config.GPSConfig;
-import model.Itinerary;
-import model.Map;
-import model.Node;
-import model.Transport;
+import model.*;
 import model.identifiers.TransportIdentifier;
 import model.repositories.TransportRepository;
 import process.Dijkstra;
@@ -426,7 +423,75 @@ public class MainGUI extends JFrame {
                 Itinerary itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid);
                 mapView.setItinerary(itinerary);
                 mapView.repaint();
-                JOptionPane.showMessageDialog(mapView, itinerary.toString());
+                JPanel itineraryView = new JPanel();
+                SpringLayout itineraryLayout = new SpringLayout();
+                itineraryView.setLayout(itineraryLayout);
+                JLabel time = new JLabel();
+                JLabel cost = new JLabel();
+                JLabel previousLabel = cost;
+                for(StepItinerary stepItinerary : itinerary.getStepItineraries()){
+                    for(int i=0; i<stepItinerary.getStepItineraryNodes().length;i++){
+                        Node node = stepItinerary.getStepItineraryNodes()[i];
+                        Transport transport = stepItinerary.getTransportsUsed()[i];
+                        System.out.println("transport : " + transport);
+                        if(node.isPOI()){
+                            POI poi = node.getPoi();
+                            JLabel namePoi = new JLabel();
+                            namePoi.setText(poi.getName());
+                            /*if(i==0 || i==stepItinerary.getStepItineraryNodes().length-1){
+                                namePoi.setIcon(new ImageIcon("src/img/round_place_black_24dp.png"));
+                            }
+                            else*/ if(i<stepItinerary.getStepItineraryNodes().length-1 && transport != stepItinerary.getTransportsUsed()[i+1]){
+                                Transport nextTransport = stepItinerary.getTransportsUsed()[i+1];
+                                String iconPath;
+                                switch (nextTransport.getIdentifier()){
+                                    case BUS :
+                                        iconPath = "src/img/round_directions_bus_black_24dp.png";
+                                        break;
+                                    case CAR:
+                                        iconPath = "src/img/round_directions_car_black_24dp.png";
+                                        break;
+                                    case BICYCLE:
+                                        iconPath = "src/img/round_directions_bike_black_24dp.png";
+                                        break;
+                                    case FOOT:
+                                        iconPath = "src/img/round_directions_walk_black_24dp.png";
+                                        break;
+                                    case BOAT:
+                                        iconPath = "src/img/round_directions_boat_black_24dp.png";
+                                        break;
+                                    case METRO:
+                                        iconPath = "src/img/round_subway_black_24dp.png";
+                                        break;
+                                    case TRAIN:
+                                        iconPath = "src/img/round_train_black_24dp.png";
+                                        break;
+                                    case PLANE:
+                                        iconPath = "src/img/round_plane_black_24dp.png";
+                                        break;
+                                    default:
+                                        iconPath = null;
+                                }
+                                namePoi.setIcon(new ImageIcon(iconPath));
+                                //System.out.println("transport changement : " + stepItinerary.getTransportsUsed()[i+1]);
+                            }
+                            else {
+                                namePoi.setIcon(new ImageIcon("src/img/dot.png"));
+                            }
+                            itineraryView.add(namePoi);
+                            itineraryLayout.putConstraint(SpringLayout.NORTH, namePoi, 5, SpringLayout.SOUTH, previousLabel);
+                            previousLabel = namePoi;
+                        }
+                    }
+                }
+                time.setText((int)Math.ceil(itinerary.getTotal()) + " min de trajet");
+                cost.setText("- €");
+                itineraryView.add(time);
+                itineraryView.add(cost);
+                itineraryLayout.putConstraint(SpringLayout.NORTH, time, 5,SpringLayout.NORTH, itineraryView);
+                itineraryLayout.putConstraint(SpringLayout.NORTH, cost, 5, SpringLayout.SOUTH, time);
+                itineraryView.setPreferredSize(IDEAL_ITINERARY_PANEL_DIMENSION);
+                JOptionPane.showMessageDialog(mapView, itineraryView);
             } else {
                 JOptionPane.showMessageDialog(mapView,"Destination inconnue","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
             }
