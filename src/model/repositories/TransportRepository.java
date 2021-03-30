@@ -68,6 +68,8 @@ public class TransportRepository {
             if(transport != exclusiveTransport) transportsToAvoid.add(transport) ;
         }
 
+        transportsToAvoid.remove(getTransports().get(TransportIdentifier.FOOT));
+
         return transportsToAvoid ;
     }
 

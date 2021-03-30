@@ -58,8 +58,10 @@ public class Dijkstra {
                         if (!coveredNodes.contains(idNode)) {
                             //Get the adjacent node
                             Node node = map.getNodes().get(idNode);
+
+
                             //Get transports used previously
-                            ArrayList<Transport> transports = transportsUsed(accessibleNodes,coveredNodes);
+                            ArrayList<Transport> transports = transportsUsed(accessibleNodes, accessibleNodes.get(currentNode.getId()));
 
                             //Transport constraints
 
@@ -68,12 +70,7 @@ public class Dijkstra {
                                 transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                             }
                             //After foot, only public transport or foot
-                            if(transports.contains(transportRepository.get(TransportIdentifier.FOOT))){
-                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
-                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
-                            }
-                            //After public transport, only public transport or foot
-                            if(transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
+                            if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
                                 transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                                 transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
@@ -120,6 +117,7 @@ public class Dijkstra {
 
                         }
                     }
+                    transportsToAvoid.clear();
                 }
             }
 
@@ -139,6 +137,8 @@ public class Dijkstra {
                     }
                 }
             }
+
+
             //Add the new current node to the covered nodes
             coveredNodes.add(currentNode.getId());
         }
@@ -146,12 +146,13 @@ public class Dijkstra {
         //Get the itinerary
         Stack<Node> nodeStack = new Stack<>();
         Stack<Transport> transportStack = new Stack<>();
-        float time = accessibleNodes.get(currentNode.getId()).getTime();
+        float time = 0;
         float cost = 0;
         while (currentNode != null){
             nodeStack.push(accessibleNodes.get(currentNode.getId()).getNode()) ;
             transportStack.push(accessibleNodes.get(currentNode.getId()).getTransport());
             cost += accessibleNodes.get(currentNode.getId()).getCost();
+            time += accessibleNodes.get(currentNode.getId()).getTime();
             currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
         }
 
@@ -164,7 +165,6 @@ public class Dijkstra {
         ArrayList<Transport> transportList = new ArrayList<>();
         while (transportStack.size() != 0) {
             Transport transport = transportStack.peek();
-            System.out.println(transport);
             transportList.add(transport);
             transportStack.pop();
         }
@@ -190,33 +190,34 @@ public class Dijkstra {
      * @param previousNode the previous node
      * @param accessibleNodes all the accessible nodes
      */
-    private static void updateWeight(float weight, float time, float cost, Node node, Node previousNode ,Transport higherTransport, HashMap<String,AccessibleNode> accessibleNodes){
+    private static void updateWeight(float weight, float time, float cost, Node node, Node previousNode ,Transport transport, HashMap<String,AccessibleNode> accessibleNodes){
         if(accessibleNodes.containsKey(node.getId())){
             if(weight < accessibleNodes.get(node.getId()).getWeight()){
                 accessibleNodes.get(node.getId()).setWeight(weight);
                 accessibleNodes.get(node.getId()).setTime(time);
                 accessibleNodes.get(node.getId()).setCost(cost);
                 accessibleNodes.get(node.getId()).setPreviousNode(previousNode);
-                accessibleNodes.get(node.getId()).setTransport(higherTransport);
+                accessibleNodes.get(node.getId()).setTransport(transport);
             }
         }else{
-            accessibleNodes.put(node.getId(), new AccessibleNode(node,previousNode,higherTransport,weight, time, cost));
+            accessibleNodes.put(node.getId(), new AccessibleNode(node,previousNode,transport,weight, time, cost));
         }
     }
 
-    private static ArrayList<Transport> transportsUsed(HashMap<String,AccessibleNode> accessibleNodes, ArrayList<String> coveredNodes){
+    private static ArrayList<Transport> transportsUsed(HashMap<String, AccessibleNode> accessibleNodes, AccessibleNode currentNode){
 
         ArrayList<Transport> transportsUsed = new ArrayList<>();
 
-        for(AccessibleNode accessibleNode : accessibleNodes.values()){
-            //Check if the node is covered
-            if(coveredNodes.contains(accessibleNode.getNode().getId())){
-                //add the transport to the list
-                if(!transportsUsed.contains(accessibleNode.getTransport())){
-                    transportsUsed.add(accessibleNode.getTransport());
-                }
+        while (currentNode.getPreviousNode() != null){
+            //add the transport to the list
+            if(!transportsUsed.contains(currentNode.getTransport())){
+                transportsUsed.add(currentNode.getTransport());
             }
+            currentNode =  accessibleNodes.get(currentNode.getPreviousNode().getId());
         }
+
+
+
         return transportsUsed ;
     }
 
