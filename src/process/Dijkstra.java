@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import process.builders.MapBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -56,7 +57,6 @@ public class Dijkstra {
                             ArrayList<Transport> transports = transportsUsed(accessibleNodes,coveredNodes);
 
                             //Transport constraints
-                            //TODO : here add user's transport constraints
 
                             //After car, only public transport
                             if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
@@ -184,6 +184,10 @@ public class Dijkstra {
      * @return the best itinerary between all points
      */
     public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid){
+
+        logger.info("Start itinerary calculation");
+        Date startTime = new Date();
+
         ArrayList<StepItinerary> stepItineraries = new ArrayList<>();
         int i =  0;
         while (i< nodes.size() -1){
@@ -198,6 +202,9 @@ public class Dijkstra {
         for (StepItinerary stepItinerary : stepItineraries) {
             total += stepItinerary.getTotalStepNode();
         }
+
+        Date finishTime = new Date();
+        logger.info("Best itinerary found in "+(finishTime.getTime() - startTime.getTime())+" milliseconds");
 
         return new Itinerary(total, stepItineraries);
     }

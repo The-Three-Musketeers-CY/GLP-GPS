@@ -658,7 +658,7 @@ public class MainGUI extends JFrame {
                 cpt++;
             }
 
-            ImageIcon icon = new ImageIcon("src/img/round_place_black_24dp.png");
+            ImageIcon icon = new ImageIcon("src/img/placeholder.png");
             itineraryStart.setIcon(icon);
             itineraryFinal.setIcon(icon);
             itineraryStart.setText(itinerary.getStepItineraries().get(0).getStepItineraryNodes()[0].getPoi().getName());
