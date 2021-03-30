@@ -5,12 +5,12 @@ import model.identifiers.TransportIdentifier;
 public class Transport {
 
     private model.identifiers.TransportIdentifier name;
-    private float coast;
+    private float cost;
     private boolean isPublicTransport;
 
-    public Transport(model.identifiers.TransportIdentifier name, float coast, boolean isPublicTransport) {
+    public Transport(model.identifiers.TransportIdentifier name, float cost, boolean isPublicTransport) {
         this.name = name;
-        this.coast = coast;
+        this.cost = cost;
         this.isPublicTransport = isPublicTransport;
     }
 
@@ -18,8 +18,8 @@ public class Transport {
         return name;
     }
 
-    public float getCoast() {
-        return coast;
+    public float getCost() {
+        return cost;
     }
 
     public boolean isPublicTransport() {
@@ -30,7 +30,7 @@ public class Transport {
     public String toString() {
         return "Transport{" +
                 "name=" + name +
-                ", coast=" + coast +
+                ", coast=" + cost +
                 ", isPublicTransport=" + isPublicTransport +
                 '}';
     }

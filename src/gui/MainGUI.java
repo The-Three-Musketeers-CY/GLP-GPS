@@ -2,8 +2,6 @@ package gui;
 
 import config.GPSConfig;
 import model.*;
-import model.identifiers.TransportIdentifier;
-import model.repositories.TransportRepository;
 import process.Dijkstra;
 import process.builders.MapBuilder;
 import gui.view.MapView;
@@ -18,6 +16,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 
@@ -421,7 +420,7 @@ public class MainGUI extends JFrame {
 
                 ArrayList<Transport> transportsToAvoid = new ArrayList<>();
                 //transportsToAvoid.addAll(TransportRepository.getInstance().getIndividualTransports());
-                Itinerary itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid);
+                Itinerary itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
                 mapView.setItinerary(itinerary);
                 mapView.repaint();
 
@@ -582,6 +581,8 @@ public class MainGUI extends JFrame {
         public ItineraryView(Itinerary itinerary) {
             this.itinerary = itinerary;
 
+            System.out.println(itinerary);
+
             init();
         }
 
@@ -664,8 +665,8 @@ public class MainGUI extends JFrame {
             itineraryStart.setText(itinerary.getStepItineraries().get(0).getStepItineraryNodes()[0].getPoi().getName());
             itineraryFinal.setText(itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes()[itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes().length-1].getPoi().getName());
 
-            time.setText((int)Math.ceil(itinerary.getTotal()) + " min de trajet");
-            cost.setText("- €");
+            time.setText((int)Math.ceil(itinerary.getTime()) + " min de trajet");
+            cost.setText(itinerary.getCost() + " €");
             button.addActionListener(new NewItineraryListener());
 
             this.add(itineraryStart);

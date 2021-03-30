@@ -6,12 +6,16 @@ public class AccessibleNode {
     private Node previousNode ;
     private Transport transport;
     private float weight ;
+    private float time;
+    private float cost;
 
-    public AccessibleNode(Node node, Node previousNode,Transport transport, float weight){
+    public AccessibleNode(Node node, Node previousNode,Transport transport, float weight, float time, float cost){
         this.node = node ;
         this.previousNode = previousNode ;
         this.transport = transport ;
         this.weight = weight ;
+        this.time = time;
+        this.cost = cost;
     }
 
     public Node getNode() {
@@ -24,6 +28,14 @@ public class AccessibleNode {
 
     public float getWeight() {
         return weight;
+    }
+
+    public float getTime() {
+        return time;
+    }
+
+    public float getCost() {
+        return cost;
     }
 
     public Transport getTransport() {
@@ -41,4 +53,13 @@ public class AccessibleNode {
     public void setWeight(float weight) {
         this.weight = weight;
     }
+
+    public void setTime(float time) {
+        this.time = time;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
+    }
+
 }

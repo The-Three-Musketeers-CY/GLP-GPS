@@ -4,16 +4,22 @@ import java.util.ArrayList;
 
 public class Itinerary {
 
-    private float total ;
+    private float time;
+    private float cost;
     private ArrayList<StepItinerary> stepItineraries;
 
-    public Itinerary(float total, ArrayList<StepItinerary> stepItineraries){
-        this.total = total ;
+    public Itinerary(float time, float cost, ArrayList<StepItinerary> stepItineraries){
+        this.time = time;
+        this.cost = cost;
         this.stepItineraries = stepItineraries ;
     }
 
-    public float getTotal() {
-        return total;
+    public float getTime() {
+        return time;
+    }
+
+    public float getCost() {
+        return cost;
     }
 
     public ArrayList<StepItinerary> getStepItineraries() {
@@ -23,7 +29,7 @@ public class Itinerary {
     @Override
     public String toString() {
         String res = "Meilleur itinéraire trouvé !\n" +
-                "Durée totale : " + total +
+                "Durée totale : " + time +
                 "\nPassage par : " + "\n";
         for (StepItinerary stepItinerary : stepItineraries) {
             for (Node node : stepItinerary.getStepItineraryNodes()) {

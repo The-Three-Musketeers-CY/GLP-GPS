@@ -4,8 +4,8 @@ import log.LoggerUtility;
 import model.*;
 import model.identifiers.TransportIdentifier;
 import model.repositories.TransportRepository;
+import model.repositories.WayTypeRepository;
 import org.apache.log4j.Logger;
-import process.builders.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,8 +17,13 @@ import java.util.Stack;
  */
 public class Dijkstra {
 
+    public static final int DEFAULT_BY_TIME = 0;
+    public static final int BY_DISTANCE = 1;
+    public static final int BY_COST = 2;
+    private static final int SCALE = 2;
 
     private static Logger logger = LoggerUtility.getLogger(Dijkstra.class, "html");
+
     /**
      * This method calculate the best itinerary in terms of time between two specific points
      * @param startingNode the starting node of the itinerary
@@ -26,7 +31,7 @@ public class Dijkstra {
      * @param map the main map
      * @return the best itinerary between the two points
      */
-    private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map, ArrayList<Transport> transportsToAvoid){
+    private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map, ArrayList<Transport> transportsToAvoid, int weightType){
 
         //The node currently covered
         Node currentNode = startingNode ;
@@ -42,7 +47,7 @@ public class Dijkstra {
 
         //Init the starting node
         coveredNodes.add(startingNode.getId());
-        accessibleNodes.put(startingNode.getId(),new AccessibleNode(startingNode,null,null,0));
+        accessibleNodes.put(startingNode.getId(),new AccessibleNode(startingNode,null, null,0, 0, 0));
 
         while (!coveredNodes.contains(arrivalNode.getId())){
             //FIRST STEP : find all the adjacent nodes to the current node and update their weight
@@ -74,11 +79,44 @@ public class Dijkstra {
                             }
 
                             //Calculate the travel time of this way with the higher speed without the transports to avoid
-                            float time = calculateTime(way.getDistance() * 2, way.getHigherSpeed(transportsToAvoid));
-                            //Get the higher transport without the transports to avoid
-                            Transport transport = way.getHigherTransport(transportsToAvoid);
+                            float weight;
+                            float time;
+                            float cost;
+                            Transport transport;
+                            switch (weightType) {
+                                case DEFAULT_BY_TIME:
+                                    weight = calculateTime(way.getDistance() * SCALE, way.getHigherSpeed(transportsToAvoid));
+                                    transport = way.getHigherTransport(transportsToAvoid);
+                                    time = weight;
+                                    if (transport != null) {
+                                        cost = transport.getCost();
+                                    } else {
+                                        cost = 0;
+                                    }
+                                    break;
+                                case BY_DISTANCE:
+                                    weight = way.getDistance() * SCALE;
+                                    transport = way.getHigherTransport(transportsToAvoid);
+                                    time = calculateTime(weight, way.getHigherSpeed(transportsToAvoid));
+                                    cost = way.getBestPrice(transportsToAvoid);
+                                    break;
+                                case BY_COST:
+                                    weight = way.getBestPrice(transportsToAvoid);
+                                    transport = way.getCheaperTransport(transportsToAvoid);
+                                    if (transport != null) {
+                                        time = calculateTime(way.getDistance() * SCALE, WayTypeRepository.getInstance().getWayTypes().get(way.getIdentifier()).getSpeeds().get(transport.getIdentifier()));
+                                    } else {
+                                        time = -1;
+                                    }
+                                    cost = weight;
+                                    break;
+                                default:
+                                    // TODO : Faire l'exception
+                                    throw new IllegalArgumentException();
+                            }
+
                             //Update weight of the node, the node is now accessible
-                            updateWeight(time + accessibleNodes.get(currentNode.getId()).getWeight(), node,currentNode,transport,accessibleNodes);
+                            updateWeight(weight + accessibleNodes.get(currentNode.getId()).getWeight(), time, cost, node, currentNode, transport, accessibleNodes);
 
                         }
                     }
@@ -108,10 +146,12 @@ public class Dijkstra {
         //Get the itinerary
         Stack<Node> nodeStack = new Stack<>();
         Stack<Transport> transportStack = new Stack<>();
-        float total = accessibleNodes.get(currentNode.getId()).getWeight();
+        float time = accessibleNodes.get(currentNode.getId()).getTime();
+        float cost = 0;
         while (currentNode != null){
             nodeStack.push(accessibleNodes.get(currentNode.getId()).getNode()) ;
             transportStack.push(accessibleNodes.get(currentNode.getId()).getTransport());
+            cost += accessibleNodes.get(currentNode.getId()).getCost();
             currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
         }
 
@@ -123,12 +163,14 @@ public class Dijkstra {
 
         ArrayList<Transport> transportList = new ArrayList<>();
         while (transportStack.size() != 0) {
-            transportList.add(transportStack.peek());
+            Transport transport = transportStack.peek();
+            System.out.println(transport);
+            transportList.add(transport);
             transportStack.pop();
         }
 
         //Return the best itinerary
-        return new StepItinerary(total, nodeList.toArray(new Node[0]), transportList.toArray(new Transport[0]));
+        return new StepItinerary(time, cost, nodeList.toArray(new Node[0]), transportList.toArray(new Transport[0]));
     }
 
     /**
@@ -143,20 +185,22 @@ public class Dijkstra {
 
     /**
      * this methode update accessible node's weight
-     * @param value the new weight
+     * @param weight the new weight
      * @param node the node to update
      * @param previousNode the previous node
      * @param accessibleNodes all the accessible nodes
      */
-    private static void updateWeight(float value, Node node, Node previousNode ,Transport higherTransport, HashMap<String,AccessibleNode> accessibleNodes){
+    private static void updateWeight(float weight, float time, float cost, Node node, Node previousNode ,Transport higherTransport, HashMap<String,AccessibleNode> accessibleNodes){
         if(accessibleNodes.containsKey(node.getId())){
-                if(value < accessibleNodes.get(node.getId()).getWeight()){
-                    accessibleNodes.get(node.getId()).setWeight(value);
-                    accessibleNodes.get(node.getId()).setPreviousNode(previousNode);
-                    accessibleNodes.get(node.getId()).setTransport(higherTransport);
-                }
+            if(weight < accessibleNodes.get(node.getId()).getWeight()){
+                accessibleNodes.get(node.getId()).setWeight(weight);
+                accessibleNodes.get(node.getId()).setTime(time);
+                accessibleNodes.get(node.getId()).setCost(cost);
+                accessibleNodes.get(node.getId()).setPreviousNode(previousNode);
+                accessibleNodes.get(node.getId()).setTransport(higherTransport);
+            }
         }else{
-            accessibleNodes.put(node.getId(), new AccessibleNode(node,previousNode,higherTransport,value));
+            accessibleNodes.put(node.getId(), new AccessibleNode(node,previousNode,higherTransport,weight, time, cost));
         }
     }
 
@@ -183,7 +227,7 @@ public class Dijkstra {
      * @param transportsToAvoid The transports to avoid in the itinerary
      * @return the best itinerary between all points
      */
-    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid){
+    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType){
 
         logger.info("Start itinerary calculation");
         Date startTime = new Date();
@@ -193,29 +237,22 @@ public class Dijkstra {
         while (i< nodes.size() -1){
             Node nodeA = nodes.get(i);
             Node nodeB = nodes.get(i + 1);
-            StepItinerary stepItinerary = calculateStepItinerary(nodeA, nodeB, map, transportsToAvoid);
+            StepItinerary stepItinerary = calculateStepItinerary(nodeA, nodeB, map, transportsToAvoid, weightType);
             stepItineraries.add(stepItinerary);
             i++;
         }
 
-        float total = 0;
+        float time = 0;
+        float cost = 0;
         for (StepItinerary stepItinerary : stepItineraries) {
-            total += stepItinerary.getTotalStepNode();
+            time += stepItinerary.getTime();
+            cost += stepItinerary.getCost();
         }
 
         Date finishTime = new Date();
         logger.info("Best itinerary found in "+(finishTime.getTime() - startTime.getTime())+" milliseconds");
 
-        return new Itinerary(total, stepItineraries);
-    }
-    /**
-     * This method calculate the best itinerary in terms of time between all points given by the user
-     * @param nodes Collection of all points into the itinerary path
-     * @param map the main map
-     * @return the best itinerary between all points
-     */
-    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map){
-        return calculateItinerary(nodes,map,new ArrayList<>());
+        return new Itinerary(time, cost, stepItineraries);
     }
 
 }

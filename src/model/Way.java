@@ -64,8 +64,8 @@ public class Way {
         float minCost = -1 ;
 
         for(TransportIdentifier identifier : transportIdentifiers){
-            if((TransportRepository.getInstance().getTransports().get(identifier).getCoast() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
-                minCost = TransportRepository.getInstance().getTransports().get(identifier).getCoast();
+            if((TransportRepository.getInstance().getTransports().get(identifier).getCost() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
+                minCost = TransportRepository.getInstance().getTransports().get(identifier).getCost();
             }
         }
 
@@ -96,8 +96,8 @@ public class Way {
         TransportIdentifier identifierCheaper = null ;
 
         for(TransportIdentifier identifier : transportIdentifiers){
-            if((TransportRepository.getInstance().getTransports().get(identifier).getCoast() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
-                minCost = TransportRepository.getInstance().getTransports().get(identifier).getCoast();
+            if((TransportRepository.getInstance().getTransports().get(identifier).getCost() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
+                minCost = TransportRepository.getInstance().getTransports().get(identifier).getCost();
                 identifierCheaper = identifier ;
             }
         }
