@@ -218,6 +218,12 @@ public class Dijkstra {
             cost += transportRepository.get(TransportIdentifier.BOAT).getCost() ;
         }
 
+        if(transports.contains(transportRepository.get(TransportIdentifier.TRAIN))){
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+            cost += transportRepository.get(TransportIdentifier.TRAIN).getCost() ;
+        }
+
         ArrayList<Transport> transportList = new ArrayList<>();
         while (transportStack.size() != 0) {
             Transport transport = transportStack.peek();

@@ -691,15 +691,31 @@ public class MainGUI extends JFrame {
             itineraryStart.setText(itinerary.getStepItineraries().get(0).getStepItineraryNodes()[0].getPoi().getName());
             itineraryFinal.setText(itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes()[itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes().length-1].getPoi().getName());
 
+            //Distance display
             String distanceTxt = " m";
-            int distanceValue = (int) (Math.ceil(itinerary.getDistance()));
+            float distanceValue = (float) (Math.ceil(itinerary.getDistance()));
+            String format = "%.0f" ;
 
             if(Math.ceil(itinerary.getDistance()) > 999){
                 distanceTxt = " km" ;
-                distanceValue = (int) (Math.ceil(itinerary.getDistance())/1000) ;
+                distanceValue = (float) (Math.ceil(itinerary.getDistance())/1000) ;
+                format = "%.1f" ;
             }
 
-            timeDistance.setText((int) Math.ceil(itinerary.getTime()) + " min de trajet -- " + distanceValue + distanceTxt);
+            int timeValue = (int) Math.ceil(itinerary.getTime());
+            int hourValue = 0 ;
+            while (timeValue >= 60){
+                hourValue++ ;
+                timeValue-= 60 ;
+            }
+            String timeTxt = "";
+            if(hourValue == 0){
+                timeTxt = timeValue + " min de trajet -- ";
+            }else{
+                timeTxt = hourValue + " h " + timeValue%60 + " min de trajet -- ";
+            }
+
+            timeDistance.setText(timeTxt + String.format(format,distanceValue) + distanceTxt);
             cost.setText(String.format("%.2f",itinerary.getCost()) + " €");
 
             button.addActionListener(new NewItineraryListener());
