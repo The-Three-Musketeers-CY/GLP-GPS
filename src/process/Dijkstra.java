@@ -47,7 +47,7 @@ public class Dijkstra {
 
         //Init the starting node
         coveredNodes.add(startingNode.getId());
-        accessibleNodes.put(startingNode.getId(),new AccessibleNode(startingNode,null, null,0, 0, 0));
+        accessibleNodes.put(startingNode.getId(),new AccessibleNode(startingNode,null, null,0, 0, 0, 0));
 
         while (!coveredNodes.contains(arrivalNode.getId())){
             //FIRST STEP : find all the adjacent nodes to the current node and update their weight
@@ -82,6 +82,7 @@ public class Dijkstra {
                             float weight;
                             float time;
                             float cost;
+                            float distance;
                             Transport transport;
                             switch (weightType) {
                                 case DEFAULT_BY_TIME:
@@ -93,12 +94,14 @@ public class Dijkstra {
                                     } else {
                                         cost = 0;
                                     }
+                                    distance = way.getDistance() * SCALE ;
                                     break;
                                 case BY_DISTANCE:
                                     weight = way.getDistance() * SCALE;
                                     transport = way.getHigherTransport(transportsToAvoid);
                                     time = calculateTime(weight, way.getHigherSpeed(transportsToAvoid));
                                     cost = way.getBestPrice(transportsToAvoid);
+                                    distance = weight ;
                                     break;
                                 case BY_COST:
                                     weight = way.getBestPrice(transportsToAvoid);
@@ -109,6 +112,7 @@ public class Dijkstra {
                                         time = -1;
                                     }
                                     cost = weight;
+                                    distance = way.getDistance() * SCALE ;
                                     break;
                                 default:
                                     // TODO : Faire l'exception
@@ -116,7 +120,7 @@ public class Dijkstra {
                             }
 
                             //Update weight of the node, the node is now accessible
-                            updateWeight(weight + accessibleNodes.get(currentNode.getId()).getWeight(), time, cost, node, currentNode, transport, accessibleNodes);
+                            updateWeight(weight + accessibleNodes.get(currentNode.getId()).getWeight(), time, cost, distance ,node, currentNode, transport, accessibleNodes);
 
                         }
                     }
@@ -153,6 +157,7 @@ public class Dijkstra {
         Stack<Transport> transportStack = new Stack<>();
         float time = 0;
         float cost = 0;
+        float distance = 0;
 
         //Check car price
         cost += carPrice(accessibleNodes,accessibleNodes.get(currentNode.getId()));
@@ -161,8 +166,10 @@ public class Dijkstra {
             //Add to the stack
             nodeStack.push(accessibleNodes.get(currentNode.getId()).getNode()) ;
             transportStack.push(accessibleNodes.get(currentNode.getId()).getTransport());
-            //Update the duration of the itinerary
+            //Update the duration of the itinerary and the distance
             time += accessibleNodes.get(currentNode.getId()).getTime();
+            distance += accessibleNodes.get(currentNode.getId()).getDistance();
+
             currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
         }
 
@@ -197,14 +204,6 @@ public class Dijkstra {
             cost += transportRepository.get(TransportIdentifier.METRO).getCost() ;
         }
 
-        while (currentNode != null){
-            nodeStack.push(accessibleNodes.get(currentNode.getId()).getNode()) ;
-            transportStack.push(accessibleNodes.get(currentNode.getId()).getTransport());
-            cost += accessibleNodes.get(currentNode.getId()).getCost();
-            time += accessibleNodes.get(currentNode.getId()).getTime();
-            currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
-        }
-
         ArrayList<Transport> transportList = new ArrayList<>();
         while (transportStack.size() != 0) {
             Transport transport = transportStack.peek();
@@ -214,7 +213,7 @@ public class Dijkstra {
         }
 
         //Return the best itinerary
-        return new StepItinerary(time, cost, nodeList.toArray(new Node[0]), transportList.toArray(new Transport[0]));
+        return new StepItinerary(time, cost, distance,nodeList.toArray(new Node[0]), transportList.toArray(new Transport[0]));
     }
 
     /**
@@ -234,17 +233,18 @@ public class Dijkstra {
      * @param previousNode the previous node
      * @param accessibleNodes all the accessible nodes
      */
-    private static void updateWeight(float weight, float time, float cost, Node node, Node previousNode ,Transport transport, HashMap<String,AccessibleNode> accessibleNodes){
+    private static void updateWeight(float weight, float time, float cost, float distance, Node node, Node previousNode ,Transport transport, HashMap<String,AccessibleNode> accessibleNodes){
         if(accessibleNodes.containsKey(node.getId())){
             if(weight < accessibleNodes.get(node.getId()).getWeight()){
                 accessibleNodes.get(node.getId()).setWeight(weight);
                 accessibleNodes.get(node.getId()).setTime(time);
                 accessibleNodes.get(node.getId()).setCost(cost);
+                accessibleNodes.get(node.getId()).setDistance(distance);
                 accessibleNodes.get(node.getId()).setPreviousNode(previousNode);
                 accessibleNodes.get(node.getId()).setTransport(transport);
             }
         }else{
-            accessibleNodes.put(node.getId(), new AccessibleNode(node,previousNode,transport,weight, time, cost));
+            accessibleNodes.put(node.getId(), new AccessibleNode(node,previousNode,transport,weight, time, cost, distance));
         }
     }
 
@@ -270,13 +270,7 @@ public class Dijkstra {
         while (currentNode.getPreviousNode() != null){
 
             if(currentNode.getTransport() == TransportRepository.getInstance().getTransports().get(TransportIdentifier.CAR)){
-                //Distance calculation
-                int dX = currentNode.getNode().getPosition().getX() - currentNode.getPreviousNode().getPosition().getX() ;
-                int dY = currentNode.getNode().getPosition().getY() - currentNode.getPreviousNode().getPosition().getY() ;
-                double d = Math.sqrt((double) (Math.pow(dX,2) + Math.pow(dY,2))) * SCALE;
-                System.out.println("distance = " + d);
-                price += d * TransportRepository.getInstance().getTransports().get(TransportIdentifier.CAR).getCost() ;
-                System.out.println("prix intermediaire = "+ price);
+                price += currentNode.getDistance() * TransportRepository.getInstance().getTransports().get(TransportIdentifier.CAR).getCost() ;
             }
             currentNode =  accessibleNodes.get(currentNode.getPreviousNode().getId());
         }
@@ -308,15 +302,17 @@ public class Dijkstra {
 
         float time = 0;
         float cost = 0;
+        float distance = 0;
         for (StepItinerary stepItinerary : stepItineraries) {
             time += stepItinerary.getTime();
             cost += stepItinerary.getCost();
+            distance += stepItinerary.getDistance();
         }
 
         Date finishTime = new Date();
         logger.info("Best itinerary found in "+(finishTime.getTime() - startTime.getTime())+" milliseconds");
 
-        return new Itinerary(time, cost, stepItineraries);
+        return new Itinerary(time, cost, distance, stepItineraries);
     }
 
 }

@@ -6,11 +6,13 @@ public class Itinerary {
 
     private float time;
     private float cost;
+    private float distance;
     private ArrayList<StepItinerary> stepItineraries;
 
-    public Itinerary(float time, float cost, ArrayList<StepItinerary> stepItineraries){
+    public Itinerary(float time, float cost, float distance, ArrayList<StepItinerary> stepItineraries){
         this.time = time;
         this.cost = cost;
+        this.distance = distance;
         this.stepItineraries = stepItineraries ;
     }
 
@@ -20,6 +22,10 @@ public class Itinerary {
 
     public float getCost() {
         return cost;
+    }
+
+    public float getDistance() {
+        return distance;
     }
 
     public ArrayList<StepItinerary> getStepItineraries() {

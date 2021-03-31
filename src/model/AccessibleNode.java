@@ -8,14 +8,16 @@ public class AccessibleNode {
     private float weight ;
     private float time;
     private float cost;
+    private float distance;
 
-    public AccessibleNode(Node node, Node previousNode,Transport transport, float weight, float time, float cost){
+    public AccessibleNode(Node node, Node previousNode,Transport transport, float weight, float time, float cost, float distance){
         this.node = node ;
         this.previousNode = previousNode ;
         this.transport = transport ;
         this.weight = weight ;
         this.time = time;
         this.cost = cost;
+        this.distance = distance ;
     }
 
     public Node getNode() {
@@ -36,6 +38,10 @@ public class AccessibleNode {
 
     public float getCost() {
         return cost;
+    }
+
+    public float getDistance() {
+        return distance;
     }
 
     public Transport getTransport() {
@@ -62,4 +68,7 @@ public class AccessibleNode {
         this.cost = cost;
     }
 
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
 }
