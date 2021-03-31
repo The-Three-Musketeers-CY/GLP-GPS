@@ -61,7 +61,7 @@ public class MapView extends JPanel{
         for (Network network : map.getNetworks().values()){
            for(NodeWays nodeWays : network.getNodeWays().values()){
                for(Way way : nodeWays.getWays().values()){
-                   if (way.getIdentifier() != WayIdentifier.FOOT) paintStrategy.paint(way, newDecX, newDecY, g2d);
+                   if (way.getIdentifier() != WayIdentifier.FOOT && way.getIdentifier() != WayIdentifier.PLANE_LANE && way.getIdentifier() != WayIdentifier.RAILWAY) paintStrategy.paint(way, newDecX, newDecY, g2d);
                }
            }
         }

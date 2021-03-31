@@ -438,7 +438,7 @@ public class MainGUI extends JFrame {
                 nodes.add(arrivalNode);
 
                 ArrayList<Transport> transportsToAvoid = new ArrayList<>();
-                //transportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.CAR));
+                //transportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.FOOT));
                 Itinerary itinerary;
                 if (defaultTimeItinerary.isSelected()) {
                     itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
@@ -665,7 +665,7 @@ public class MainGUI extends JFrame {
                                     iconPath = "src/img/round_train_black_24dp.png";
                                     break;
                                 case PLANE:
-                                    iconPath = "src/img/round_plane_black_24dp.png";
+                                    iconPath = "src/img/round_flight_black_24dp.png";
                                     break;
                                 default:
                                     iconPath = null;

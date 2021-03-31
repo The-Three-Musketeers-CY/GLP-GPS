@@ -26,7 +26,7 @@ public class WayTypeBuilder {
 
     private static final int DEFAULT_METRO_SPEED = 60;
     private static final int DEFAULT_BOAT_SPEED = 20;
-    private static final int DEFAULT_PLANE_SPEED = 700;
+    private static final int DEFAULT_PLANE_SPEED = 500;
     private static final int DEFAULT_TRAIN_SPEED = 230;
 
     private WayTypeRepository wayTypeRepository = WayTypeRepository.getInstance();
