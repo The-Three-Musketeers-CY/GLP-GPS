@@ -52,6 +52,10 @@ public class MainGUI extends JFrame {
     private JLabel arrivalLabel = new JLabel("Saisissez un point de d'arrivée :");
     private JLabel stepLabel = new JLabel("Etapes intérmédiaires");
 
+    private JRadioButton defaultTimeItinerary = new JRadioButton("Le + court");
+    private JRadioButton distanceItinerary = new JRadioButton("La - courte distance");
+    private JRadioButton costItinerary = new JRadioButton("Le - cher");
+
     private JPanel testItinerary = new JPanel();
     private ItineraryView itineraryView;
     private JPanel mapPanel = new JPanel();
@@ -146,6 +150,16 @@ public class MainGUI extends JFrame {
         addStep.addMouseListener(new AddStepListener());
         testItinerary.add(addStep);
 
+        defaultTimeItinerary.setSelected(true);
+        testItinerary.add(defaultTimeItinerary);
+        testItinerary.add(distanceItinerary);
+        testItinerary.add(costItinerary);
+
+        ButtonGroup radioButtonGroup = new ButtonGroup();
+        radioButtonGroup.add(defaultTimeItinerary);
+        radioButtonGroup.add(distanceItinerary);
+        radioButtonGroup.add(costItinerary);
+
         JLabel copyrightsWallethChevalierLabel = new JLabel("Benjamin Walleth | Paul Chevalier");
         JLabel copyrightsDenoyerLabel = new JLabel("William Denoyer");
         JLabel copyrightsGLPLabel = new JLabel("GLP GPS - 2021");
@@ -162,7 +176,10 @@ public class MainGUI extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, arrivalLabel, 10, SpringLayout.SOUTH, startNode);
         layout.putConstraint(SpringLayout.NORTH, arrivalNode, 2, SpringLayout.SOUTH, arrivalLabel);
         layout.putConstraint(SpringLayout.NORTH, calculateItinerary, 10, SpringLayout.SOUTH, arrivalNode);
-        layout.putConstraint(SpringLayout.NORTH,addStep,10,SpringLayout.SOUTH,calculateItinerary);
+        layout.putConstraint(SpringLayout.NORTH, addStep,10, SpringLayout.SOUTH,calculateItinerary);
+        layout.putConstraint(SpringLayout.NORTH, defaultTimeItinerary, 10, SpringLayout.SOUTH, addStep);
+        layout.putConstraint(SpringLayout.NORTH, distanceItinerary, 5, SpringLayout.SOUTH, defaultTimeItinerary);
+        layout.putConstraint(SpringLayout.NORTH, costItinerary, 5, SpringLayout.SOUTH, distanceItinerary);
         layout.putConstraint(SpringLayout.SOUTH, copyrightsWallethChevalierLabel, -50, SpringLayout.SOUTH, contentPane);
         layout.putConstraint(SpringLayout.NORTH, copyrightsDenoyerLabel, 2, SpringLayout.SOUTH, copyrightsWallethChevalierLabel);
         layout.putConstraint(SpringLayout.NORTH, copyrightsGLPLabel, 2, SpringLayout.SOUTH, copyrightsDenoyerLabel);
@@ -422,7 +439,16 @@ public class MainGUI extends JFrame {
 
                 ArrayList<Transport> transportsToAvoid = new ArrayList<>();
                 //transportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.BICYCLE));
-                Itinerary itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
+                Itinerary itinerary;
+                if (defaultTimeItinerary.isSelected()) {
+                    itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
+                } else if (distanceItinerary.isSelected()) {
+                    itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.BY_DISTANCE);
+                } else if (costItinerary.isSelected()) {
+                    itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.BY_COST);
+                } else {
+                    itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
+                }
                 mapView.setItinerary(itinerary);
                 mapView.repaint();
 
