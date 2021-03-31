@@ -2,18 +2,21 @@ package gui.view;
 
 import config.GPSConfig;
 import gui.PaintStrategy;
-import model.Map;
-import model.Network;
-import model.Node;
+import model.*;
+import model.identifiers.WayIdentifier;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class represents the map view panel of the GPS
+ */
 public class MapView extends JPanel{
 
     private static final long serialVersionUID = 1L;
 
     private Map map ;
+    private Itinerary itinerary ;
 
     private int newDecX = 0;
     private int newDecY = 0;
@@ -28,6 +31,10 @@ public class MapView extends JPanel{
     private JLabel testX = new JLabel();
     private JLabel testY = new JLabel();
 
+    /**
+     * This methods construct the map view panel of the GPS from the GPS map
+     * @param map GPS map
+     */
     public MapView(Map map){
         this.map = map;
 
@@ -35,8 +42,13 @@ public class MapView extends JPanel{
         add(test);
         add(testX);
         add(testY);
+
     }
 
+    /**
+     * This method draws the GPS map view with the offset on the x and y axes
+     * @param g Graphic component
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -47,49 +59,101 @@ public class MapView extends JPanel{
         testY.setText("Y : " + (GPSConfig.MAP_SIZE_HEIGHT - (GPSConfig.MAP_SIZE_HEIGHT + newDecY)));
 
         for (Network network : map.getNetworks().values()){
-           for(String nodeId1 : network.getWays().keySet()){
-               Node node1 = map.getNodes().get(nodeId1);
-               for(String nodeId2 : network.getWays().get(nodeId1).keySet()){
-                   Node node2 = map.getNodes().get(nodeId2);
-                   paintStrategy.paint(node1, node2, newDecX, newDecY, g2d);
+           for(NodeWays nodeWays : network.getNodeWays().values()){
+               for(Way way : nodeWays.getWays().values()){
+                   if (way.getIdentifier() != WayIdentifier.FOOT && way.getIdentifier() != WayIdentifier.PLANE_LANE && way.getIdentifier() != WayIdentifier.RAILWAY) paintStrategy.paint(way, newDecX, newDecY, g2d);
                }
            }
         }
-        for(Node node : map.getNodes().values()){
-            paintStrategy.paint(node, newDecX, newDecY, g);
+
+        //Draw itinerary
+        if (itinerary != null) {
+            Node previousNode = null;
+            for (StepItinerary stepItinerary : itinerary.getStepItineraries()) {
+                for (Node node : stepItinerary.getStepItineraryNodes()) {
+                    if (previousNode != null) {
+                        paintStrategy.paint(previousNode, node, newDecX, newDecY, g2d);
+                    }
+                    previousNode = node;
+                }
+            }
         }
+
+        for (Node node : map.getNodes().values()) {
+            if (node.isPOI()) paintStrategy.paint(node, newDecX, newDecY, g);
+        }
+
     }
 
+    /**
+     * This method retrieves the X-dec of the map view
+     * @return The X-dec of the map view
+     */
     public int getDecPosX() {
         return decPosX;
     }
 
+    /**
+     * This method retrieves the Y-dec of the map view
+     * @return The Y-dec of the map view
+     */
     public int getDecPosY() {
         return decPosY;
     }
 
+    /**
+     * This method retrieves the new X-dec of the map view
+     * @return The new X-dec of the map view
+     */
     public int getNewDecX() {
         return newDecX;
     }
 
+    /**
+     * This method retrieves the new Y-dec of the map view
+     * @return The new Y-dec of the map view
+     */
     public int getNewDecY() {
         return newDecY;
     }
 
+    /**
+     * This method sets the X-dec of the map view
+     * @param decPosX Offset of the X-coordinate
+     */
     public void setDecPosX(int decPosX) {
         this.decPosX = decPosX;
     }
 
+    /**
+     * This method sets the Y-dec of the map view
+     * @param decPosY Offset of the Y-coordinate
+     */
     public void setDecPosY(int decPosY) {
         this.decPosY = decPosY;
     }
 
+    /**
+     * This method sets the new X-dec of the map view
+     * @param newDecX
+     */
     public void setNewDecX(int newDecX) {
         this.newDecX = newDecX;
     }
 
+    /**
+     * This method sets the new Y-dec of the map view
+     * @param newDecY
+     */
     public void setNewDecY(int newDecY) {
         this.newDecY = newDecY;
     }
 
+    /**
+     * This method sets the itinerary
+     * @param itinerary
+     */
+    public void setItinerary(Itinerary itinerary) {
+        this.itinerary = itinerary;
+    }
 }

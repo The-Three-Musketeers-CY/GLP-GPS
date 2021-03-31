@@ -1,42 +1,65 @@
 package process.repositories;
 
 import model.Node;
-import model.identifiers.WayIdentifier;
+import model.NodeWays;
+import model.Way;
 
 import java.util.HashMap;
 
+/**
+ * This repository class contains all nodes & ways from the XML map before building map
+ */
 public class MapRepository {
 
     private HashMap<String, Node> nodes;
     private static MapRepository instance = new MapRepository();
-    private HashMap<String,HashMap<String, WayIdentifier>> ways;
+    private HashMap<String, NodeWays> ways;
 
     private MapRepository(){
         nodes = new HashMap<>();
         ways = new HashMap<>();
     }
 
+    /**
+     * This method returns the only instance of this class
+     * @return instance of this class
+     */
     public static MapRepository getInstance() {
         return instance;
     }
 
+    /**
+     * This methods put a node object into map node list
+     * @param node node of the map
+     */
     public void addNode(Node node){
         nodes.put(node.getId(), node);
     }
 
-    public void addWayToNode(String idNodeA, String idNodeB, WayIdentifier way){
-        ways.putIfAbsent(idNodeA, new HashMap<>());
-        ways.get(idNodeA).put(idNodeB, way);
+    /**
+     * This methods put a way object into map way list
+     * @param way way of the map
+     */
+    public void addWayToNode(Way way){
+        ways.putIfAbsent(way.getNodeA().getId(), new NodeWays(way.getNodeA()));
+        ways.get(way.getNodeA().getId()).getWays().put(way.getNodeB().getId(), way);
     }
 
-    public void addNodeWays(String idNodeA, HashMap<String, WayIdentifier> ways) {
-        this.ways.put(idNodeA, ways);
-    }
-
+    /**
+     * This methods returns a node by its id
+     * @param id id of the node
+     * @return node
+     */
     public Node getNode(String id){
         return nodes.get(id);
     }
 
+    /**
+     * This methods returns a node by its location
+     * @param x x position of the node
+     * @param y y position of the node
+     * @return node
+     */
     public Node getNode(float x, float y) {
         for (Node node : nodes.values()) {
             if (node.getPosition().getX() == x && node.getPosition().getY() == y) {
@@ -46,11 +69,20 @@ public class MapRepository {
         return null;
     }
 
+    /**
+     * This methods returns the node list
+     * @return dictionnary of all map nodes
+     */
     public HashMap<String, Node> getNodes() {
         return nodes;
     }
 
-    public HashMap<String, WayIdentifier> getNodeWays(String nodeID) {
+    /**
+     * This methods returns all ways connected to one node
+     * @param nodeID id of the node
+     * @return NodeWays object containing all ways connected to this node
+     */
+    public NodeWays getNodeWays(String nodeID) {
         return ways.get(nodeID);
     }
 

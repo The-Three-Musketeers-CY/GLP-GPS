@@ -1,7 +1,10 @@
 package model.identifiers;
 
+/**
+ * This class lists the types of networks
+ */
 public enum NetworkIdentifier {
 
-    ROAD, RAIL, AIR, MARITIME
+    FOOT, ROAD, RAIL, AIR, MARITIME
 
 }

@@ -11,12 +11,12 @@ public class WayType {
 
     private WayIdentifier identifier;
     private TransportIdentifier[] availableTransports;
-    private HashMap<TransportIdentifier, Integer> speed;
+    private HashMap<TransportIdentifier, Integer> speeds;
 
     public WayType(WayIdentifier identifier, TransportIdentifier[] availableTransports) {
         this.identifier = identifier;
         this.availableTransports = availableTransports;
-        this.speed = new HashMap<>();
+        this.speeds = new HashMap<>();
     }
 
     public WayIdentifier getIdentifier() {
@@ -28,11 +28,11 @@ public class WayType {
     }
 
     public void setSpeed(TransportIdentifier identifier, int speed) {
-        this.speed.put(identifier, speed);
+        this.speeds.put(identifier, speed);
     }
 
     public HashMap<TransportIdentifier, Integer> getSpeeds() {
-        return (HashMap<TransportIdentifier, Integer>) Collections.unmodifiableMap(speed);
+        return speeds;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class WayType {
         return "WayType{" +
                 "identifier=" + identifier +
                 ", availableTransports=" + Arrays.toString(availableTransports) +
-                ", speed=" + speed +
+                ", speed=" + speeds +
                 '}';
     }
 
