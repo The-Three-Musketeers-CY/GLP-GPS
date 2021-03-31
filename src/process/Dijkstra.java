@@ -146,16 +146,22 @@ public class Dijkstra {
             coveredNodes.add(currentNode.getId());
         }
 
-        //Get the itinerary
+        //GET THE ITINERARY
+
+        //init
         Stack<Node> nodeStack = new Stack<>();
         Stack<Transport> transportStack = new Stack<>();
         float time = 0;
         float cost = 0;
 
+        //Check car price
+        cost += carPrice(accessibleNodes,accessibleNodes.get(currentNode.getId()));
+
         while (currentNode != null){
+            //Add to the stack
             nodeStack.push(accessibleNodes.get(currentNode.getId()).getNode()) ;
             transportStack.push(accessibleNodes.get(currentNode.getId()).getTransport());
-            cost += accessibleNodes.get(currentNode.getId()).getCost();
+            //Update the duration of the itinerary
             time += accessibleNodes.get(currentNode.getId()).getTime();
             currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
         }
@@ -171,17 +177,24 @@ public class Dijkstra {
 
         //Transport constraints
 
-        //After car, only public transport
+        //After car, only public transport or foot
         if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
         }
+        //After bicycle, only public transport, foot, or bicycle
         if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
         }
         //After foot, only public transport or foot
-        if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
+        if(transports.contains(transportRepository.get(TransportIdentifier.FOOT))){
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+        }
+        //After public transports, only public transport or foot
+        if( transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+            cost += transportRepository.get(TransportIdentifier.METRO).getCost() ;
         }
 
         while (currentNode != null){
@@ -247,9 +260,28 @@ public class Dijkstra {
             currentNode =  accessibleNodes.get(currentNode.getPreviousNode().getId());
         }
 
-
-
         return transportsUsed ;
+    }
+
+    private static double carPrice(HashMap<String, AccessibleNode> accessibleNodes, AccessibleNode currentNode){
+
+        double price = 0 ;
+
+        while (currentNode.getPreviousNode() != null){
+
+            if(currentNode.getTransport() == TransportRepository.getInstance().getTransports().get(TransportIdentifier.CAR)){
+                //Distance calculation
+                int dX = currentNode.getNode().getPosition().getX() - currentNode.getPreviousNode().getPosition().getX() ;
+                int dY = currentNode.getNode().getPosition().getY() - currentNode.getPreviousNode().getPosition().getY() ;
+                double d = Math.sqrt((double) (Math.pow(dX,2) + Math.pow(dY,2))) * SCALE;
+                System.out.println("distance = " + d);
+                price += d * TransportRepository.getInstance().getTransports().get(TransportIdentifier.CAR).getCost() ;
+                System.out.println("prix intermediaire = "+ price);
+            }
+            currentNode =  accessibleNodes.get(currentNode.getPreviousNode().getId());
+        }
+
+        return price ;
     }
 
     /**

@@ -9,7 +9,7 @@ public class TransportBuilder {
 
     private static final float FREE_COST = 0;
 
-    private static final float DEFAULT_CAR_COST = 2;
+    private static final float DEFAULT_CAR_COST = (float) 0.002;
     private static final float DEFAULT_METRO_BUS_COST = (float) 1.9;
     private static final float DEFAULT_TRAIN_COST = 60;
     private static final float DEFAULT_BOAT_COST = 40;
