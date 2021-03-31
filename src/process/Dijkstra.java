@@ -69,6 +69,9 @@ public class Dijkstra {
                             if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
                                 transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                             }
+                            if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
+                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+                            }
                             //After foot, only public transport or foot
                             if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
                                 transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
@@ -149,14 +152,31 @@ public class Dijkstra {
         float time = 0;
         float cost = 0;
 
+        while (currentNode != null){
+            nodeStack.push(accessibleNodes.get(currentNode.getId()).getNode()) ;
+            transportStack.push(accessibleNodes.get(currentNode.getId()).getTransport());
+            cost += accessibleNodes.get(currentNode.getId()).getCost();
+            time += accessibleNodes.get(currentNode.getId()).getTime();
+            currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
+        }
+
+        ArrayList<Node> nodeList = new ArrayList<>();
+        while (nodeStack.size() != 0) {
+            nodeList.add(nodeStack.peek());
+            nodeStack.pop();
+        }
+
         //Get transports used previously
-        ArrayList<Transport> transports = transportsUsed(accessibleNodes, accessibleNodes.get(currentNode.getId()));
+        ArrayList<Transport> transports = transportsUsed(accessibleNodes, accessibleNodes.get(nodeList.get(nodeList.size() - 1).getId()));
 
         //Transport constraints
 
         //After car, only public transport
         if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+        }
+        if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
         }
         //After foot, only public transport or foot
         if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
@@ -172,15 +192,10 @@ public class Dijkstra {
             currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
         }
 
-        ArrayList<Node> nodeList = new ArrayList<>();
-        while (nodeStack.size() != 0) {
-            nodeList.add(nodeStack.peek());
-            nodeStack.pop();
-        }
-
         ArrayList<Transport> transportList = new ArrayList<>();
         while (transportStack.size() != 0) {
             Transport transport = transportStack.peek();
+            System.out.println(transport);
             transportList.add(transport);
             transportStack.pop();
         }

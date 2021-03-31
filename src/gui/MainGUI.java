@@ -667,7 +667,11 @@ public class MainGUI extends JFrame {
 
             time.setText((int)Math.ceil(itinerary.getTime()) + " min de trajet");
             cost.setText(String.format("%.2f",itinerary.getCost()) + " €");
+
             button.addActionListener(new NewItineraryListener());
+            button.setPreferredSize(new Dimension(210, 30));
+            button.setBackground(new Color(200,200,200));
+            button.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 
             this.add(itineraryStart);
             this.add(itineraryFinal);
