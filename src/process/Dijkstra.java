@@ -148,6 +148,22 @@ public class Dijkstra {
         Stack<Transport> transportStack = new Stack<>();
         float time = 0;
         float cost = 0;
+
+        //Get transports used previously
+        ArrayList<Transport> transports = transportsUsed(accessibleNodes, accessibleNodes.get(currentNode.getId()));
+
+        //Transport constraints
+
+        //After car, only public transport
+        if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+        }
+        //After foot, only public transport or foot
+        if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+        }
+
         while (currentNode != null){
             nodeStack.push(accessibleNodes.get(currentNode.getId()).getNode()) ;
             transportStack.push(accessibleNodes.get(currentNode.getId()).getTransport());
