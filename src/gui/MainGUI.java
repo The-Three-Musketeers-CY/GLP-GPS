@@ -691,7 +691,15 @@ public class MainGUI extends JFrame {
             itineraryStart.setText(itinerary.getStepItineraries().get(0).getStepItineraryNodes()[0].getPoi().getName());
             itineraryFinal.setText(itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes()[itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes().length-1].getPoi().getName());
 
-            timeDistance.setText((int) Math.ceil(itinerary.getTime()) + " min de trajet -- " + (int) Math.ceil(itinerary.getDistance()) + " m");
+            String distanceTxt = " m";
+            int distanceValue = (int) (Math.ceil(itinerary.getDistance()));
+
+            if(Math.ceil(itinerary.getDistance()) > 999){
+                distanceTxt = " km" ;
+                distanceValue = (int) (Math.ceil(itinerary.getDistance())/1000) ;
+            }
+
+            timeDistance.setText((int) Math.ceil(itinerary.getTime()) + " min de trajet -- " + distanceValue + distanceTxt);
             cost.setText(String.format("%.2f",itinerary.getCost()) + " €");
 
             button.addActionListener(new NewItineraryListener());
