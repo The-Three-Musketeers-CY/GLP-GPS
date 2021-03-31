@@ -41,6 +41,8 @@ public class Dijkstra {
         HashMap<String,AccessibleNode> accessibleNodes ;
         //All the transports
         HashMap<TransportIdentifier,Transport> transportRepository = TransportRepository.getInstance().getTransports() ;
+        //Intern transport's constraints
+        ArrayList<Transport> internTransportsToAvoid = new ArrayList<>(transportsToAvoid);
 
         coveredNodes = new ArrayList<>();
         accessibleNodes = new HashMap<>();
@@ -59,7 +61,6 @@ public class Dijkstra {
                             //Get the adjacent node
                             Node node = map.getNodes().get(idNode);
 
-
                             //Get transports used previously
                             ArrayList<Transport> transports = transportsUsed(accessibleNodes, accessibleNodes.get(currentNode.getId()));
 
@@ -67,15 +68,15 @@ public class Dijkstra {
 
                             //After car, only public transport
                             if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
-                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+                                internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                             }
                             if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
-                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+                                internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
                             //After foot, only public transport or foot
                             if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
-                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
-                                transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+                                internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+                                internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
 
                             //Calculate the travel time of this way with the higher speed without the transports to avoid
@@ -86,8 +87,8 @@ public class Dijkstra {
                             Transport transport;
                             switch (weightType) {
                                 case DEFAULT_BY_TIME:
-                                    weight = calculateTime(way.getDistance() * SCALE, way.getHigherSpeed(transportsToAvoid));
-                                    transport = way.getHigherTransport(transportsToAvoid);
+                                    weight = calculateTime(way.getDistance() * SCALE, way.getHigherSpeed(internTransportsToAvoid));
+                                    transport = way.getHigherTransport(internTransportsToAvoid);
                                     time = weight;
                                     if (transport != null) {
                                         cost = transport.getCost();
@@ -97,15 +98,15 @@ public class Dijkstra {
                                     distance = way.getDistance() * SCALE ;
                                     break;
                                 case BY_DISTANCE:
-                                    weight = way.getDistance() * SCALE;
-                                    transport = way.getHigherTransport(transportsToAvoid);
-                                    time = calculateTime(weight, way.getHigherSpeed(transportsToAvoid));
-                                    cost = way.getBestPrice(transportsToAvoid);
+                                    weight = way.getDistance() * SCALE ;
+                                    transport = way.getHigherTransport(internTransportsToAvoid);
+                                    time = calculateTime(weight, way.getHigherSpeed(internTransportsToAvoid));
+                                    cost = way.getBestPrice(internTransportsToAvoid);
                                     distance = weight ;
                                     break;
                                 case BY_COST:
-                                    weight = way.getBestPrice(transportsToAvoid);
-                                    transport = way.getCheaperTransport(transportsToAvoid);
+                                    weight = way.getBestPrice(internTransportsToAvoid);
+                                    transport = way.getCheaperTransport(internTransportsToAvoid);
                                     if (transport != null) {
                                         time = calculateTime(way.getDistance() * SCALE, WayTypeRepository.getInstance().getWayTypes().get(way.getIdentifier()).getSpeeds().get(transport.getIdentifier()));
                                     } else {
@@ -124,7 +125,8 @@ public class Dijkstra {
 
                         }
                     }
-                    transportsToAvoid.clear();
+                    internTransportsToAvoid.clear();
+                    internTransportsToAvoid.addAll(transportsToAvoid);
                 }
             }
 

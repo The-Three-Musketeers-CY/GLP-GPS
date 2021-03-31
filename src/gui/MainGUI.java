@@ -438,7 +438,7 @@ public class MainGUI extends JFrame {
                 nodes.add(arrivalNode);
 
                 ArrayList<Transport> transportsToAvoid = new ArrayList<>();
-                //transportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.BICYCLE));
+                //transportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.CAR));
                 Itinerary itinerary;
                 if (defaultTimeItinerary.isSelected()) {
                     itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
