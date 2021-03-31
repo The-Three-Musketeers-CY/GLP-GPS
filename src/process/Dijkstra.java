@@ -74,7 +74,7 @@ public class Dijkstra {
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
                             //After foot, only public transport or foot
-                            if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
+                            if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS)) || transports.contains(transportRepository.get(TransportIdentifier.TRAIN)) || transports.contains(transportRepository.get(TransportIdentifier.BOAT)) || transports.contains(transportRepository.get(TransportIdentifier.PLANE))){
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
