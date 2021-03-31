@@ -53,7 +53,7 @@ public class MainGUI extends JFrame {
     private JLabel stepLabel = new JLabel("Etapes intérmédiaires");
 
     private JRadioButton defaultTimeItinerary = new JRadioButton("Le + court");
-    private JRadioButton distanceItinerary = new JRadioButton("La - courte distance");
+    private JRadioButton distanceItinerary = new JRadioButton("La + courte distance");
     private JRadioButton costItinerary = new JRadioButton("Le - cher");
 
     private JPanel testItinerary = new JPanel();
@@ -615,7 +615,7 @@ public class MainGUI extends JFrame {
         private void init() {
             SpringLayout itineraryLayout = new SpringLayout();
             this.setLayout(itineraryLayout);
-            JLabel time = new JLabel();
+            JLabel timeDistance = new JLabel();
             JLabel cost = new JLabel();
             JLabel itineraryStart = new JLabel();
             JLabel itineraryFinal = new JLabel();
@@ -691,24 +691,36 @@ public class MainGUI extends JFrame {
             itineraryStart.setText(itinerary.getStepItineraries().get(0).getStepItineraryNodes()[0].getPoi().getName());
             itineraryFinal.setText(itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes()[itinerary.getStepItineraries().get(itinerary.getStepItineraries().size()-1).getStepItineraryNodes().length-1].getPoi().getName());
 
-            time.setText((int)Math.ceil(itinerary.getTime()) + " min de trajet");
+            timeDistance.setText((int) Math.ceil(itinerary.getTime()) + " min de trajet -- " + (int) Math.ceil(itinerary.getDistance()) + " m");
             cost.setText(String.format("%.2f",itinerary.getCost()) + " €");
 
             button.addActionListener(new NewItineraryListener());
             button.setPreferredSize(new Dimension(210, 30));
             button.setBackground(new Color(200,200,200));
             button.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    super.mouseEntered(e);
+                    e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                }
+            });
 
             this.add(itineraryStart);
             this.add(itineraryFinal);
-            this.add(time);
+            this.add(timeDistance);
             this.add(cost);
             this.add(button);
 
             itineraryLayout.putConstraint(SpringLayout.NORTH, itineraryStart, 15, SpringLayout.SOUTH, cost);
             itineraryLayout.putConstraint(SpringLayout.NORTH, itineraryFinal, 15, SpringLayout.SOUTH, previousLabel);
-            itineraryLayout.putConstraint(SpringLayout.NORTH, time, 15,SpringLayout.NORTH, this);
-            itineraryLayout.putConstraint(SpringLayout.NORTH, cost, 15, SpringLayout.SOUTH, time);
+            itineraryLayout.putConstraint(SpringLayout.NORTH, timeDistance, 15,SpringLayout.NORTH, this);
+            itineraryLayout.putConstraint(SpringLayout.NORTH, cost, 15, SpringLayout.SOUTH, timeDistance);
             itineraryLayout.putConstraint(SpringLayout.SOUTH, button, -10, SpringLayout.SOUTH, this);
             itineraryLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, button, 0, SpringLayout.HORIZONTAL_CENTER, this);
             this.setPreferredSize(IDEAL_ITINERARY_PANEL_DIMENSION);
