@@ -14,31 +14,31 @@
         <adjacentNode id="4" type="URBAN_ROAD" />
     </node>
     <node id="4" x="150" y="85">
-        <adjacentNode id="5" type="URBAN_ROAD" />
-        <adjacentNode id="6" type="URBAN_ROAD"/>
         <adjacentNode id="3" type="URBAN_ROAD" />
+        <adjacentNode id="5" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="6" type="URBAN_ROAD"/>
         <adjacentNode id="34" type="URBAN_ROAD" />
-        <adjacentNode id="35" type="BUS_LANE" />
+        <adjacentNode id="35" type="URBAN_ROAD" />
     </node>
     <node id="5" x="100" y="150">
         <poi type="STATION">Porte Dauphine</poi>
-        <adjacentNode id="4" type="BUS_LANE" />
-        <adjacentNode id="7" type="URBAN_ROAD" />
+        <adjacentNode id="4" type="URBAN_ROAD" />
+        <adjacentNode id="7" type="BUS_LANE" lineNumber="1"/>
         <adjacentNode id="29" type="METRO" />
         <adjacentNode id="34" type="METRO" />
     </node>
     <node id="6" x="250" y="85">
         <adjacentNode id="4" type="URBAN_ROAD" />
-        <adjacentNode id="16" type="BUS_LANE" />
-        <adjacentNode id="33" type="URBAN_ROAD" />
         <adjacentNode id="12" type="URBAN_ROAD" />
+        <adjacentNode id="16" type="URBAN_ROAD" />
+        <adjacentNode id="33" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="7" x="100" y="250">
-        <adjacentNode id="5" type="BUS_LANE" />
+        <adjacentNode id="5" type="URBAN_ROAD" />
         <adjacentNode id="8" type="URBAN_ROAD" />
         <adjacentNode id="9" type="URBAN_ROAD" />
         <adjacentNode id="29" type="URBAN_ROAD" />
-        <adjacentNode id="36" type="URBAN_ROAD" />
+        <adjacentNode id="36" type="BUS_LANE" lineNumber="1"/>
         <adjacentNode id="43" type="URBAN_ROAD" />
     </node>
     <node id="8" x="0" y="250">
@@ -47,56 +47,56 @@
     <node id="9" x="200" y="250">
         <poi type="STATION">Charles de Gaulle Etoile</poi>
         <adjacentNode id="7" type="URBAN_ROAD" />
+        <adjacentNode id="10" type="URBAN_ROAD" />
         <adjacentNode id="12" type="URBAN_ROAD" />
-        <adjacentNode id="10" type="BUS_LANE" />
         <adjacentNode id="22" type="URBAN_ROAD" />
         <adjacentNode id="29" type="METRO" />
         <adjacentNode id="30" type="METRO" />
-        <adjacentNode id="43" type="BUS_LANE" />
+        <adjacentNode id="43" type="URBAN_ROAD" />
     </node>
     <node id="10" x="300" y="300">
         <poi type="STATION">Saint-Gilles - Chemin Vert</poi>
-        <adjacentNode id="9" type="URBAN_ROAD" />
-        <adjacentNode id="11" type="URBAN_ROAD" />
-        <adjacentNode id="30" type="BUS_LANE" />
+        <adjacentNode id="9" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="11" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="30" type="URBAN_ROAD" />
         <adjacentNode id="31" type="URBAN_ROAD" />
         <adjacentNode id="124" type="URBAN_ROAD" />
     </node>
     <node id="11" x="350" y="200">
-        <adjacentNode id="10" type="BUS_LANE" />
-        <adjacentNode id="13" type="BUS_LANE" />
+        <adjacentNode id="10" type="URBAN_ROAD" />
         <adjacentNode id="12" type="URBAN_ROAD" />
+        <adjacentNode id="13" type="URBAN_ROAD" />
     </node>
     <node id="12" x="250" y="150">
         <poi type="BUILDING">La Défense</poi>
-        <adjacentNode id="11" type="URBAN_ROAD" />
         <adjacentNode id="6" type="URBAN_ROAD" />
         <adjacentNode id="9" type="URBAN_ROAD" />
+        <adjacentNode id="11" type="URBAN_ROAD" />
     </node>
     <node id="13" x="450" y="250">
         <poi type="STATION">Monceau</poi>
-        <adjacentNode id="11" type="URBAN_ROAD" />
-        <adjacentNode id="14" type="URBAN_ROAD" />
-        <adjacentNode id="25" type="URBAN_ROAD" />
+        <adjacentNode id="11" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="14" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="25" type="URBAN_ROAD" lineNumber="2"/>
         <adjacentNode id="31" type="METRO" />
         <adjacentNode id="32" type="METRO" />
     </node>
     <node id="14" x="500" y="150">
         <poi type="STATION">Gare Montparnasse</poi>
-        <adjacentNode id="13" type="BUS_LANE" />
-        <adjacentNode id="15" type="URBAN_ROAD" />
-        <adjacentNode id="32" type="BUS_LANE" />
+        <adjacentNode id="13" type="URBAN_ROAD" />
+        <adjacentNode id="15" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="32" type="BUS_LANE" lineNumber="1"/>
         <adjacentNode id="48" type="URBAN_ROAD" />
     </node>
     <node id="15" x="500" y="85">
-        <adjacentNode id="14" type="BUS_LANE" />
-        <adjacentNode id="16" type="URBAN_ROAD" />
+        <adjacentNode id="14" type="URBAN_ROAD" />
+        <adjacentNode id="16" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="16" x="350" y="85">
         <poi type="STATION">Montparnasse</poi>
-        <adjacentNode id="15" type="BUS_LANE" />
-        <adjacentNode id="6" type="URBAN_ROAD" />
-        <adjacentNode id="44" type="URBAN_ROAD" />
+        <adjacentNode id="6" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="15" type="URBAN_ROAD" />
+        <adjacentNode id="44" type="URBAN_ROAD" lineNumber="1" />
         <adjacentNode id="45" type="URBAN_ROAD" />
     </node>
     <node id="17" x="500" y="0">
@@ -106,9 +106,9 @@
     <node id="18" x="630" y="100">
         <adjacentNode id="17" type="ROAD" />
         <adjacentNode id="19" type="HIGHWAY" />
-        <adjacentNode id="24" type="ROAD" />
-        <adjacentNode id="76" type="ROAD" />
-        <adjacentNode id="102" type="ROAD" />
+        <adjacentNode id="24" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="76" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="102" type="ROAD" lineNumber="2"/>
     </node>
     <node id="19" x="750" y="150">
         <adjacentNode id="18" type="HIGHWAY" />
@@ -127,129 +127,130 @@
         <adjacentNode id="28" type="ROAD" />
     </node>
     <node id="22" x="250" y="380">
+        <adjacentNode id="9" type="URBAN_ROAD" />
         <adjacentNode id="21" type="HIGHWAY" />
         <adjacentNode id="23" type="HIGHWAY" />
-        <adjacentNode id="9" type="URBAN_ROAD" />
     </node>
     <node id="23" x="0" y="450">
         <adjacentNode id="22" type="HIGHWAY" />
         <adjacentNode id="101" type="ROAD" />
     </node>
     <node id="24" x="600" y="200">
-        <adjacentNode id="18" type="ROAD" />
-        <adjacentNode id="25" type="ROAD" />
+        <poi type="STATION">Place de la Chapelle</poi>
+        <adjacentNode id="18" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="25" type="ROAD" lineNumber="2"/>
         <adjacentNode id="48" type="URBAN_ROAD" />
         <adjacentNode id="49" type="URBAN_ROAD" />
     </node>
     <node id="25" x="500" y="300">
-        <adjacentNode id="13" type="URBAN_ROAD" />
-        <adjacentNode id="24" type="ROAD" />
-        <adjacentNode id="26" type="ROAD" />
+        <adjacentNode id="13" type="URBAN_ROAD" lineNumber="2"/>
+        <adjacentNode id="24" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="26" type="ROAD" lineNumber="2"/>
         <adjacentNode id="31" type="URBAN_ROAD" />
         <adjacentNode id="49" type="URBAN_ROAD" />
     </node>
     <node id="26" x="530" y="380">
-        <adjacentNode id="25" type="ROAD" />
-        <adjacentNode id="27" type="ROAD" />
+        <adjacentNode id="25" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="27" type="ROAD" lineNumber="2"/>
     </node>
     <node id="27" x="530" y="500">
-        <adjacentNode id="26" type="ROAD" />
-        <adjacentNode id="28" type="ROAD" />
+        <adjacentNode id="26" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="28" type="ROAD" lineNumber="2"/>
         <adjacentNode id="79" type="ROAD" />
         <adjacentNode id="92" type="ROAD" />
     </node>
     <node id="28" x="600" y="530">
-        <adjacentNode id="27" type="ROAD" />
         <adjacentNode id="21" type="ROAD" />
-        <adjacentNode id="91" type="ROAD" />
+        <adjacentNode id="27" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="91" type="ROAD" lineNumber="2"/>
     </node>
     <node id="29" x="150" y="220">
         <poi type="STATION">Victor Hugo</poi>
         <adjacentNode id="5" type="METRO" />
-        <adjacentNode id="9" type="METRO" />
         <adjacentNode id="7" type="URBAN_ROAD" />
+        <adjacentNode id="9" type="METRO" />
     </node>
     <node id="30" x="290" y="250">
         <poi type="STATION">Ternes</poi>
         <adjacentNode id="9" type="METRO" />
+        <adjacentNode id="10" type="BUS_LANE" lineNumber="1"/>
         <adjacentNode id="31" type="METRO" />
-        <adjacentNode id="10" type="URBAN_ROAD" />
     </node>
     <node id="31" x="400" y="300">
         <poi type="STATION">Courcelles</poi>
-        <adjacentNode id="30" type="METRO" />
-        <adjacentNode id="13" type="METRO" />
         <adjacentNode id="10" type="URBAN_ROAD" />
+        <adjacentNode id="13" type="METRO" />
         <adjacentNode id="25" type="URBAN_ROAD" />
+        <adjacentNode id="30" type="METRO" />
         <adjacentNode id="124" type="URBAN_ROAD" />
     </node>
     <node id="32" x="420" y="120">
         <poi type="STATION">Villiers</poi>
         <adjacentNode id="13" type="METRO" />
-        <adjacentNode id="14" type="BUS_LANE" />
+        <adjacentNode id="14" type="BUS_LANE" lineNumber="1"/>
         <adjacentNode id="44" type="METRO" />
     </node>
     <node id="33" x="250" y="50">
         <poi type="STATION">Place de Clichy</poi>
-        <adjacentNode id="6" type="BUS_LANE" />
+        <adjacentNode id="6" type="URBAN_ROAD" />
         <adjacentNode id="34" type="METRO" />
-        <adjacentNode id="35" type="BUS_LANE" />
+        <adjacentNode id="35" type="URBAN_ROAD" />
         <adjacentNode id="44" type="METRO" />
     </node>
     <node id="34" x="170" y="120">
         <poi type="STATION">Blanche</poi>
-        <adjacentNode id="33" type="METRO" />
+        <adjacentNode id="4" type="BUS_LANE" lineNumber="1"/>
         <adjacentNode id="5" type="METRO" />
-        <adjacentNode id="4" type="BUS_LANE" />
+        <adjacentNode id="33" type="METRO" />
     </node>
     <node id="35" x="170" y="40">
         <poi type="STATION">Bastille</poi>
         <adjacentNode id="1" type="URBAN_ROAD" />
-        <adjacentNode id="4" type="URBAN_ROAD" />
-        <adjacentNode id="33" type="URBAN_ROAD" />
+        <adjacentNode id="4" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="33" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="36" x="50" y="300">
         <poi type="STATION">Bastille - Beaumarchais</poi>
-        <adjacentNode id="7" type="BUS_LANE" />
-        <adjacentNode id="37" type="URBAN_ROAD" />
+        <adjacentNode id="7" type="URBAN_ROAD" />
+        <adjacentNode id="37" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="37" x="40" y="330">
-        <adjacentNode id="36" type="BUS_LANE" />
-        <adjacentNode id="38" type="URBAN_ROAD" />
+        <adjacentNode id="36" type="URBAN_ROAD" />
+        <adjacentNode id="38" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="38" x="20" y="360">
-        <adjacentNode id="37" type="BUS_LANE" />
-        <adjacentNode id="39" type="BUS_LANE" />
+        <adjacentNode id="37" type="URBAN_ROAD" />
+        <adjacentNode id="39" type="URBAN_ROAD" />
     </node>
     <node id="39" x="50" y="400">
         <poi type="STATION">République</poi>
-        <adjacentNode id="38" type="URBAN_ROAD" />
-        <adjacentNode id="40" type="URBAN_ROAD" />
+        <adjacentNode id="38" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="40" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="40" x="100" y="360">
-        <adjacentNode id="39" type="BUS_LANE" />
-        <adjacentNode id="41" type="BUS_LANE" />
+        <adjacentNode id="39" type="URBAN_ROAD" />
+        <adjacentNode id="41" type="URBAN_ROAD" />
     </node>
     <node id="41" x="150" y="380">
         <poi type="STATION">République - Magenta</poi>
-        <adjacentNode id="40" type="URBAN_ROAD" />
-        <adjacentNode id="42" type="URBAN_ROAD" />
+        <adjacentNode id="40" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="42" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="42" x="170" y="330">
-        <adjacentNode id="41" type="BUS_LANE" />
-        <adjacentNode id="43" type="BUS_LANE" />
+        <adjacentNode id="41" type="URBAN_ROAD" />
+        <adjacentNode id="43" type="URBAN_ROAD" />
     </node>
     <node id="43" x="150" y="280">
         <poi type="STATION">Saint-Claude</poi>
-        <adjacentNode id="42" type="URBAN_ROAD" />
         <adjacentNode id="7" type="URBAN_ROAD" />
-        <adjacentNode id="9" type="URBAN_ROAD" />
+        <adjacentNode id="9" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="42" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="44" x="350" y="110">
         <poi type="STATION">Rome</poi>
+        <adjacentNode id="16" type="BUS_LANE" lineNumber="1"/>
         <adjacentNode id="32" type="METRO" />
         <adjacentNode id="33" type="METRO" />
-        <adjacentNode id="16" type="BUS_LANE" />
     </node>
     <node id="45" x="300" y="60">
         <adjacentNode id="16" type="URBAN_ROAD" />
@@ -260,8 +261,8 @@
         <adjacentNode id="47" type="URBAN_ROAD" />
     </node>
     <node id="47" x="430" y="30">
-        <adjacentNode id="46" type="URBAN_ROAD" />
         <adjacentNode id="17" type="URBAN_ROAD" />
+        <adjacentNode id="46" type="URBAN_ROAD" />
     </node>
     <node id="48" x="540" y="140">
         <adjacentNode id="14" type="URBAN_ROAD" />
@@ -286,16 +287,16 @@
     </node>
     <node id="52" x="680" y="330">
         <poi type="BUILDING">Lotissement 3</poi>
-        <adjacentNode id="51" type="URBAN_ROAD" />
         <adjacentNode id="50" type="CYCLE_LANE" />
+        <adjacentNode id="51" type="URBAN_ROAD" />
         <adjacentNode id="53" type="CYCLE_LANE" />
     </node>
     <node id="53" x="710" y="250">
+        <adjacentNode id="20" type="URBAN_ROAD" />
+        <adjacentNode id="49" type="CYCLE_LANE" />
         <adjacentNode id="52" type="URBAN_ROAD" />
         <adjacentNode id="54" type="URBAN_ROAD" />
-        <adjacentNode id="49" type="CYCLE_LANE" />
         <adjacentNode id="56" type="URBAN_ROAD" />
-        <adjacentNode id="20" type="URBAN_ROAD" />
     </node>
     <node id="54" x="640" y="220">
         <poi type="BUILDING">Lotissement 4</poi>
@@ -307,8 +308,8 @@
         <adjacentNode id="54" type="URBAN_ROAD" />
     </node>
     <node id="56" x="720" y="180">
-        <adjacentNode id="53" type="URBAN_ROAD" />
         <adjacentNode id="19" type="URBAN_ROAD" />
+        <adjacentNode id="53" type="URBAN_ROAD" />
     </node>
     <node id="57" x="905" y="0">
         <poi type="STATION">Quai Denoyer</poi>
@@ -394,20 +395,22 @@
         <adjacentNode id="74" type="BOAT_LANE" />
     </node>
     <node id="76" x="700" y="100">
-        <adjacentNode id="18" type="ROAD" />
-        <adjacentNode id="77" type="ROAD" />
+        <adjacentNode id="18" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="77" type="ROAD" lineNumber="2"/>
     </node>
     <node id="77" x="800" y="70">
-        <adjacentNode id="76" type="ROAD" />
+        <poi type="STATION">Cité-Palais de Justice</poi>
+        <adjacentNode id="76" type="ROAD" lineNumber="2"/>
         <adjacentNode id="80" type="ROAD" />
-        <adjacentNode id="83" type="ROAD" />
+        <adjacentNode id="83" type="ROAD" lineNumber="2"/>
 
     </node>
     <node id="78" x="920" y="350">
+        <poi type="STATION">Châtelet</poi>
         <adjacentNode id="20" type="ROAD" />
         <adjacentNode id="81" type="ROAD" />
-        <adjacentNode id="86" type="ROAD" />
-        <adjacentNode id="87" type="ROAD" />
+        <adjacentNode id="86" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="87" type="ROAD" lineNumber="2"/>
     </node>
     <node id="79" x="510" y="550">
         <adjacentNode id="27" type="ROAD" />
@@ -415,57 +418,57 @@
     </node>
     <node id="80" x="890" y="5">
         <poi type="BUILDING">Parking de la Croix</poi>
-        <adjacentNode id="77" type="ROAD" />
         <adjacentNode id="57" type="FOOT" />
+        <adjacentNode id="77" type="ROAD" />
     </node>
     <node id="81" x="990" y="310">
         <poi type="BUILDING">Parking de la Rose des Vents</poi>
-        <adjacentNode id="78" type="ROAD" />
         <adjacentNode id="60" type="FOOT" />
+        <adjacentNode id="78" type="ROAD" />
     </node>
     <node id="82" x="490" y="590">
         <poi type="BUILDING">Parking des Flot Bleu</poi>
-        <adjacentNode id="79" type="ROAD" />
         <adjacentNode id="70" type="FOOT" />
+        <adjacentNode id="79" type="ROAD" />
     </node>
     <node id="83" x="820" y="110">
-        <adjacentNode id="77" type="ROAD" />
-        <adjacentNode id="84" type="ROAD" />
+        <adjacentNode id="77" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="84" type="ROAD" lineNumber="2"/>
     </node>
     <node id="84" x="920" y="140">
-        <adjacentNode id="83" type="ROAD" />
-        <adjacentNode id="85" type="ROAD" />
+        <adjacentNode id="83" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="85" type="ROAD" lineNumber="2"/>
     </node>
     <node id="85" x="880" y="220">
         <poi type="ATTRACTION">Le Mont-Saint-Michel</poi>
-        <adjacentNode id="84" type="ROAD" />
+        <adjacentNode id="84" type="ROAD" lineNumber="2"/>
         <adjacentNode id="86" type="ROAD" />
     </node>
     <node id="86" x="930" y="280">
-        <adjacentNode id="85" type="ROAD" />
-        <adjacentNode id="78" type="ROAD" />
+        <adjacentNode id="78" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="85" type="ROAD" lineNumber="2"/>
     </node>
     <node id="87" x="950" y="420">
-        <adjacentNode id="78" type="ROAD" />
-        <adjacentNode id="88" type="ROAD" />
+        <adjacentNode id="78" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="88" type="ROAD" lineNumber="2"/>
     </node>
     <node id="88" x="850" y="470">
-        <adjacentNode id="87" type="ROAD" />
-        <adjacentNode id="89" type="ROAD" />
+        <adjacentNode id="87" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="89" type="ROAD" lineNumber="2"/>
     </node>
     <node id="89" x="950" y="580">
         <poi type="ATTRACTION">La Grande Muraille de Chine</poi>
-        <adjacentNode id="88" type="ROAD" />
-        <adjacentNode id="90" type="ROAD" />
+        <adjacentNode id="88" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="90" type="ROAD" lineNumber="2"/>
     </node>
     <node id="90" x="760" y="520">
-        <adjacentNode id="89" type="ROAD" />
-        <adjacentNode id="91" type="ROAD" />
+        <adjacentNode id="89" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="91" type="ROAD" lineNumber="2"/>
     </node>
     <node id="91" x="680" y="550">
         <poi type="ATTRACTION">Pyramide de Khéops</poi>
-        <adjacentNode id="90" type="ROAD" />
-        <adjacentNode id="28" type="ROAD" />
+        <adjacentNode id="28" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="90" type="ROAD" lineNumber="2"/>
     </node>
     <node id="92" x="480" y="480">
         <adjacentNode id="27" type="ROAD" />
@@ -507,38 +510,38 @@
         <adjacentNode id="101" type="ROAD" />
     </node>
     <node id="101" x="110" y="480">
-        <adjacentNode id="100" type="ROAD" />
         <adjacentNode id="23" type="ROAD" />
+        <adjacentNode id="100" type="ROAD" />
     </node>
     <node id="102" x="650" y="80">
-        <adjacentNode id="18" type="ROAD" />
-        <adjacentNode id="103" type="URBAN_ROAD" />
-        <adjacentNode id="108" type="URBAN_ROAD" />
+        <adjacentNode id="18" type="ROAD" lineNumber="2"/>
+        <adjacentNode id="103" type="URBAN_ROAD" lineNumber="2"/>
+        <adjacentNode id="108" type="URBAN_ROAD" lineNumber="2"/>
     </node>
     <node id="103" x="670" y="70">
-        <adjacentNode id="102" type="URBAN_ROAD" />
-        <adjacentNode id="104" type="URBAN_ROAD" />
+        <adjacentNode id="102" type="URBAN_ROAD" lineNumber="2"/>
+        <adjacentNode id="104" type="URBAN_ROAD" lineNumber="2"/>
     </node>
     <node id="104" x="710" y="70">
-        <adjacentNode id="103" type="URBAN_ROAD" />
-        <adjacentNode id="105" type="URBAN_ROAD" />
+        <adjacentNode id="103" type="URBAN_ROAD" lineNumber="2"/>
+        <adjacentNode id="105" type="URBAN_ROAD" lineNumber="2"/>
     </node>
     <node id="105" x="720" y="40">
         <poi type="BUILDING">Parking de Paris-Orly</poi>
-        <adjacentNode id="104" type="URBAN_ROAD" />
-        <adjacentNode id="106" type="URBAN_ROAD" />
+        <adjacentNode id="104" type="URBAN_ROAD" lineNumber="2"/>
+        <adjacentNode id="106" type="URBAN_ROAD" lineNumber="2"/>
     </node>
     <node id="106" x="670" y="20">
-        <adjacentNode id="105" type="URBAN_ROAD" />
-        <adjacentNode id="107" type="URBAN_ROAD" />
+        <adjacentNode id="105" type="URBAN_ROAD" lineNumber="2"/>
+        <adjacentNode id="107" type="URBAN_ROAD" lineNumber="2"/>
     </node>
     <node id="107" x="620" y="50">
-        <adjacentNode id="106" type="URBAN_ROAD" />
-        <adjacentNode id="108" type="URBAN_ROAD" />
+        <adjacentNode id="106" type="URBAN_ROAD" lineNumber="2"/>
+        <adjacentNode id="108" type="URBAN_ROAD" lineNumber="2"/>
     </node>
     <node id="108" x="620" y="70">
-        <adjacentNode id="107" type="URBAN_ROAD" />
-        <adjacentNode id="102" type="URBAN_ROAD" />
+        <adjacentNode id="102" type="URBAN_ROAD" lineNumber="2"/>
+        <adjacentNode id="107" type="URBAN_ROAD" lineNumber="2"/>
     </node>
     <node id="109" x="730" y="30">
         <poi type="STATION">Aéroport de Paris-Orly</poi>
@@ -572,8 +575,8 @@
         <adjacentNode id="116" type="URBAN_ROAD" />
     </node>
     <node id="116" x="1190" y="940">
-        <adjacentNode id="115" type="URBAN_ROAD" />
         <adjacentNode id="111" type="URBAN_ROAD" />
+        <adjacentNode id="115" type="URBAN_ROAD" />
     </node>
     <node id="117" x="900" y="890">
         <adjacentNode id="114" type="ROAD" />
@@ -603,8 +606,8 @@
         <adjacentNode id="123" type="URBAN_ROAD" />
     </node>
     <node id="123" x="890" y="920">
-        <adjacentNode id="122" type="URBAN_ROAD" />
         <adjacentNode id="117" type="URBAN_ROAD" />
+        <adjacentNode id="122" type="URBAN_ROAD" />
     </node>
     <node id="124" x="360" y="330">
         <poi type="STATION">Gare de Grand Central</poi>
@@ -641,8 +644,8 @@
         <adjacentNode id="131" type="URBAN_ROAD" />
     </node>
     <node id="131" x="240" y="960">
-        <adjacentNode id="130" type="URBAN_ROAD" />
         <adjacentNode id="125" type="URBAN_ROAD" />
+        <adjacentNode id="130" type="URBAN_ROAD" />
     </node>
 
 </map>

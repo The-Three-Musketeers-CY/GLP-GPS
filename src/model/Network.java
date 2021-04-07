@@ -30,8 +30,8 @@ public class Network {
         line.addStation(node);
     }
 
-    public void addWay(WayIdentifier identifier, Node node1, Node node2){
-        Way way = new Way(identifier, node1, node2);
+    public void addWay(WayIdentifier identifier, Node node1, Node node2, String lineNumber){
+        Way way = new Way(identifier, node1, node2, lineNumber);
         ways.putIfAbsent(node1.getId(), new NodeWays(node1));
         ways.get(node1.getId()).getWays().put(node2.getId(), way);
     }

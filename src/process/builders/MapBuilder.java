@@ -84,7 +84,15 @@ public class MapBuilder {
                                 String id = eltAdjacent.getAttribute("id");
                                 String typeAdjacent = eltAdjacent.getAttribute("type");
                                 model.Node adjNode = mapRepository.getNode(id);
-                                Way way = new Way(WayIdentifier.valueOf(typeAdjacent), node, adjNode);
+                                Way way = null;
+                                if(!eltAdjacent.getAttribute("lineNumber").isBlank()){
+                                    String lineNumber = eltAdjacent.getAttribute("lineNumber");
+                                    way = new Way(WayIdentifier.valueOf(typeAdjacent), node, adjNode, lineNumber);
+                                    //System.out.println("ligne trouvée!!!" + eltAdjacent.getAttribute("lineNumber"));
+                                }
+                                else {
+                                    way = new Way(WayIdentifier.valueOf(typeAdjacent), node, adjNode);
+                                }
                                 mapRepository.addWayToNode(way);
                             }
                         }
@@ -129,7 +137,7 @@ public class MapBuilder {
                     String adjNodeID = way.getNodeB().getId();
                     for (Network network : map.getNetworks().values()) {
                         if (network.isAcceptedWay(way.getIdentifier())) {
-                            network.addWay(way.getIdentifier(), node, map.getNodes().get(adjNodeID));
+                            network.addWay(way.getIdentifier(), node, map.getNodes().get(adjNodeID), way.getLineNumber());
                             waysCounter ++ ;
                         }
                     }
