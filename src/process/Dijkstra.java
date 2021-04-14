@@ -1,5 +1,6 @@
 package process;
 
+import log.config.LoggerConfig;
 import log.LoggerUtility;
 import model.*;
 import model.identifiers.TransportIdentifier;
@@ -22,7 +23,7 @@ public class Dijkstra {
     public static final int BY_COST = 2;
     private static final int SCALE = 2;
 
-    private static Logger logger = LoggerUtility.getLogger(Dijkstra.class, "html");
+    private static Logger logger = LoggerUtility.getLogger(Dijkstra.class, LoggerConfig.LOG_FILE_TYPE);
 
     /**
      * This method calculate the best itinerary in terms of time between two specific points

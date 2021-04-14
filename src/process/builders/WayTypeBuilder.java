@@ -1,6 +1,7 @@
 package process.builders;
 
 import log.LoggerUtility;
+import log.config.LoggerConfig;
 import model.WayType;
 import model.identifiers.TransportIdentifier;
 import model.identifiers.WayIdentifier;
@@ -31,7 +32,7 @@ public class WayTypeBuilder {
 
     private WayTypeRepository wayTypeRepository = WayTypeRepository.getInstance();
 
-    private Logger logger = LoggerUtility.getLogger(WayTypeBuilder.class, "html");
+    private Logger logger = LoggerUtility.getLogger(WayTypeBuilder.class, LoggerConfig.LOG_FILE_TYPE);
 
     /**
      * This method built all way types

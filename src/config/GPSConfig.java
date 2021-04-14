@@ -4,6 +4,8 @@ package config;
  */
 public class GPSConfig {
 
+    public static final String MAP_PATH = "src/test/map/map.xml";
+
     public static final int WINDOW_WIDTH = 1000;
     public static final int WINDOW_HEIGHT = 600;
 

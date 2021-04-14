@@ -1,6 +1,7 @@
 package gui;
 
 import config.GPSConfig;
+import log.config.LoggerConfig;
 import log.LoggerUtility;
 import model.*;
 import model.identifiers.TransportIdentifier;
@@ -22,7 +23,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 
@@ -33,6 +33,7 @@ public class MainGUI extends JFrame {
     private static final Dimension IDEAL_MAIN_DIMENSION = new Dimension(GPSConfig.WINDOW_WIDTH, GPSConfig.WINDOW_HEIGHT);
     private static final Dimension IDEAL_MAPVIEW_DIMENSION = new Dimension(GPSConfig.MAPVIEW_WIDTH, GPSConfig.MAPVIEW_HEIGHT);
     private static final Dimension IDEAL_ITINERARY_PANEL_DIMENSION = new Dimension(GPSConfig.ITINERARY_PANEL_WIDTH, GPSConfig.ITINERARY_PANEL_HEIGHT);
+    private static final Dimension FIELD_BUTTON_PREFERRED_SIZE_DIMENSION = new Dimension(210, 30);
 
     private static final int MIN_DEC_POS_X = Math.min(GPSConfig.WINDOW_WIDTH - GPSConfig.MAP_SIZE_WIDTH, 0);
     private static final int MIN_DEC_POS_Y = Math.min(GPSConfig.WINDOW_HEIGHT - GPSConfig.MAP_SIZE_HEIGHT, 0);
@@ -42,17 +43,17 @@ public class MainGUI extends JFrame {
     private Map map;
     private MapView mapView;
 
-    private static Logger logger = LoggerUtility.getLogger(Dijkstra.class, "html");
+    private Logger logger = LoggerUtility.getLogger(MainGUI.class, LoggerConfig.LOG_FILE_TYPE);
 
     private JButton resetButton = new JButton("Reset default position");
-    private JButton calculateItinerary = new JButton("Rechercher");
-    private JButton addStep = new JButton("Ajouter une étape");
+    private JButton calculateButton = new JButton("Rechercher");
+    private JButton addStepButton = new JButton("Ajouter une étape");
 
-    private JTextField startNode = new JTextField();
-    private JTextField arrivalNode = new JTextField();
-    private ArrayList<JTextField> steps;
+    private JTextField startNodeField = new JTextField();
+    private JTextField arrivalNodeField = new JTextField();
+    private ArrayList<JTextField> stepNodesField;
 
-    private JPanel autoCompletePanel = new JPanel();
+    private JPanel autoCompletionPanel = new JPanel();
 
     private JLabel startLabel = new JLabel("Saisissez un point de départ :");
     private JLabel arrivalLabel = new JLabel("Saisissez un point de d'arrivée :");
@@ -62,20 +63,21 @@ public class MainGUI extends JFrame {
     private JRadioButton distanceItinerary = new JRadioButton("La + courte distance");
     private JRadioButton costItinerary = new JRadioButton("Le - cher");
 
-    private JPanel testItinerary = new JPanel();
+    private JPanel itineraryPanel = new JPanel();
     private ItineraryView itineraryView;
     private JPanel mapPanel = new JPanel();
 
     public MainGUI(String title, String mapPath) {
         super(title);
 
+        // Adding icon to application
         try {
-            setIconImage(new ImageIcon(ImageIO.read(new File("favicon.png"))).getImage());
+            setIconImage(new ImageIcon(ImageIO.read(new File("src/img/favicon.png"))).getImage());
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
 
-        steps = new ArrayList<>();
+        stepNodesField = new ArrayList<>();
 
         try {
             // Building map
@@ -87,25 +89,29 @@ public class MainGUI extends JFrame {
 
             // Initializing MainGUI components
             init();
-        }catch (IllegalArgumentException argumentException){
+        } catch (IllegalArgumentException | SAXException | ParserConfigurationException | IOException argumentException) {
+            JOptionPane.showMessageDialog(this, "Impossible de lancer l'application : une erreur a eue lieu avec la carte !", "Erreur", JOptionPane.ERROR_MESSAGE);
             logger.fatal(argumentException.getMessage());
-        } catch (SAXException | ParserConfigurationException | IOException e) {
-            logger.fatal(e.getMessage());
         }
 
     }
 
     private void init() {
+        // Setting layout
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
+        // Adding map dragging to mapView
         MapDraggedListener mapDraggedListener = new MapDraggedListener();
         mapView.addMouseListener(mapDraggedListener);
         mapView.addMouseMotionListener(mapDraggedListener);
+
+        // Adding POIClick event to mapView
         POIClickListener poiClickListener = new POIClickListener();
         mapView.addMouseListener(poiClickListener);
         mapView.setPreferredSize(IDEAL_MAPVIEW_DIMENSION);
 
+        // Adding mapView & resetButton to mapPanel
         mapPanel.setLayout(new BorderLayout());
         mapPanel.add(BorderLayout.NORTH, mapView);
         ResetDefaultPosButtonListener resetDefaultPosButtonListener = new ResetDefaultPosButtonListener();
@@ -113,60 +119,56 @@ public class MainGUI extends JFrame {
         mapPanel.add(BorderLayout.SOUTH, resetButton);
         contentPane.add(BorderLayout.WEST, mapPanel);
 
+        // Creating itinerary panel with a SpringLayout
         SpringLayout layout = new SpringLayout();
+        itineraryPanel.setLayout(layout);
+        itineraryPanel.setPreferredSize(IDEAL_ITINERARY_PANEL_DIMENSION);
+        itineraryPanel.setBackground(Color.WHITE);
+        itineraryPanel.setBorder(new EmptyBorder(new Insets(5, 20, 0, 20)));
 
-        testItinerary.setLayout(layout);
-        testItinerary.setPreferredSize(IDEAL_ITINERARY_PANEL_DIMENSION);
-        testItinerary.setBackground(Color.WHITE);
-        testItinerary.setBorder(new EmptyBorder(new Insets(5, 20, 0, 20)));
+        AutoCompletionListener autoCompletionListener;
 
-        AutoCompletion newListener = new AutoCompletion(startNode);
-        startNode.setPreferredSize(new Dimension(210,30));
-        startNode.setMaximumSize(startNode.getPreferredSize());
-        startNode.getDocument().addDocumentListener(newListener);
-        startNode.addFocusListener(newListener);
-        arrivalNode.setPreferredSize(new Dimension(210,30));
-        arrivalNode.setMaximumSize(arrivalNode.getPreferredSize());
-        newListener = new AutoCompletion(arrivalNode);
-        arrivalNode.getDocument().addDocumentListener(newListener);
-        arrivalNode.addFocusListener(newListener);
+        autoCompletionListener = new AutoCompletionListener(startNodeField);
+        startNodeField.setPreferredSize(FIELD_BUTTON_PREFERRED_SIZE_DIMENSION);
+        startNodeField.setMaximumSize(startNodeField.getPreferredSize());
+        startNodeField.getDocument().addDocumentListener(autoCompletionListener);
+        startNodeField.addFocusListener(autoCompletionListener);
+
+        autoCompletionListener = new AutoCompletionListener(arrivalNodeField);
+        arrivalNodeField.setPreferredSize(FIELD_BUTTON_PREFERRED_SIZE_DIMENSION);
+        arrivalNodeField.setMaximumSize(arrivalNodeField.getPreferredSize());
+        arrivalNodeField.getDocument().addDocumentListener(autoCompletionListener);
+        arrivalNodeField.addFocusListener(autoCompletionListener);
 
         JLabel itineraryLabel = new JLabel("Itinéraire");
         itineraryLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        testItinerary.add(itineraryLabel);
+        itineraryPanel.add(itineraryLabel);
 
-        testItinerary.add(startLabel);
-        testItinerary.add(Box.createRigidArea(new Dimension(0, 2)));
-        testItinerary.add(startNode);
+        itineraryPanel.add(startLabel);
+        itineraryPanel.add(startNodeField);
+        itineraryPanel.add(arrivalLabel);
+        itineraryPanel.add(arrivalNodeField);
 
-        testItinerary.add(Box.createRigidArea(new Dimension(0, 10)));
+        calculateButton.setPreferredSize(FIELD_BUTTON_PREFERRED_SIZE_DIMENSION);
+        calculateButton.setBackground(new Color(200,200,200));
+        calculateButton.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        calculateButton.setMaximumSize(calculateButton.getPreferredSize());
+        calculateButton.removeMouseListener(calculateButton.getMouseListeners()[0]);
+        calculateButton.addMouseListener(new CalculateItineraryListener());
+        itineraryPanel.add(calculateButton);
 
-        testItinerary.add(arrivalLabel);
-        testItinerary.add(Box.createRigidArea(new Dimension(0, 2)));
-        testItinerary.add(arrivalNode);
-
-        testItinerary.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        calculateItinerary.setPreferredSize(new Dimension(210, 30));
-        calculateItinerary.setBackground(new Color(200,200,200));
-        calculateItinerary.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-        calculateItinerary.setMaximumSize(calculateItinerary.getPreferredSize());
-        calculateItinerary.removeMouseListener(calculateItinerary.getMouseListeners()[0]);
-        calculateItinerary.addMouseListener(new CalculateItineraryListener());
-        testItinerary.add(calculateItinerary);
-
-        addStep.setPreferredSize(new Dimension(210, 30));
-        addStep.setBackground(new Color(240,240,240));
-        addStep.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-        addStep.setMaximumSize(calculateItinerary.getPreferredSize());
-        addStep.removeMouseListener(addStep.getMouseListeners()[0]);
-        addStep.addMouseListener(new AddStepListener());
-        testItinerary.add(addStep);
+        addStepButton.setPreferredSize(FIELD_BUTTON_PREFERRED_SIZE_DIMENSION);
+        addStepButton.setBackground(new Color(240,240,240));
+        addStepButton.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        addStepButton.setMaximumSize(calculateButton.getPreferredSize());
+        addStepButton.removeMouseListener(addStepButton.getMouseListeners()[0]);
+        addStepButton.addMouseListener(new AddStepListener());
+        itineraryPanel.add(addStepButton);
 
         defaultTimeItinerary.setSelected(true);
-        testItinerary.add(defaultTimeItinerary);
-        testItinerary.add(distanceItinerary);
-        testItinerary.add(costItinerary);
+        itineraryPanel.add(defaultTimeItinerary);
+        itineraryPanel.add(distanceItinerary);
+        itineraryPanel.add(costItinerary);
 
         ButtonGroup radioButtonGroup = new ButtonGroup();
         radioButtonGroup.add(defaultTimeItinerary);
@@ -176,29 +178,31 @@ public class MainGUI extends JFrame {
         JLabel copyrightsWallethChevalierLabel = new JLabel("Benjamin Walleth | Paul Chevalier");
         JLabel copyrightsDenoyerLabel = new JLabel("William Denoyer");
         JLabel copyrightsGLPLabel = new JLabel("GLP GPS - 2021");
-        testItinerary.add(copyrightsWallethChevalierLabel);
-        testItinerary.add(copyrightsDenoyerLabel);
-        testItinerary.add(copyrightsGLPLabel);
+        itineraryPanel.add(copyrightsWallethChevalierLabel);
+        itineraryPanel.add(copyrightsDenoyerLabel);
+        itineraryPanel.add(copyrightsGLPLabel);
 
-        autoCompletePanel.setLayout(new BoxLayout(autoCompletePanel,BoxLayout.Y_AXIS));
+        autoCompletionPanel.setLayout(new BoxLayout(autoCompletionPanel,BoxLayout.Y_AXIS));
 
         // Creating all layout constraints
         layout.putConstraint(SpringLayout.NORTH, itineraryLabel, 5, SpringLayout.NORTH, contentPane);
         layout.putConstraint(SpringLayout.NORTH, startLabel, 10, SpringLayout.SOUTH, itineraryLabel);
-        layout.putConstraint(SpringLayout.NORTH, startNode, 2, SpringLayout.SOUTH, startLabel);
-        layout.putConstraint(SpringLayout.NORTH, arrivalLabel, 10, SpringLayout.SOUTH, startNode);
-        layout.putConstraint(SpringLayout.NORTH, arrivalNode, 2, SpringLayout.SOUTH, arrivalLabel);
-        layout.putConstraint(SpringLayout.NORTH, calculateItinerary, 10, SpringLayout.SOUTH, arrivalNode);
-        layout.putConstraint(SpringLayout.NORTH, addStep,10, SpringLayout.SOUTH,calculateItinerary);
-        layout.putConstraint(SpringLayout.NORTH, defaultTimeItinerary, 10, SpringLayout.SOUTH, addStep);
+        layout.putConstraint(SpringLayout.NORTH, startNodeField, 2, SpringLayout.SOUTH, startLabel);
+        layout.putConstraint(SpringLayout.NORTH, arrivalLabel, 10, SpringLayout.SOUTH, startNodeField);
+        layout.putConstraint(SpringLayout.NORTH, arrivalNodeField, 2, SpringLayout.SOUTH, arrivalLabel);
+        layout.putConstraint(SpringLayout.NORTH, calculateButton, 10, SpringLayout.SOUTH, arrivalNodeField);
+        layout.putConstraint(SpringLayout.NORTH, addStepButton,10, SpringLayout.SOUTH, calculateButton);
+        layout.putConstraint(SpringLayout.NORTH, defaultTimeItinerary, 10, SpringLayout.SOUTH, addStepButton);
         layout.putConstraint(SpringLayout.NORTH, distanceItinerary, 5, SpringLayout.SOUTH, defaultTimeItinerary);
         layout.putConstraint(SpringLayout.NORTH, costItinerary, 5, SpringLayout.SOUTH, distanceItinerary);
         layout.putConstraint(SpringLayout.SOUTH, copyrightsWallethChevalierLabel, -50, SpringLayout.SOUTH, contentPane);
         layout.putConstraint(SpringLayout.NORTH, copyrightsDenoyerLabel, 2, SpringLayout.SOUTH, copyrightsWallethChevalierLabel);
         layout.putConstraint(SpringLayout.NORTH, copyrightsGLPLabel, 2, SpringLayout.SOUTH, copyrightsDenoyerLabel);
 
-        contentPane.add(BorderLayout.EAST,testItinerary);
+        // Adding itineraryPanel at EAST of the frame
+        contentPane.add(BorderLayout.EAST, itineraryPanel);
 
+        // Creating frame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
@@ -278,12 +282,13 @@ public class MainGUI extends JFrame {
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, null);
 
                         if (result == 1) {
-                            startNode.setText(node.getPoi().getName());
+                            startNodeField.setText(node.getPoi().getName());
                         } else if(result == 2) {
-                            arrivalNode.setText(node.getPoi().getName());
+                            arrivalNodeField.setText(node.getPoi().getName());
                         }
 
-                    } else JOptionPane.showMessageDialog(mapView,node.toString(), "PAS POI", JOptionPane.ERROR_MESSAGE);
+                    }
+                    // else JOptionPane.showMessageDialog(mapView,node.toString(), "PAS POI", JOptionPane.ERROR_MESSAGE);>
                 }
             }
         }
@@ -310,15 +315,15 @@ public class MainGUI extends JFrame {
 
     }
 
-    private class AutoCompletion implements DocumentListener, FocusListener{
+    private class AutoCompletionListener implements DocumentListener, FocusListener{
 
         private JTextField component;
 
-        public AutoCompletion(JTextField component){
+        public AutoCompletionListener(JTextField component){
             this.component = component ;
-            autoCompletePanel.setVisible(false);
-            testItinerary.add(autoCompletePanel);
-            testItinerary.setComponentZOrder(autoCompletePanel, 0);
+            autoCompletionPanel.setVisible(false);
+            itineraryPanel.add(autoCompletionPanel);
+            itineraryPanel.setComponentZOrder(autoCompletionPanel, 0);
         }
 
         @Override
@@ -342,24 +347,20 @@ public class MainGUI extends JFrame {
             String currentText = component.getText();
 
             // Get the layout
-            SpringLayout layout = (SpringLayout) testItinerary.getLayout();
+            SpringLayout layout = (SpringLayout) itineraryPanel.getLayout();
             //Remove all old components
-            for(Component component : autoCompletePanel.getComponents()){
-                autoCompletePanel.remove(component);
+            for(Component component : autoCompletionPanel.getComponents()){
+                autoCompletionPanel.remove(component);
             }
             // Set the panel constraints
-            layout.putConstraint(SpringLayout.NORTH,autoCompletePanel,0,SpringLayout.SOUTH,component);
+            layout.putConstraint(SpringLayout.NORTH, autoCompletionPanel,0,SpringLayout.SOUTH,component);
 
             // Show the panel
-            if (component.getText().isBlank()) {
-                autoCompletePanel.setVisible(false);
-            } else {
-                autoCompletePanel.setVisible(true);
-            }
+            autoCompletionPanel.setVisible(!component.getText().isBlank());
 
             for(String nodeName : nodeNames) {
                 if (nodeName.equals(currentText)) {
-                    autoCompletePanel.setVisible(false);
+                    autoCompletionPanel.setVisible(false);
                 } else if (Pattern.matches("(?i)"+currentText+".*",nodeName)) {
                     JLabel nodeNameLabel = new JLabel(nodeName);
                     nodeNameLabel.addMouseListener(new MouseAdapter() {
@@ -375,9 +376,9 @@ public class MainGUI extends JFrame {
                             e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                         }
                     });
-                    autoCompletePanel.add(nodeNameLabel);
+                    autoCompletionPanel.add(nodeNameLabel);
                 }
-                testItinerary.updateUI();
+                itineraryPanel.updateUI();
             }
 
         }
@@ -389,7 +390,7 @@ public class MainGUI extends JFrame {
 
         @Override
         public void focusLost(FocusEvent e) {
-            autoCompletePanel.setVisible(false);
+            autoCompletionPanel.setVisible(false);
         }
     }
 
@@ -410,8 +411,8 @@ public class MainGUI extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            String start = startNode.getText() ;
-            String arrival = arrivalNode.getText() ;
+            String start = startNodeField.getText() ;
+            String arrival = arrivalNodeField.getText() ;
             ArrayList<String> stepsString = new ArrayList<>() ;
 
             //Get all node's name
@@ -420,11 +421,11 @@ public class MainGUI extends JFrame {
             try{
                 //Check start and arrival nodes
                 if (start.isEmpty() || arrival.isEmpty()){
-                    throw new IllegalArgumentException("Départ ou arrivée non saisie.");
+                    throw new IllegalArgumentException("Départ ou arrivée non saisie !");
                 }
 
                 //Get all step's name and check it
-                for (JTextField jTextField : steps){
+                for (JTextField jTextField : stepNodesField){
                     if (jTextField.getText().isBlank()) {
                         JOptionPane.showMessageDialog(mapView,"Aucune étape saisie","Recherche d'itinéraire",JOptionPane.WARNING_MESSAGE);
                     } else {
@@ -458,8 +459,7 @@ public class MainGUI extends JFrame {
                     }
                     nodes.add(arrivalNode);
 
-                    ArrayList<Transport> transportsToAvoid = new ArrayList<>();
-                    transportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.BUS));
+                    ArrayList<Transport> transportsToAvoid = new ArrayList<>(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.BUS));
                     Itinerary itinerary;
 
                     if (defaultTimeItinerary.isSelected()) {
@@ -479,7 +479,7 @@ public class MainGUI extends JFrame {
                     itineraryView.setBackground(Color.WHITE);
                     itineraryView.setBorder(new EmptyBorder(new Insets(5, 20, 0, 20)));
                     getContentPane().add(BorderLayout.EAST, itineraryView);
-                    testItinerary.setVisible(false);
+                    itineraryPanel.setVisible(false);
                     revalidate();
 
                 } else {
@@ -523,23 +523,23 @@ public class MainGUI extends JFrame {
             int height = 30;
             int marginTop = 10;
             int blockHeight = height + marginTop;
-            int numberStep = steps.size();
+            int numberStep = stepNodesField.size();
 
             //Add a limit : max 3 steps
             if (numberStep > 2) {
                 return;
             } else if (numberStep == 2) {
-                addStep.setVisible(false);
+                addStepButton.setVisible(false);
             }
 
             //Get the layout
-            SpringLayout layout = (SpringLayout) testItinerary.getLayout();
+            SpringLayout layout = (SpringLayout) itineraryPanel.getLayout();
 
             //Add the new component
             JTextField newStep = new JTextField();
             newStep.setPreferredSize(new Dimension(175,height));
             newStep.setMaximumSize(newStep.getPreferredSize());
-            AutoCompletion newListener = new AutoCompletion(newStep);
+            AutoCompletionListener newListener = new AutoCompletionListener(newStep);
             newStep.getDocument().addDocumentListener(newListener);
             newStep.addFocusListener(newListener);
 
@@ -547,26 +547,26 @@ public class MainGUI extends JFrame {
             rmStep.setPreferredSize(new Dimension(30, 30));
             rmStep.setBackground(new Color(240,240,240));
             rmStep.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-            rmStep.setMaximumSize(calculateItinerary.getPreferredSize());
-            rmStep.addActionListener(new RemoveSteplistener(newStep));
+            rmStep.setMaximumSize(calculateButton.getPreferredSize());
+            rmStep.addActionListener(new RemoveStepListener(newStep));
 
-            testItinerary.add(newStep);
-            testItinerary.add(rmStep);
+            itineraryPanel.add(newStep);
+            itineraryPanel.add(rmStep);
 
             //Add the new text field to the steps list
-            steps.add(newStep);
+            stepNodesField.add(newStep);
 
             //Add Label if it's first step
             if(numberStep == 0) {
-                testItinerary.add(stepLabel);
-                layout.putConstraint(SpringLayout.NORTH,stepLabel,10,SpringLayout.SOUTH,startNode);
+                itineraryPanel.add(stepLabel);
+                layout.putConstraint(SpringLayout.NORTH,stepLabel,10,SpringLayout.SOUTH, startNodeField);
             }
-            layout.putConstraint(SpringLayout.NORTH, newStep,numberStep*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNode);
-            layout.putConstraint(SpringLayout.NORTH, rmStep, numberStep*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNode);
+            layout.putConstraint(SpringLayout.NORTH, newStep,numberStep*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNodeField);
+            layout.putConstraint(SpringLayout.NORTH, rmStep, numberStep*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNodeField);
             layout.putConstraint(SpringLayout.WEST, rmStep, 5, SpringLayout.EAST, newStep);
-            layout.putConstraint(SpringLayout.NORTH, arrivalLabel,(numberStep+1)*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNode);
+            layout.putConstraint(SpringLayout.NORTH, arrivalLabel,(numberStep+1)*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNodeField);
 
-            testItinerary.updateUI();
+            itineraryPanel.updateUI();
         }
 
         @Override
@@ -590,11 +590,11 @@ public class MainGUI extends JFrame {
         }
     }
 
-    private class RemoveSteplistener implements ActionListener {
+    private class RemoveStepListener implements ActionListener {
 
         private JTextField stepField;
 
-        public RemoveSteplistener(JTextField stepField) {
+        public RemoveStepListener(JTextField stepField) {
             this.stepField = stepField;
         }
 
@@ -604,29 +604,29 @@ public class MainGUI extends JFrame {
             int height = 30;
             int marginTop = 10;
             int blockHeight = height + marginTop;
-            int numberStep = steps.size();
-            SpringLayout layout = (SpringLayout) testItinerary.getLayout();
+            int numberStep = stepNodesField.size();
+            SpringLayout layout = (SpringLayout) itineraryPanel.getLayout();
 
-            steps.remove(stepField);
-            testItinerary.remove(stepField);
-            testItinerary.remove((JButton) e.getSource());
+            stepNodesField.remove(stepField);
+            itineraryPanel.remove(stepField);
+            itineraryPanel.remove((JButton) e.getSource());
 
             if ((numberStep - 1) == 0) {
-                testItinerary.remove(stepLabel);
-                layout.putConstraint(SpringLayout.NORTH, arrivalLabel, marginTop, SpringLayout.SOUTH, startNode);
+                itineraryPanel.remove(stepLabel);
+                layout.putConstraint(SpringLayout.NORTH, arrivalLabel, marginTop, SpringLayout.SOUTH, startNodeField);
             } else {
-                for (JTextField stepF : steps) {
-                    layout.putConstraint(SpringLayout.NORTH, stepF, steps.indexOf(stepF)*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNode);
-                    layout.putConstraint(SpringLayout.NORTH, testItinerary.findComponentAt(205, stepF.getY()), steps.indexOf(stepF)*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNode);
+                for (JTextField stepF : stepNodesField) {
+                    layout.putConstraint(SpringLayout.NORTH, stepF, stepNodesField.indexOf(stepF)*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNodeField);
+                    layout.putConstraint(SpringLayout.NORTH, itineraryPanel.findComponentAt(205, stepF.getY()), stepNodesField.indexOf(stepF)*blockHeight + marginTop + 20, SpringLayout.SOUTH, startNodeField);
                 }
-                layout.putConstraint(SpringLayout.NORTH, arrivalLabel, (numberStep - 1) * blockHeight + marginTop + 20, SpringLayout.SOUTH, startNode);
+                layout.putConstraint(SpringLayout.NORTH, arrivalLabel, (numberStep - 1) * blockHeight + marginTop + 20, SpringLayout.SOUTH, startNodeField);
             }
 
             if (numberStep == 3) {
-                addStep.setVisible(true);
+                addStepButton.setVisible(true);
             }
 
-            testItinerary.updateUI();
+            itineraryPanel.updateUI();
         }
 
     }
@@ -737,7 +737,7 @@ public class MainGUI extends JFrame {
                 hourValue++ ;
                 timeValue-= 60 ;
             }
-            String timeTxt = "";
+            String timeTxt;
             if(hourValue == 0){
                 timeTxt = timeValue + " min de trajet -- ";
             }else{
@@ -748,7 +748,7 @@ public class MainGUI extends JFrame {
             cost.setText(String.format("%.2f",itinerary.getCost()) + " €");
 
             button.addActionListener(new NewItineraryListener());
-            button.setPreferredSize(new Dimension(210, 30));
+            button.setPreferredSize(FIELD_BUTTON_PREFERRED_SIZE_DIMENSION);
             button.setBackground(new Color(200,200,200));
             button.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
             button.addMouseListener(new MouseAdapter() {
@@ -786,7 +786,7 @@ public class MainGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             getContentPane().remove(itineraryView);
-            testItinerary.setVisible(true);
+            itineraryPanel.setVisible(true);
             mapView.setItinerary(null);
             mapView.updateUI();
             revalidate();

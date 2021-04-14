@@ -3,6 +3,7 @@ package test.unit;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
+import config.GPSConfig;
 import model.Map;
 import model.Network;
 import model.Node;
@@ -18,14 +19,12 @@ import java.io.IOException;
 
 public class TestMapBuild {
 
-    private final static String mapPath = "src/test/map/map.xml";
-
     private Map map;
 
     @Before
     public void prepareMap() {
         try {
-            MapBuilder mapBuilder = new MapBuilder(mapPath);
+            MapBuilder mapBuilder = new MapBuilder(GPSConfig.MAP_PATH);
             map = mapBuilder.buildMap();
         }catch(SAXException | ParserConfigurationException | IOException e) {
             e.printStackTrace();

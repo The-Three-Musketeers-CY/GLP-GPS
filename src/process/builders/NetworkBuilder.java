@@ -1,6 +1,7 @@
 package process.builders;
 
 import log.LoggerUtility;
+import log.config.LoggerConfig;
 import model.Map;
 import model.Network;
 import model.identifiers.NetworkIdentifier;
@@ -9,7 +10,7 @@ import org.apache.log4j.Logger;
 
 public class NetworkBuilder {
 
-    private Logger logger = LoggerUtility.getLogger(NetworkBuilder.class, "html");
+    private Logger logger = LoggerUtility.getLogger(NetworkBuilder.class, LoggerConfig.LOG_FILE_TYPE);
 
     /**
      * This method built network for each network type

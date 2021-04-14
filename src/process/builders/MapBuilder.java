@@ -1,6 +1,7 @@
 package process.builders;
 
 import log.LoggerUtility;
+import log.config.LoggerConfig;
 import model.*;
 import model.identifiers.NetworkIdentifier;
 import model.identifiers.POIIdentifier;
@@ -25,14 +26,13 @@ public class MapBuilder {
 
     private MapRepository mapRepository = MapRepository.getInstance();
 
-    private Logger logger = LoggerUtility.getLogger(MapBuilder.class, "html");
+    private Logger logger = LoggerUtility.getLogger(MapBuilder.class, LoggerConfig.LOG_FILE_TYPE);
 
     /**
      * Create a MapBuilder
      * @param path the map file's path
      */
     public MapBuilder(String path) throws IllegalArgumentException, IOException, ParserConfigurationException, SAXException{
-
 
         File file = new File(path);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -85,7 +85,7 @@ public class MapBuilder {
                             String id = eltAdjacent.getAttribute("id");
                             String typeAdjacent = eltAdjacent.getAttribute("type");
                             model.Node adjNode = mapRepository.getNode(id);
-                            Way way = null;
+                            Way way;
                             if(!eltAdjacent.getAttribute("lineNumber").isBlank()){
                                 String lineNumber = eltAdjacent.getAttribute("lineNumber");
                                 way = new Way(WayIdentifier.valueOf(typeAdjacent), node, adjNode, lineNumber);
@@ -143,12 +143,12 @@ public class MapBuilder {
 
             // Putting foot ways
             Network footNetwork = map.getNetworks().get(NetworkIdentifier.FOOT);
-            for (model.Node node1 : map.getNodes().values()) {
-                if (node1.isPOI()) {
-                    footNetwork.getNodeWays().put(node1.getId(), new NodeWays(node1));
-                    for (model.Node node2 : map.getNodes().values()) {
-                        if (node2.isPOI())
-                            footNetwork.getNodeWays().get(node1.getId()).getWays().put(node2.getId(), new Way(WayIdentifier.FOOT, node1, node2));
+            for (model.Node nodeA : map.getNodes().values()) {
+                if (nodeA.isPOI()) {
+                    footNetwork.getNodeWays().put(nodeA.getId(), new NodeWays(nodeA));
+                    for (model.Node nodeB : map.getNodes().values()) {
+                        if (nodeB.isPOI())
+                            footNetwork.getNodeWays().get(nodeA.getId()).getWays().put(nodeB.getId(), new Way(WayIdentifier.FOOT, nodeA, nodeB));
                     }
                 }
             }

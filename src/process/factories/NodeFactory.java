@@ -42,4 +42,5 @@ public class NodeFactory {
     public static Node create(String id, int x, int y){
         return new Node(id, createPoint(x, y));
     }
+
 }

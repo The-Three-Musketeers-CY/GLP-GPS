@@ -1,6 +1,7 @@
 package process.builders;
 
 import log.LoggerUtility;
+import log.config.LoggerConfig;
 import model.Transport;
 import model.repositories.TransportRepository;
 import org.apache.log4j.Logger;
@@ -17,7 +18,7 @@ public class TransportBuilder {
 
     private TransportRepository transportRepository = TransportRepository.getInstance();
 
-    private Logger logger = LoggerUtility.getLogger(TransportBuilder.class, "html");
+    private Logger logger = LoggerUtility.getLogger(TransportBuilder.class, LoggerConfig.LOG_FILE_TYPE);
 
     /**
      * This method built all transports types
