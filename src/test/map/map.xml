@@ -314,8 +314,6 @@
     <node id="57" x="905" y="0">
         <poi type="STATION">Quai Denoyer</poi>
         <adjacentNode id="58" type="BOAT_LANE" />
-        <adjacentNode id="80" type="FOOT" />
-
     </node>
     <node id="58" x="980" y="150">
         <adjacentNode id="57" type="BOAT_LANE" />
@@ -329,7 +327,6 @@
         <poi type="STATION">Quai Walleth</poi>
         <adjacentNode id="59" type="BOAT_LANE" />
         <adjacentNode id="61" type="BOAT_LANE" />
-        <adjacentNode id="81" type="FOOT" />
     </node>
     <node id="61" x="1050" y="350">
         <adjacentNode id="60" type="BOAT_LANE" />
@@ -372,7 +369,6 @@
         <poi type="STATION">Quai Chevalier</poi>
         <adjacentNode id="69" type="BOAT_LANE" />
         <adjacentNode id="71" type="BOAT_LANE" />
-        <adjacentNode id="82" type="FOOT" />
     </node>
     <node id="71" x="380" y="700">
         <adjacentNode id="70" type="BOAT_LANE" />
@@ -418,17 +414,14 @@
     </node>
     <node id="80" x="890" y="5">
         <poi type="BUILDING">Parking de la Croix</poi>
-        <adjacentNode id="57" type="FOOT" />
         <adjacentNode id="77" type="ROAD" />
     </node>
     <node id="81" x="990" y="310">
         <poi type="BUILDING">Parking de la Rose des Vents</poi>
-        <adjacentNode id="60" type="FOOT" />
         <adjacentNode id="78" type="ROAD" />
     </node>
     <node id="82" x="490" y="590">
         <poi type="BUILDING">Parking des Flot Bleu</poi>
-        <adjacentNode id="70" type="FOOT" />
         <adjacentNode id="79" type="ROAD" />
     </node>
     <node id="83" x="820" y="110">
@@ -647,5 +640,4 @@
         <adjacentNode id="125" type="URBAN_ROAD" />
         <adjacentNode id="130" type="URBAN_ROAD" />
     </node>
-
 </map>
