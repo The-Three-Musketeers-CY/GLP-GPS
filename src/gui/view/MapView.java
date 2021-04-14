@@ -52,7 +52,6 @@ public class MapView extends JPanel{
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g.create();
 
-        // TODO : just some tests :p
         testX.setText("X : " + (GPSConfig.MAP_SIZE_WIDTH - (GPSConfig.MAP_SIZE_WIDTH + newDecX)));
         testY.setText("Y : " + (GPSConfig.MAP_SIZE_HEIGHT - (GPSConfig.MAP_SIZE_HEIGHT + newDecY)));
 
