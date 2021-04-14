@@ -19,7 +19,7 @@ public class TestTransportBuild {
     }
 
     @Test
-    public void testNetworksConstructedSuccessfully() {
+    public void testTransportsConstructedSuccessfully() {
         for (TransportIdentifier identifier : TransportIdentifier.values()) {
             assertNotNull(transportRepository.getTransports().get(identifier));
         }

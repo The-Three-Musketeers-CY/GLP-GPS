@@ -13,13 +13,13 @@ public class TestWayTypeBuild {
     private WayTypeRepository wayTypeRepository = WayTypeRepository.getInstance();
 
     @Before
-    public void prepareTransports() {
+    public void prepareWayTypes() {
         WayTypeBuilder wayTypeBuilder = new WayTypeBuilder();
         wayTypeBuilder.buildWayTypes();
     }
 
     @Test
-    public void testNetworksConstructedSuccessfully() {
+    public void testWayTypesConstructedSuccessfully() {
         for (WayIdentifier identifier : WayIdentifier.values()) {
             assertNotNull(wayTypeRepository.getWayTypes().get(identifier));
         }
