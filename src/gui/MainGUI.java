@@ -1,9 +1,12 @@
 package gui;
 
 import config.GPSConfig;
+import log.LoggerUtility;
 import model.*;
 import model.identifiers.TransportIdentifier;
 import model.repositories.TransportRepository;
+import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 import process.Dijkstra;
 import process.builders.MapBuilder;
 import gui.view.MapView;
@@ -13,6 +16,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -37,6 +41,8 @@ public class MainGUI extends JFrame {
 
     private Map map;
     private MapView mapView;
+
+    private static Logger logger = LoggerUtility.getLogger(Dijkstra.class, "html");
 
     private JButton resetButton = new JButton("Reset default position");
     private JButton calculateItinerary = new JButton("Rechercher");
@@ -66,20 +72,27 @@ public class MainGUI extends JFrame {
         try {
             setIconImage(new ImageIcon(ImageIO.read(new File("favicon.png"))).getImage());
         } catch (IOException e) {
-            // TODO : Gérer cette exception
+            logger.error(e.getMessage());
         }
 
         steps = new ArrayList<>();
 
-        // Building map
-        MapBuilder mapBuilder = new MapBuilder(mapPath);
-        map = mapBuilder.buildMap();
+        try {
+            // Building map
+            MapBuilder mapBuilder = new MapBuilder(mapPath);
+            map = mapBuilder.buildMap();
 
-        // Creating mapView with map info
-        mapView = new MapView(map);
+            // Creating mapView with map info
+            mapView = new MapView(map);
 
-        // Initializing MainGUI components
-        init();
+            // Initializing MainGUI components
+            init();
+        }catch (IllegalArgumentException argumentException){
+            logger.fatal(argumentException.getMessage());
+        } catch (SAXException | ParserConfigurationException | IOException e) {
+            logger.fatal(e.getMessage());
+        }
+
     }
 
     private void init() {
@@ -401,65 +414,81 @@ public class MainGUI extends JFrame {
             String arrival = arrivalNode.getText() ;
             ArrayList<String> stepsString = new ArrayList<>() ;
 
-            //Get all step's name and check it
-            for (JTextField jTextField : steps){
-                if (jTextField.getText().isBlank()) {
-                    JOptionPane.showMessageDialog(mapView,"Veuilliez saisir une étape intermédiaire valide","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
-                    return;
-                } else {
-                    stepsString.add(jTextField.getText());
-                }
-            }
-
             //Get all node's name
             ArrayList<String> nodeNames = map.getAllNodeNames();
 
-            //Check nodes
-            if (start.isEmpty() || arrival.isEmpty()){
-                JOptionPane.showMessageDialog(mapView,"Saisissez tous les champs !","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
-            } else if ((map.getNodes().containsKey(start) || nodeNames.contains(start)) && (map.getNodes().containsKey(arrival) || nodeNames.contains(arrival))) {
-
-                Node startingNode, arrivalNode;
-                startingNode = map.getNodeFromId(start);
-                arrivalNode = map.getNodeFromId(arrival);
-
-
-                if (startingNode == null) startingNode = map.getNodeFromName(start);
-                if (arrivalNode == null) arrivalNode = map.getNodeFromName(arrival);
-
-                ArrayList<Node> nodes = new ArrayList<>();
-                nodes.add(startingNode);
-                for (String stepNodeField : stepsString) {
-                    Node stepNode;
-                    stepNode = map.getNodeFromId(stepNodeField);
-                    if (stepNode == null) stepNode = map.getNodeFromName(stepNodeField);
-                    nodes.add(stepNode);
+            try{
+                //Check start and arrival nodes
+                if (start.isEmpty() || arrival.isEmpty()){
+                    throw new IllegalArgumentException("Départ ou arrivée non saisie.");
                 }
-                nodes.add(arrivalNode);
 
-                ArrayList<Transport> transportsToAvoid = new ArrayList<>();
-                transportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.BUS));
-                Itinerary itinerary;
-                if (defaultTimeItinerary.isSelected()) {
-                    itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
-                } else if (distanceItinerary.isSelected()) {
-                    itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.BY_DISTANCE);
-                } else if (costItinerary.isSelected()) {
-                    itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.BY_COST);
+                //Get all step's name and check it
+                for (JTextField jTextField : steps){
+                    if (jTextField.getText().isBlank()) {
+                        JOptionPane.showMessageDialog(mapView,"Aucune étape saisie","Recherche d'itinéraire",JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        stepsString.add(jTextField.getText());
+                    }
+                }
+
+                for(String steps : stepsString){
+                    if(!nodeNames.contains(steps) || !map.getNodes().containsKey(steps)){
+                        throw new IllegalArgumentException("Etape inconnue. Vérifiez votre saisie.");
+                    }
+                }
+
+                if ((map.getNodes().containsKey(start) || nodeNames.contains(start)) && (map.getNodes().containsKey(arrival) || nodeNames.contains(arrival))) {
+
+                    Node startingNode, arrivalNode;
+                    startingNode = map.getNodeFromId(start);
+                    arrivalNode = map.getNodeFromId(arrival);
+
+
+                    if (startingNode == null) startingNode = map.getNodeFromName(start);
+                    if (arrivalNode == null) arrivalNode = map.getNodeFromName(arrival);
+
+                    ArrayList<Node> nodes = new ArrayList<>();
+                    nodes.add(startingNode);
+                    for (String stepNodeField : stepsString) {
+                        Node stepNode;
+                        stepNode = map.getNodeFromId(stepNodeField);
+                        if (stepNode == null) stepNode = map.getNodeFromName(stepNodeField);
+                        nodes.add(stepNode);
+                    }
+                    nodes.add(arrivalNode);
+
+                    ArrayList<Transport> transportsToAvoid = new ArrayList<>();
+                    transportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.BUS));
+                    Itinerary itinerary;
+
+                    if (defaultTimeItinerary.isSelected()) {
+                        itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
+                    } else if (distanceItinerary.isSelected()) {
+                        itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.BY_DISTANCE);
+                    } else if (costItinerary.isSelected()) {
+                        itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.BY_COST);
+                    } else {
+                        itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
+                    }
+
+                    mapView.setItinerary(itinerary);
+                    mapView.repaint();
+
+                    itineraryView = new ItineraryView(itinerary);
+                    itineraryView.setBackground(Color.WHITE);
+                    itineraryView.setBorder(new EmptyBorder(new Insets(5, 20, 0, 20)));
+                    getContentPane().add(BorderLayout.EAST, itineraryView);
+                    testItinerary.setVisible(false);
+                    revalidate();
+
                 } else {
-                    itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
+                    throw new IllegalArgumentException("Destination inconnue. Vérifiez votre itinéraire.");
                 }
-                mapView.setItinerary(itinerary);
-                mapView.repaint();
 
-                itineraryView = new ItineraryView(itinerary);
-                itineraryView.setBackground(Color.WHITE);
-                itineraryView.setBorder(new EmptyBorder(new Insets(5, 20, 0, 20)));
-                getContentPane().add(BorderLayout.EAST, itineraryView);
-                testItinerary.setVisible(false);
-                revalidate();
-            } else {
-                JOptionPane.showMessageDialog(mapView,"Destination inconnue","Erreur de saisie",JOptionPane.ERROR_MESSAGE);
+            }catch (IllegalArgumentException argumentException){
+                logger.error(argumentException.getMessage());
+                JOptionPane.showMessageDialog(mapView,argumentException.getMessage(),"Recherche d'itinéraire",JOptionPane.ERROR_MESSAGE);
             }
 
         }

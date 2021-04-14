@@ -31,7 +31,7 @@ public class Dijkstra {
      * @param map the main map
      * @return the best itinerary between the two points
      */
-    private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map, ArrayList<Transport> transportsToAvoid, int weightType){
+    private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
 
         //The node currently covered
         Node currentNode = startingNode ;
@@ -116,8 +116,7 @@ public class Dijkstra {
                                     distance = way.getDistance() * SCALE ;
                                     break;
                                 default:
-                                    // TODO : Faire l'exception
-                                    throw new IllegalArgumentException();
+                                    throw new IllegalArgumentException("Invalid itinerary criteria. Available criteria are BY_TIME, BY_DISTANCE and BY_COST.");
                             }
 
                             //Update weight of the node, the node is now accessible
@@ -227,7 +226,6 @@ public class Dijkstra {
         ArrayList<Transport> transportList = new ArrayList<>();
         while (transportStack.size() != 0) {
             Transport transport = transportStack.peek();
-            System.out.println(transport);
             transportList.add(transport);
             transportStack.pop();
         }
@@ -305,7 +303,7 @@ public class Dijkstra {
      * @param transportsToAvoid The transports to avoid in the itinerary
      * @return the best itinerary between all points
      */
-    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType){
+    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
 
         logger.info("Start itinerary calculation");
         Date startTime = new Date();

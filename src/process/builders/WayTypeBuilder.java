@@ -37,15 +37,17 @@ public class WayTypeBuilder {
      * This method built all way types
      * @see WayIdentifier
      */
-    public void buildWayTypes() {
+    public void buildWayTypes() throws IllegalArgumentException{
+
         for (WayIdentifier identifier : WayIdentifier.values()) {
             WayType wayType = buildWayType(identifier);
             wayTypeRepository.getWayTypes().put(identifier, wayType);
         }
+
         logger.info(wayTypeRepository.getWayTypes().size() + " way types built successfully");
     }
 
-    private WayType buildWayType(WayIdentifier identifier) {
+    private WayType buildWayType(WayIdentifier identifier) throws IllegalArgumentException {
         WayType wayType;
         TransportIdentifier[] transports;
         switch (identifier) {
@@ -104,8 +106,7 @@ public class WayTypeBuilder {
                 wayType.setSpeed(TransportIdentifier.BUS, DEFAULT_URBAN_ROAD_BUS_SPEED);
                 break;
             default:
-                // TODO lever une exception
-                return null;
+                throw new IllegalArgumentException("Invalid Way identifier. Check available Way identifier");
         }
 
         return wayType;

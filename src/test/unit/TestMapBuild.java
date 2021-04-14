@@ -10,7 +10,11 @@ import model.NodeWays;
 import model.identifiers.NetworkIdentifier;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 import process.builders.MapBuilder;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 public class TestMapBuild {
 
@@ -20,8 +24,12 @@ public class TestMapBuild {
 
     @Before
     public void prepareMap() {
-        MapBuilder mapBuilder = new MapBuilder(mapPath);
-        map = mapBuilder.buildMap();
+        try {
+            MapBuilder mapBuilder = new MapBuilder(mapPath);
+            map = mapBuilder.buildMap();
+        }catch(SAXException | ParserConfigurationException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
