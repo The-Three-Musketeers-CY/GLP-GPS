@@ -7,7 +7,7 @@ public class TestGPS {
 
     public static void main(String[] args) {
 
-        new MainGUI("Test GPS - v2", GPSConfig.MAP_PATH);
+        new MainGUI(GPSConfig.GPS_FRAME_NAME, GPSConfig.MAP_PATH);
 
     }
 

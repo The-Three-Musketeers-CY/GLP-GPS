@@ -58,6 +58,8 @@ public class MainGUI extends JFrame {
     private JLabel startLabel = new JLabel("Saisissez un point de départ :");
     private JLabel arrivalLabel = new JLabel("Saisissez un point de d'arrivée :");
     private JLabel stepLabel = new JLabel("Etapes intérmédiaires");
+    private JLabel itineraryOptionsLabel = new JLabel("Options d'itinéraire");
+    private JLabel transportsOptionsLabel = new JLabel("Modes de transport disponibles");
 
     private JRadioButton defaultTimeItinerary = new JRadioButton("Le + court");
     private JRadioButton distanceItinerary = new JRadioButton("La + courte distance");
@@ -176,6 +178,8 @@ public class MainGUI extends JFrame {
         addStepButton.addMouseListener(new AddStepListener());
         itineraryPanel.add(addStepButton);
 
+        itineraryPanel.add(itineraryOptionsLabel);
+
         defaultTimeItinerary.setSelected(true);
         itineraryPanel.add(defaultTimeItinerary);
         itineraryPanel.add(distanceItinerary);
@@ -186,6 +190,7 @@ public class MainGUI extends JFrame {
         radioButtonGroup.add(distanceItinerary);
         radioButtonGroup.add(costItinerary);
 
+        itineraryPanel.add(transportsOptionsLabel);
 
         itineraryPanel.add(busTransport);
         JLabel busTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_bus_black_24dp.png"));
@@ -269,13 +274,16 @@ public class MainGUI extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, arrivalNodeField, 2, SpringLayout.SOUTH, arrivalLabel);
         layout.putConstraint(SpringLayout.NORTH, calculateButton, 10, SpringLayout.SOUTH, arrivalNodeField);
         layout.putConstraint(SpringLayout.NORTH, addStepButton,10, SpringLayout.SOUTH, calculateButton);
-        layout.putConstraint(SpringLayout.NORTH, defaultTimeItinerary, 10, SpringLayout.SOUTH, addStepButton);
+
+        layout.putConstraint(SpringLayout.NORTH, itineraryOptionsLabel, 20, SpringLayout.SOUTH, addStepButton);
+
+        layout.putConstraint(SpringLayout.NORTH, defaultTimeItinerary, 10, SpringLayout.SOUTH, itineraryOptionsLabel);
         layout.putConstraint(SpringLayout.NORTH, distanceItinerary, 5, SpringLayout.SOUTH, defaultTimeItinerary);
         layout.putConstraint(SpringLayout.NORTH, costItinerary, 5, SpringLayout.SOUTH, distanceItinerary);
-        layout.putConstraint(SpringLayout.SOUTH, copyrightsWallethChevalierLabel, -50, SpringLayout.SOUTH, contentPane);
-        layout.putConstraint(SpringLayout.NORTH, copyrightsDenoyerLabel, 2, SpringLayout.SOUTH, copyrightsWallethChevalierLabel);
-        layout.putConstraint(SpringLayout.NORTH, copyrightsGLPLabel, 2, SpringLayout.SOUTH, copyrightsDenoyerLabel);
-        layout.putConstraint(SpringLayout.NORTH, footTransport, 20, SpringLayout.SOUTH, costItinerary);
+
+        layout.putConstraint(SpringLayout.NORTH, transportsOptionsLabel, 10, SpringLayout.SOUTH, costItinerary);
+
+        layout.putConstraint(SpringLayout.NORTH, footTransport, 10, SpringLayout.SOUTH, transportsOptionsLabel);
         layout.putConstraint(SpringLayout.NORTH, carTransport, 5, SpringLayout.SOUTH, footTransport);
         layout.putConstraint(SpringLayout.NORTH, busTransport, 5, SpringLayout.SOUTH, carTransport);
         layout.putConstraint(SpringLayout.NORTH, metroTransport, 5, SpringLayout.SOUTH, busTransport);
@@ -287,11 +295,15 @@ public class MainGUI extends JFrame {
         layout.putConstraint(SpringLayout.EAST, bikeTransport, 100, SpringLayout.WEST, footTransport);
         layout.putConstraint(SpringLayout.EAST, planeTransport, 100, SpringLayout.WEST, footTransport);
         layout.putConstraint(SpringLayout.EAST, boatTransport, 100, SpringLayout.WEST, footTransport);
-        layout.putConstraint(SpringLayout.NORTH, trainTransport, 20, SpringLayout.SOUTH, costItinerary);
+        layout.putConstraint(SpringLayout.NORTH, trainTransport, 10, SpringLayout.SOUTH, transportsOptionsLabel);
         layout.putConstraint(SpringLayout.NORTH, bikeTransport, 5, SpringLayout.SOUTH, trainTransport);
         layout.putConstraint(SpringLayout.NORTH, planeTransport, 5, SpringLayout.SOUTH, bikeTransport);
         layout.putConstraint(SpringLayout.NORTH, boatTransport, 5, SpringLayout.SOUTH, planeTransport);
         layout.putConstraint(SpringLayout.NORTH, allSelected, 10, SpringLayout.SOUTH, boatTransport);
+
+        layout.putConstraint(SpringLayout.SOUTH, copyrightsWallethChevalierLabel, -50, SpringLayout.SOUTH, contentPane);
+        layout.putConstraint(SpringLayout.NORTH, copyrightsDenoyerLabel, 2, SpringLayout.SOUTH, copyrightsWallethChevalierLabel);
+        layout.putConstraint(SpringLayout.NORTH, copyrightsGLPLabel, 2, SpringLayout.SOUTH, copyrightsDenoyerLabel);
 
 
         // Adding itineraryPanel at EAST of the frame
@@ -642,16 +654,15 @@ public class MainGUI extends JFrame {
             int marginTop = 10;
             int blockHeight = height + marginTop;
             int numberStep = stepNodesField.size();
+            SpringLayout layout = (SpringLayout) itineraryPanel.getLayout();
 
             //Add a limit : max 3 steps
-            if (numberStep > 2) {
+            if (numberStep >= GPSConfig.MAX_STEP_ITINERARY) {
                 return;
-            } else if (numberStep == 2) {
+            } else if (numberStep == (GPSConfig.MAX_STEP_ITINERARY - 1)) {
                 addStepButton.setVisible(false);
+                layout.putConstraint(SpringLayout.NORTH, itineraryOptionsLabel, 20, SpringLayout.SOUTH, calculateButton);
             }
-
-            //Get the layout
-            SpringLayout layout = (SpringLayout) itineraryPanel.getLayout();
 
             //Add the new component
             JTextField newStep = new JTextField();
@@ -740,8 +751,9 @@ public class MainGUI extends JFrame {
                 layout.putConstraint(SpringLayout.NORTH, arrivalLabel, (numberStep - 1) * blockHeight + marginTop + 20, SpringLayout.SOUTH, startNodeField);
             }
 
-            if (numberStep == 3) {
+            if (numberStep == GPSConfig.MAX_STEP_ITINERARY) {
                 addStepButton.setVisible(true);
+                layout.putConstraint(SpringLayout.NORTH, itineraryOptionsLabel, 20, SpringLayout.SOUTH, addStepButton);
             }
 
             itineraryPanel.updateUI();
