@@ -7,6 +7,7 @@ import model.identifiers.TransportIdentifier;
 import model.repositories.TransportRepository;
 import model.repositories.WayTypeRepository;
 import org.apache.log4j.Logger;
+import process.model.AccessibleNode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,13 +36,13 @@ public class Dijkstra {
     private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
 
         //The node currently covered
-        Node currentNode = startingNode ;
+        Node currentNode = startingNode;
         //All nodes previously covered
-        ArrayList<String> coveredNodes ;
+        ArrayList<String> coveredNodes;
         //All nodes who are accessible for the itinerary
-        HashMap<String,AccessibleNode> accessibleNodes ;
+        HashMap<String, AccessibleNode> accessibleNodes;
         //All the transports
-        HashMap<TransportIdentifier,Transport> transportRepository = TransportRepository.getInstance().getTransports() ;
+        HashMap<TransportIdentifier,Transport> transportRepository = TransportRepository.getInstance().getTransports();
         //Intern transport's constraints
         ArrayList<Transport> internTransportsToAvoid = new ArrayList<>(transportsToAvoid);
 
@@ -52,9 +53,9 @@ public class Dijkstra {
         coveredNodes.add(startingNode.getId());
         accessibleNodes.put(startingNode.getId(),new AccessibleNode(startingNode,null, null,0, 0, 0, 0));
 
-        while (!coveredNodes.contains(arrivalNode.getId())){
+        while (!coveredNodes.contains(arrivalNode.getId())) {
             //FIRST STEP : find all the adjacent nodes to the current node and update their weight
-            for (Network network : map.getNetworks().values()){
+            for (Network network : map.getNetworks().values()) {
                 if(network.getWaysFromNode(currentNode) != null) {
                     for (Way way : network.getWaysFromNode(currentNode).getWays().values()) {
                         String idNode = way.getNodeB().getId();
@@ -68,14 +69,14 @@ public class Dijkstra {
                             //Transport constraints
 
                             //After car, only public transport
-                            if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
+                            if(transports.contains(transportRepository.get(TransportIdentifier.CAR))) {
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                             }
                             if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
                             //After foot, only public transport or foot
-                            if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS)) || transports.contains(transportRepository.get(TransportIdentifier.TRAIN)) || transports.contains(transportRepository.get(TransportIdentifier.BOAT)) || transports.contains(transportRepository.get(TransportIdentifier.PLANE))){
+                            if (transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS)) || transports.contains(transportRepository.get(TransportIdentifier.TRAIN)) || transports.contains(transportRepository.get(TransportIdentifier.BOAT)) || transports.contains(transportRepository.get(TransportIdentifier.PLANE))){
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
@@ -147,7 +148,6 @@ public class Dijkstra {
                 }
             }
 
-
             //Add the new current node to the covered nodes
             coveredNodes.add(currentNode.getId());
         }
@@ -186,42 +186,17 @@ public class Dijkstra {
 
         //Transport constraints
 
-        //After car, only public transport or foot
-        if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+        //After car, only public transport
+        if(transports.contains(transportRepository.get(TransportIdentifier.CAR))) {
+            internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
         }
-        //After bicycle, only public transport, foot, or bicycle
         if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+            internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
         }
         //After foot, only public transport or foot
-        if(transports.contains(transportRepository.get(TransportIdentifier.FOOT))){
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
-        }
-        //After public transports, only public transport or foot
-        if( transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
-            cost += transportRepository.get(TransportIdentifier.METRO).getCost() ;
-        }
-
-        if(transports.contains(transportRepository.get(TransportIdentifier.PLANE))){
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
-            cost += transportRepository.get(TransportIdentifier.PLANE).getCost() ;
-        }
-
-        if(transports.contains(transportRepository.get(TransportIdentifier.BOAT))){
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
-            cost += transportRepository.get(TransportIdentifier.BOAT).getCost() ;
-        }
-
-        if(transports.contains(transportRepository.get(TransportIdentifier.TRAIN))){
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
-            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
-            cost += transportRepository.get(TransportIdentifier.TRAIN).getCost() ;
+        if (transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS)) || transports.contains(transportRepository.get(TransportIdentifier.TRAIN)) || transports.contains(transportRepository.get(TransportIdentifier.BOAT)) || transports.contains(transportRepository.get(TransportIdentifier.PLANE))){
+            internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+            internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
         }
 
         ArrayList<Transport> transportList = new ArrayList<>();

@@ -1,4 +1,4 @@
-package process;
+package process.model;
 
 import model.Node;
 import model.Transport;
