@@ -63,6 +63,17 @@ public class MainGUI extends JFrame {
     private JRadioButton distanceItinerary = new JRadioButton("La + courte distance");
     private JRadioButton costItinerary = new JRadioButton("Le - cher");
 
+    private JCheckBox busTransport = new JCheckBox();
+    private JCheckBox carTransport = new JCheckBox();
+    private JCheckBox footTransport = new JCheckBox();
+    private JCheckBox metroTransport = new JCheckBox();
+    private JCheckBox trainTransport = new JCheckBox();
+    private JCheckBox bikeTransport = new JCheckBox();
+    private JCheckBox planeTransport = new JCheckBox();
+    private JCheckBox boatTransport = new JCheckBox();
+
+    private JButton allSelected = new JButton("Tous les modes de transports");
+
     private JPanel itineraryPanel = new JPanel();
     private ItineraryView itineraryView;
     private JPanel mapPanel = new JPanel();
@@ -175,8 +186,74 @@ public class MainGUI extends JFrame {
         radioButtonGroup.add(distanceItinerary);
         radioButtonGroup.add(costItinerary);
 
+
+        itineraryPanel.add(busTransport);
+        JLabel busTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_bus_black_24dp.png"));
+        itineraryPanel.add(busTransportLabel);
+        layout.putConstraint(SpringLayout.WEST,busTransportLabel, 0, SpringLayout.EAST, busTransport);
+        layout.putConstraint(SpringLayout.NORTH,busTransportLabel, 0, SpringLayout.NORTH, busTransport);
+        busTransport.setSelected(true);
+
+        itineraryPanel.add(carTransport);
+        JLabel carTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_car_black_24dp.png"));
+        itineraryPanel.add(carTransportLabel);
+        layout.putConstraint(SpringLayout.WEST,carTransportLabel, 0, SpringLayout.EAST, carTransport);
+        layout.putConstraint(SpringLayout.NORTH,carTransportLabel, 0, SpringLayout.NORTH, carTransport);
+        carTransport.setSelected(true);
+
+        itineraryPanel.add(footTransport);
+        JLabel footTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_walk_black_24dp.png"));
+        itineraryPanel.add(footTransportLabel);
+        layout.putConstraint(SpringLayout.WEST,footTransportLabel, 0, SpringLayout.EAST, footTransport);
+        layout.putConstraint(SpringLayout.NORTH,footTransportLabel, 0, SpringLayout.NORTH, footTransport);
+        footTransport.setSelected(true);
+        footTransport.setEnabled(false);
+
+        itineraryPanel.add(metroTransport);
+        JLabel metroTransportLabel = new JLabel(new ImageIcon("src/img/round_subway_black_24dp.png"));
+        itineraryPanel.add(metroTransportLabel);
+        layout.putConstraint(SpringLayout.WEST,metroTransportLabel, 0, SpringLayout.EAST, metroTransport);
+        layout.putConstraint(SpringLayout.NORTH,metroTransportLabel, 0, SpringLayout.NORTH, metroTransport);
+        metroTransport.setSelected(true);
+
+        itineraryPanel.add(trainTransport);
+        JLabel trainTransportLabel = new JLabel(new ImageIcon("src/img/round_train_black_24dp.png"));
+        itineraryPanel.add(trainTransportLabel);
+        layout.putConstraint(SpringLayout.WEST,trainTransportLabel, 0, SpringLayout.EAST, trainTransport);
+        layout.putConstraint(SpringLayout.NORTH,trainTransportLabel, 0, SpringLayout.NORTH, trainTransport);
+        trainTransport.setSelected(true);
+
+        itineraryPanel.add(planeTransport);
+        JLabel planeTransportLabel = new JLabel(new ImageIcon("src/img/round_flight_black_24dp.png"));
+        itineraryPanel.add(planeTransportLabel);
+        layout.putConstraint(SpringLayout.WEST,planeTransportLabel, 0, SpringLayout.EAST, planeTransport);
+        layout.putConstraint(SpringLayout.NORTH,planeTransportLabel, 0, SpringLayout.NORTH, planeTransport);
+        planeTransport.setSelected(true);
+
+        itineraryPanel.add(boatTransport);
+        JLabel boatTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_boat_black_24dp.png"));
+        itineraryPanel.add(boatTransportLabel);
+        layout.putConstraint(SpringLayout.WEST,boatTransportLabel, 0, SpringLayout.EAST, boatTransport);
+        layout.putConstraint(SpringLayout.NORTH,boatTransportLabel, 0, SpringLayout.NORTH, boatTransport);
+        boatTransport.setSelected(true);
+
+        itineraryPanel.add(bikeTransport);
+        JLabel bikeTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_bike_black_24dp.png"));
+        itineraryPanel.add(bikeTransportLabel);
+        layout.putConstraint(SpringLayout.WEST,bikeTransportLabel, 0, SpringLayout.EAST, bikeTransport);
+        layout.putConstraint(SpringLayout.NORTH,bikeTransportLabel, 0, SpringLayout.NORTH, bikeTransport);
+        bikeTransport.setSelected(true);
+
+        allSelected.setPreferredSize(FIELD_BUTTON_PREFERRED_SIZE_DIMENSION);
+        allSelected.setBackground(new Color(240,240,240));
+        allSelected.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        allSelected.setMaximumSize(calculateButton.getPreferredSize());
+        allSelected.addActionListener(new ResetSelectionListener());
+        itineraryPanel.add(allSelected);
+
         JLabel copyrightsWallethChevalierLabel = new JLabel("Benjamin Walleth | Paul Chevalier");
         JLabel copyrightsDenoyerLabel = new JLabel("William Denoyer");
+
         JLabel copyrightsGLPLabel = new JLabel("GLP GPS - 2021");
         itineraryPanel.add(copyrightsWallethChevalierLabel);
         itineraryPanel.add(copyrightsDenoyerLabel);
@@ -198,6 +275,24 @@ public class MainGUI extends JFrame {
         layout.putConstraint(SpringLayout.SOUTH, copyrightsWallethChevalierLabel, -50, SpringLayout.SOUTH, contentPane);
         layout.putConstraint(SpringLayout.NORTH, copyrightsDenoyerLabel, 2, SpringLayout.SOUTH, copyrightsWallethChevalierLabel);
         layout.putConstraint(SpringLayout.NORTH, copyrightsGLPLabel, 2, SpringLayout.SOUTH, copyrightsDenoyerLabel);
+        layout.putConstraint(SpringLayout.NORTH, footTransport, 20, SpringLayout.SOUTH, costItinerary);
+        layout.putConstraint(SpringLayout.NORTH, carTransport, 5, SpringLayout.SOUTH, footTransport);
+        layout.putConstraint(SpringLayout.NORTH, busTransport, 5, SpringLayout.SOUTH, carTransport);
+        layout.putConstraint(SpringLayout.NORTH, metroTransport, 5, SpringLayout.SOUTH, busTransport);
+        layout.putConstraint(SpringLayout.EAST, footTransport, 60, SpringLayout.WEST, costItinerary);
+        layout.putConstraint(SpringLayout.EAST, carTransport, 60, SpringLayout.WEST, costItinerary);
+        layout.putConstraint(SpringLayout.EAST, busTransport, 60, SpringLayout.WEST, costItinerary);
+        layout.putConstraint(SpringLayout.EAST, metroTransport, 60, SpringLayout.WEST, costItinerary);
+        layout.putConstraint(SpringLayout.EAST, trainTransport, 100, SpringLayout.WEST, footTransport);
+        layout.putConstraint(SpringLayout.EAST, bikeTransport, 100, SpringLayout.WEST, footTransport);
+        layout.putConstraint(SpringLayout.EAST, planeTransport, 100, SpringLayout.WEST, footTransport);
+        layout.putConstraint(SpringLayout.EAST, boatTransport, 100, SpringLayout.WEST, footTransport);
+        layout.putConstraint(SpringLayout.NORTH, trainTransport, 20, SpringLayout.SOUTH, costItinerary);
+        layout.putConstraint(SpringLayout.NORTH, bikeTransport, 5, SpringLayout.SOUTH, trainTransport);
+        layout.putConstraint(SpringLayout.NORTH, planeTransport, 5, SpringLayout.SOUTH, bikeTransport);
+        layout.putConstraint(SpringLayout.NORTH, boatTransport, 5, SpringLayout.SOUTH, planeTransport);
+        layout.putConstraint(SpringLayout.NORTH, allSelected, 10, SpringLayout.SOUTH, boatTransport);
+
 
         // Adding itineraryPanel at EAST of the frame
         contentPane.add(BorderLayout.EAST, itineraryPanel);
@@ -434,7 +529,7 @@ public class MainGUI extends JFrame {
                 }
 
                 for(String steps : stepsString){
-                    if(!nodeNames.contains(steps) || !map.getNodes().containsKey(steps)){
+                    if(!nodeNames.contains(steps) && !map.getNodes().containsKey(steps)){
                         throw new IllegalArgumentException("Etape inconnue. Vérifiez votre saisie.");
                     }
                 }
@@ -459,7 +554,30 @@ public class MainGUI extends JFrame {
                     }
                     nodes.add(arrivalNode);
 
-                    ArrayList<Transport> transportsToAvoid = new ArrayList<>(TransportRepository.getInstance().getTransportToAvoid(TransportIdentifier.BUS));
+
+                    ArrayList<Transport> transportsToAvoid = new ArrayList<>();
+                    if(!busTransport.isSelected()){
+                        transportsToAvoid.add(TransportRepository.getInstance().getTransports().get(TransportIdentifier.BUS));
+                    }
+                    if(!carTransport.isSelected()){
+                        transportsToAvoid.add(TransportRepository.getInstance().getTransports().get(TransportIdentifier.CAR));
+                    }
+                    if(!metroTransport.isSelected()){
+                        transportsToAvoid.add(TransportRepository.getInstance().getTransports().get(TransportIdentifier.METRO));
+                    }
+                    if(!trainTransport.isSelected()){
+                        transportsToAvoid.add(TransportRepository.getInstance().getTransports().get(TransportIdentifier.TRAIN));
+                    }
+                    if(!boatTransport.isSelected()){
+                        transportsToAvoid.add(TransportRepository.getInstance().getTransports().get(TransportIdentifier.BOAT));
+                    }
+                    if(!planeTransport.isSelected()){
+                        transportsToAvoid.add(TransportRepository.getInstance().getTransports().get(TransportIdentifier.PLANE));
+                    }
+                    if(!bikeTransport.isSelected()){
+                        transportsToAvoid.add(TransportRepository.getInstance().getTransports().get(TransportIdentifier.BICYCLE));
+                    }
+
                     Itinerary itinerary;
 
                     if (defaultTimeItinerary.isSelected()) {
@@ -779,6 +897,19 @@ public class MainGUI extends JFrame {
             this.setPreferredSize(IDEAL_ITINERARY_PANEL_DIMENSION);
         }
 
+    }
+
+    private class ResetSelectionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            busTransport.setSelected(true);
+            carTransport.setSelected(true);
+            metroTransport.setSelected(true);
+            trainTransport.setSelected(true);
+            planeTransport.setSelected(true);
+            boatTransport.setSelected(true);
+            bikeTransport.setSelected(true);
+        }
     }
 
     private class NewItineraryListener implements ActionListener {
