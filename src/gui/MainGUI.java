@@ -48,6 +48,7 @@ public class MainGUI extends JFrame {
     private JButton resetButton = new JButton("Reset default position");
     private JButton calculateButton = new JButton("Rechercher");
     private JButton addStepButton = new JButton("Ajouter une étape");
+    private JButton calculateWithAttractionButton = new JButton("Itinéraire touristique");
 
     private JTextField startNodeField = new JTextField();
     private JTextField arrivalNodeField = new JTextField();
@@ -170,13 +171,21 @@ public class MainGUI extends JFrame {
         calculateButton.addMouseListener(new CalculateItineraryListener());
         itineraryPanel.add(calculateButton);
 
-        addStepButton.setPreferredSize(FIELD_BUTTON_PREFERRED_SIZE_DIMENSION);
+        addStepButton.setPreferredSize(new Dimension(105, 30));
         addStepButton.setBackground(new Color(240,240,240));
         addStepButton.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-        addStepButton.setMaximumSize(calculateButton.getPreferredSize());
+        addStepButton.setMaximumSize(addStepButton.getPreferredSize());
         addStepButton.removeMouseListener(addStepButton.getMouseListeners()[0]);
         addStepButton.addMouseListener(new AddStepListener());
         itineraryPanel.add(addStepButton);
+
+        calculateWithAttractionButton.setPreferredSize(new Dimension(100, 30));
+        calculateWithAttractionButton.setBackground(new Color(240,240,240));
+        calculateWithAttractionButton.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        calculateWithAttractionButton.setMaximumSize(calculateWithAttractionButton.getPreferredSize());
+        calculateWithAttractionButton.removeMouseListener(calculateWithAttractionButton.getMouseListeners()[0]);
+        calculateWithAttractionButton.addMouseListener(new CalculateItineraryListener());
+        itineraryPanel.add(calculateWithAttractionButton);
 
         itineraryPanel.add(itineraryOptionsLabel);
 
@@ -274,6 +283,8 @@ public class MainGUI extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, arrivalNodeField, 2, SpringLayout.SOUTH, arrivalLabel);
         layout.putConstraint(SpringLayout.NORTH, calculateButton, 10, SpringLayout.SOUTH, arrivalNodeField);
         layout.putConstraint(SpringLayout.NORTH, addStepButton,10, SpringLayout.SOUTH, calculateButton);
+        layout.putConstraint(SpringLayout.NORTH, calculateWithAttractionButton,10, SpringLayout.SOUTH, calculateButton);
+        layout.putConstraint(SpringLayout.WEST, calculateWithAttractionButton,5, SpringLayout.EAST, addStepButton);
 
         layout.putConstraint(SpringLayout.NORTH, itineraryOptionsLabel, 20, SpringLayout.SOUTH, addStepButton);
 
@@ -592,7 +603,9 @@ public class MainGUI extends JFrame {
 
                     Itinerary itinerary;
 
-                    if (defaultTimeItinerary.isSelected()) {
+                    if (e.getComponent() == calculateWithAttractionButton) {
+                        itinerary = Dijkstra.calculateTouristicItinerary(nodes, map, transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
+                    } else if (defaultTimeItinerary.isSelected()) {
                         itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.DEFAULT_BY_TIME);
                     } else if (distanceItinerary.isSelected()) {
                         itinerary = Dijkstra.calculateItinerary(nodes, map,transportsToAvoid, Dijkstra.BY_DISTANCE);
