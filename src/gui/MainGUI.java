@@ -61,7 +61,7 @@ public class MainGUI extends JFrame {
     private JLabel itineraryOptionsLabel = new JLabel("Options d'itinéraire");
     private JLabel transportsOptionsLabel = new JLabel("Modes de transport disponibles");
 
-    private JRadioButton defaultTimeItinerary = new JRadioButton("Le + court");
+    private JRadioButton defaultTimeItinerary = new JRadioButton("Le + rapide");
     private JRadioButton distanceItinerary = new JRadioButton("La + courte distance");
     private JRadioButton costItinerary = new JRadioButton("Le - cher");
 
@@ -284,9 +284,9 @@ public class MainGUI extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, transportsOptionsLabel, 10, SpringLayout.SOUTH, costItinerary);
 
         layout.putConstraint(SpringLayout.NORTH, footTransport, 10, SpringLayout.SOUTH, transportsOptionsLabel);
-        layout.putConstraint(SpringLayout.NORTH, carTransport, 5, SpringLayout.SOUTH, footTransport);
-        layout.putConstraint(SpringLayout.NORTH, busTransport, 5, SpringLayout.SOUTH, carTransport);
-        layout.putConstraint(SpringLayout.NORTH, metroTransport, 5, SpringLayout.SOUTH, busTransport);
+        layout.putConstraint(SpringLayout.NORTH, carTransport, 10, SpringLayout.SOUTH, footTransport);
+        layout.putConstraint(SpringLayout.NORTH, busTransport, 10, SpringLayout.SOUTH, carTransport);
+        layout.putConstraint(SpringLayout.NORTH, metroTransport, 10, SpringLayout.SOUTH, busTransport);
         layout.putConstraint(SpringLayout.EAST, footTransport, 60, SpringLayout.WEST, costItinerary);
         layout.putConstraint(SpringLayout.EAST, carTransport, 60, SpringLayout.WEST, costItinerary);
         layout.putConstraint(SpringLayout.EAST, busTransport, 60, SpringLayout.WEST, costItinerary);
@@ -296,9 +296,9 @@ public class MainGUI extends JFrame {
         layout.putConstraint(SpringLayout.EAST, planeTransport, 100, SpringLayout.WEST, footTransport);
         layout.putConstraint(SpringLayout.EAST, boatTransport, 100, SpringLayout.WEST, footTransport);
         layout.putConstraint(SpringLayout.NORTH, trainTransport, 10, SpringLayout.SOUTH, transportsOptionsLabel);
-        layout.putConstraint(SpringLayout.NORTH, bikeTransport, 5, SpringLayout.SOUTH, trainTransport);
-        layout.putConstraint(SpringLayout.NORTH, planeTransport, 5, SpringLayout.SOUTH, bikeTransport);
-        layout.putConstraint(SpringLayout.NORTH, boatTransport, 5, SpringLayout.SOUTH, planeTransport);
+        layout.putConstraint(SpringLayout.NORTH, bikeTransport, 10, SpringLayout.SOUTH, trainTransport);
+        layout.putConstraint(SpringLayout.NORTH, planeTransport, 10, SpringLayout.SOUTH, bikeTransport);
+        layout.putConstraint(SpringLayout.NORTH, boatTransport, 10, SpringLayout.SOUTH, planeTransport);
         layout.putConstraint(SpringLayout.NORTH, allSelected, 10, SpringLayout.SOUTH, boatTransport);
 
         layout.putConstraint(SpringLayout.SOUTH, copyrightsWallethChevalierLabel, -50, SpringLayout.SOUTH, contentPane);

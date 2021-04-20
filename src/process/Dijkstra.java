@@ -3,6 +3,7 @@ package process;
 import log.config.LoggerConfig;
 import log.LoggerUtility;
 import model.*;
+import model.identifiers.POIIdentifier;
 import model.identifiers.TransportIdentifier;
 import model.repositories.TransportRepository;
 import model.repositories.WayTypeRepository;
@@ -308,5 +309,45 @@ public class Dijkstra {
 
         return new Itinerary(time, cost, distance, stepItineraries);
     }
+
+    public static Itinerary calculateTouristicItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
+
+        logger.info("Start itinerary calculation");
+        Date startTime = new Date();
+
+        ArrayList<Node> touristicNodes = map.getTouristicNodes();
+        Itinerary bestItinerary = null ;
+        boolean isTouristic = false ;
+
+        //Check if the itinerary is already touristic or not
+        for (Node node : nodes){
+            if(node.isPOI() && node.getPoi().getType() == POIIdentifier.ATTRACTION){
+                isTouristic = true ;
+            }
+        }
+
+        //If not, find the best one with an attraction
+        if(!isTouristic) {
+            for (Node touristicNode : touristicNodes) {
+                //Add the touristic node
+                nodes.add(1, touristicNode);
+
+                Itinerary itinerary = calculateItinerary(nodes, map, transportsToAvoid, weightType);
+
+                if (bestItinerary == null || itinerary.getTime() < bestItinerary.getTime()) {
+                    bestItinerary = itinerary;
+                }
+            }
+        }else{
+            bestItinerary = calculateItinerary(nodes, map, transportsToAvoid, weightType);
+        }
+
+        Date finishTime = new Date();
+        logger.info("Best itinerary found in " + (finishTime.getTime() - startTime.getTime()) + " milliseconds");
+
+        return bestItinerary;
+    }
+
+
 
 }
