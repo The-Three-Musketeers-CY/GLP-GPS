@@ -800,34 +800,36 @@ public class MainGUI extends JFrame {
                         namePoi.setText(poi.getName());
                         if(i<stepItinerary.getStepItineraryNodes().length-1 && transport != stepItinerary.getTransportsUsed()[i+1]){
                             Transport nextTransport = stepItinerary.getTransportsUsed()[i+1];
-                            String iconPath;
-                            switch (nextTransport.getIdentifier()){
-                                case BUS :
-                                    iconPath = "src/img/round_directions_bus_black_24dp.png";
-                                    break;
-                                case CAR:
-                                    iconPath = "src/img/round_directions_car_black_24dp.png";
-                                    break;
-                                case BICYCLE:
-                                    iconPath = "src/img/round_directions_bike_black_24dp.png";
-                                    break;
-                                case FOOT:
-                                    iconPath = "src/img/round_directions_walk_black_24dp.png";
-                                    break;
-                                case BOAT:
-                                    iconPath = "src/img/round_directions_boat_black_24dp.png";
-                                    break;
-                                case METRO:
-                                    iconPath = "src/img/round_subway_black_24dp.png";
-                                    break;
-                                case TRAIN:
-                                    iconPath = "src/img/round_train_black_24dp.png";
-                                    break;
-                                case PLANE:
-                                    iconPath = "src/img/round_flight_black_24dp.png";
-                                    break;
-                                default:
-                                    iconPath = null;
+                            String iconPath = null;
+                            if (nextTransport != null) {
+                                switch (nextTransport.getIdentifier()){
+                                    case BUS :
+                                        iconPath = "src/img/round_directions_bus_black_24dp.png";
+                                        break;
+                                    case CAR:
+                                        iconPath = "src/img/round_directions_car_black_24dp.png";
+                                        break;
+                                    case BICYCLE:
+                                        iconPath = "src/img/round_directions_bike_black_24dp.png";
+                                        break;
+                                    case FOOT:
+                                        iconPath = "src/img/round_directions_walk_black_24dp.png";
+                                        break;
+                                    case BOAT:
+                                        iconPath = "src/img/round_directions_boat_black_24dp.png";
+                                        break;
+                                    case METRO:
+                                        iconPath = "src/img/round_subway_black_24dp.png";
+                                        break;
+                                    case TRAIN:
+                                        iconPath = "src/img/round_train_black_24dp.png";
+                                        break;
+                                    case PLANE:
+                                        iconPath = "src/img/round_flight_black_24dp.png";
+                                        break;
+                                    default:
+                                        iconPath = null;
+                                }
                             }
                             namePoi.setIcon(new ImageIcon(iconPath));
                             itineraryLayout.putConstraint(SpringLayout.WEST, namePoi, 25, SpringLayout.WEST, itineraryStart);

@@ -5,6 +5,7 @@ import log.LoggerUtility;
 import model.*;
 import model.identifiers.POIIdentifier;
 import model.identifiers.TransportIdentifier;
+import model.identifiers.WayIdentifier;
 import model.repositories.TransportRepository;
 import model.repositories.WayTypeRepository;
 import org.apache.log4j.Logger;
@@ -108,15 +109,15 @@ public class Dijkstra {
                                     distance = weight ;
                                     break;
                                 case BY_COST:
-                                    weight = way.getBestPrice(internTransportsToAvoid);
                                     transport = way.getCheaperTransport(internTransportsToAvoid);
                                     if (transport != null) {
                                         time = calculateTime(way.getDistance() * SCALE, WayTypeRepository.getInstance().getWayTypes().get(way.getIdentifier()).getSpeeds().get(transport.getIdentifier()));
                                     } else {
-                                        time = -1;
+                                        continue;
                                     }
-                                    cost = weight;
+                                    cost = way.getBestPrice(internTransportsToAvoid);
                                     distance = way.getDistance() * SCALE ;
+                                    weight = cost + time;
                                     break;
                                 default:
                                     throw new IllegalArgumentException("Invalid itinerary criteria. Available criteria are BY_TIME, BY_DISTANCE and BY_COST.");
@@ -172,7 +173,6 @@ public class Dijkstra {
             //Update the duration of the itinerary and the distance
             time += accessibleNodes.get(currentNode.getId()).getTime();
             distance += accessibleNodes.get(currentNode.getId()).getDistance();
-
             currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
         }
 
@@ -187,17 +187,42 @@ public class Dijkstra {
 
         //Transport constraints
 
-        //After car, only public transport
-        if(transports.contains(transportRepository.get(TransportIdentifier.CAR))) {
-            internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+        //After car, only public transport or foot
+        if (transports.contains(transportRepository.get(TransportIdentifier.CAR))) {
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
         }
+        //After bicycle, only public transport, foot, or bicycle
         if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
-            internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
         }
         //After foot, only public transport or foot
-        if (transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS)) || transports.contains(transportRepository.get(TransportIdentifier.TRAIN)) || transports.contains(transportRepository.get(TransportIdentifier.BOAT)) || transports.contains(transportRepository.get(TransportIdentifier.PLANE))){
-            internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
-            internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+        if(transports.contains(transportRepository.get(TransportIdentifier.FOOT))) {
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+        }
+        //After public transports, only public transport or foot
+        if (transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))) {
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+            cost += transportRepository.get(TransportIdentifier.METRO).getCost() ;
+        }
+
+        if (transports.contains(transportRepository.get(TransportIdentifier.PLANE))) {
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+            cost += transportRepository.get(TransportIdentifier.PLANE).getCost() ;
+        }
+
+        if (transports.contains(transportRepository.get(TransportIdentifier.BOAT))) {
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+            cost += transportRepository.get(TransportIdentifier.BOAT).getCost() ;
+        }
+
+        if (transports.contains(transportRepository.get(TransportIdentifier.TRAIN))) {
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
+            transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
+            cost += transportRepository.get(TransportIdentifier.TRAIN).getCost() ;
         }
 
         ArrayList<Transport> transportList = new ArrayList<>();
@@ -249,10 +274,10 @@ public class Dijkstra {
 
         while (currentNode.getPreviousNode() != null){
             //add the transport to the list
-            if(!transportsUsed.contains(currentNode.getTransport())){
+            if (!transportsUsed.contains(currentNode.getTransport())) {
                 transportsUsed.add(currentNode.getTransport());
             }
-            currentNode =  accessibleNodes.get(currentNode.getPreviousNode().getId());
+            currentNode = accessibleNodes.get(currentNode.getPreviousNode().getId());
         }
 
         return transportsUsed ;

@@ -87,7 +87,7 @@ public class Way {
         HashMap<TransportIdentifier, Integer> speeds = getType().getSpeeds();
 
         int maxSpeed = 0 ;
-        TransportIdentifier identifierHigherSpeed = null ;
+        TransportIdentifier identifierHigherSpeed = null;
 
         for(TransportIdentifier identifier : speeds.keySet()){
             if(identifier != TransportIdentifier.BUS || lineNumber != null) {
@@ -106,7 +106,7 @@ public class Way {
         TransportIdentifier[] transportIdentifiers = getType().getAvailableTransports();
 
         float minCost = -1 ;
-        TransportIdentifier identifierCheaper = null ;
+        TransportIdentifier identifierCheaper = null;
 
         for(TransportIdentifier identifier : transportIdentifiers){
             if(identifier != TransportIdentifier.BUS || lineNumber != null) {
