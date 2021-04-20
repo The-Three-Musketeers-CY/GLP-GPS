@@ -13,13 +13,20 @@ public class Way {
     private WayIdentifier identifier;
     private Node nodeA;
     private Node nodeB;
+    private String lineNumber;
 
     public Way(WayIdentifier identifier, Node nodeA, Node nodeB) {
         this.identifier = identifier;
         this.nodeA = nodeA;
         this.nodeB = nodeB;
+        lineNumber = null;
     }
-
+    public Way(WayIdentifier identifier, Node nodeA, Node nodeB, String lineNumber) {
+        this.identifier = identifier;
+        this.nodeA = nodeA;
+        this.nodeB = nodeB;
+        this.lineNumber = lineNumber;
+    }
     public WayIdentifier getIdentifier() {
         return identifier;
     }
@@ -49,8 +56,10 @@ public class Way {
         int maxSpeed = 0 ;
 
         for(TransportIdentifier identifier : speeds.keySet()){
-            if(speeds.get(identifier) > maxSpeed && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
-                maxSpeed = speeds.get(identifier) ;
+            if(identifier != TransportIdentifier.BUS || lineNumber != null) {
+                if (speeds.get(identifier) > maxSpeed && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))) {
+                    maxSpeed = speeds.get(identifier);
+                }
             }
         }
 
@@ -64,8 +73,10 @@ public class Way {
         float minCost = -1 ;
 
         for(TransportIdentifier identifier : transportIdentifiers){
-            if((TransportRepository.getInstance().getTransports().get(identifier).getCost() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
-                minCost = TransportRepository.getInstance().getTransports().get(identifier).getCost();
+            if(identifier != TransportIdentifier.BUS || lineNumber != null) {
+                if ((TransportRepository.getInstance().getTransports().get(identifier).getCost() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))) {
+                    minCost = TransportRepository.getInstance().getTransports().get(identifier).getCost();
+                }
             }
         }
 
@@ -76,12 +87,14 @@ public class Way {
         HashMap<TransportIdentifier, Integer> speeds = getType().getSpeeds();
 
         int maxSpeed = 0 ;
-        TransportIdentifier identifierHigherSpeed = null ;
+        TransportIdentifier identifierHigherSpeed = null;
 
         for(TransportIdentifier identifier : speeds.keySet()){
-            if(speeds.get(identifier) > maxSpeed && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
-                maxSpeed = speeds.get(identifier) ;
-                identifierHigherSpeed = identifier ;
+            if(identifier != TransportIdentifier.BUS || lineNumber != null) {
+                if (speeds.get(identifier) > maxSpeed && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))) {
+                    maxSpeed = speeds.get(identifier);
+                    identifierHigherSpeed = identifier;
+                }
             }
         }
 
@@ -93,12 +106,14 @@ public class Way {
         TransportIdentifier[] transportIdentifiers = getType().getAvailableTransports();
 
         float minCost = -1 ;
-        TransportIdentifier identifierCheaper = null ;
+        TransportIdentifier identifierCheaper = null;
 
         for(TransportIdentifier identifier : transportIdentifiers){
-            if((TransportRepository.getInstance().getTransports().get(identifier).getCost() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))){
-                minCost = TransportRepository.getInstance().getTransports().get(identifier).getCost();
-                identifierCheaper = identifier ;
+            if(identifier != TransportIdentifier.BUS || lineNumber != null) {
+                if ((TransportRepository.getInstance().getTransports().get(identifier).getCost() < minCost || minCost == -1) && !transportsToAvoid.contains(TransportRepository.getInstance().getTransports().get(identifier))) {
+                    minCost = TransportRepository.getInstance().getTransports().get(identifier).getCost();
+                    identifierCheaper = identifier;
+                }
             }
         }
 
@@ -106,4 +121,17 @@ public class Way {
 
     }
 
+    public String getLineNumber() {
+        return lineNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Way{" +
+                "identifier=" + identifier +
+                ", nodeA=" + nodeA +
+                ", nodeB=" + nodeB +
+                ", lineNumber='" + lineNumber + '\'' +
+                '}';
+    }
 }

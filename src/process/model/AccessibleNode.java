@@ -1,4 +1,7 @@
-package model;
+package process.model;
+
+import model.Node;
+import model.Transport;
 
 public class AccessibleNode {
 

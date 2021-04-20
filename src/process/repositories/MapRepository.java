@@ -11,8 +11,9 @@ import java.util.HashMap;
  */
 public class MapRepository {
 
-    private HashMap<String, Node> nodes;
     private static MapRepository instance = new MapRepository();
+
+    private HashMap<String, Node> nodes;
     private HashMap<String, NodeWays> ways;
 
     private MapRepository(){

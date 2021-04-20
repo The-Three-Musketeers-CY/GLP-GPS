@@ -15,8 +15,8 @@ public class MapView extends JPanel{
 
     private static final long serialVersionUID = 1L;
 
-    private Map map ;
-    private Itinerary itinerary ;
+    private Map map;
+    private Itinerary itinerary;
 
     private int newDecX = 0;
     private int newDecY = 0;
@@ -26,7 +26,6 @@ public class MapView extends JPanel{
 
     private PaintStrategy paintStrategy = new PaintStrategy();
 
-    // TODO : just some tests :p
     private JLabel test = new JLabel("Décalage |");
     private JLabel testX = new JLabel();
     private JLabel testY = new JLabel();
@@ -38,7 +37,6 @@ public class MapView extends JPanel{
     public MapView(Map map){
         this.map = map;
 
-        // TODO : just some tests :p
         add(test);
         add(testX);
         add(testY);
@@ -54,13 +52,12 @@ public class MapView extends JPanel{
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g.create();
 
-        // TODO : just some tests :p
         testX.setText("X : " + (GPSConfig.MAP_SIZE_WIDTH - (GPSConfig.MAP_SIZE_WIDTH + newDecX)));
         testY.setText("Y : " + (GPSConfig.MAP_SIZE_HEIGHT - (GPSConfig.MAP_SIZE_HEIGHT + newDecY)));
 
-        for (Network network : map.getNetworks().values()){
-           for(NodeWays nodeWays : network.getNodeWays().values()){
-               for(Way way : nodeWays.getWays().values()){
+        for (Network network : map.getNetworks().values()) {
+           for (NodeWays nodeWays : network.getNodeWays().values()) {
+               for (Way way : nodeWays.getWays().values()) {
                    if (way.getIdentifier() != WayIdentifier.FOOT && way.getIdentifier() != WayIdentifier.PLANE_LANE && way.getIdentifier() != WayIdentifier.RAILWAY) paintStrategy.paint(way, newDecX, newDecY, g2d);
                }
            }
@@ -135,7 +132,7 @@ public class MapView extends JPanel{
 
     /**
      * This method sets the new X-dec of the map view
-     * @param newDecX
+     * @param newDecX Offset of the new X-coordinate
      */
     public void setNewDecX(int newDecX) {
         this.newDecX = newDecX;
@@ -143,7 +140,7 @@ public class MapView extends JPanel{
 
     /**
      * This method sets the new Y-dec of the map view
-     * @param newDecY
+     * @param newDecY Offset of the new Y-coordinate
      */
     public void setNewDecY(int newDecY) {
         this.newDecY = newDecY;
@@ -151,9 +148,10 @@ public class MapView extends JPanel{
 
     /**
      * This method sets the itinerary
-     * @param itinerary
+     * @param itinerary Itinerary displayed on map
      */
     public void setItinerary(Itinerary itinerary) {
         this.itinerary = itinerary;
     }
+
 }

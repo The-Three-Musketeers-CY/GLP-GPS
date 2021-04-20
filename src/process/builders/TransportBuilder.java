@@ -1,6 +1,7 @@
 package process.builders;
 
 import log.LoggerUtility;
+import log.config.LoggerConfig;
 import model.Transport;
 import model.repositories.TransportRepository;
 import org.apache.log4j.Logger;
@@ -17,22 +18,24 @@ public class TransportBuilder {
 
     private TransportRepository transportRepository = TransportRepository.getInstance();
 
-    private Logger logger = LoggerUtility.getLogger(TransportBuilder.class, "html");
+    private Logger logger = LoggerUtility.getLogger(TransportBuilder.class, LoggerConfig.LOG_FILE_TYPE);
 
     /**
      * This method built all transports types
      * @see model.identifiers.TransportIdentifier
      */
-    public void buildTransports() {
+    public void buildTransports() throws IllegalArgumentException{
         logger.info("Start transports construction");
+
         for (model.identifiers.TransportIdentifier identifier : model.identifiers.TransportIdentifier.values()) {
             Transport transportIdentifier = buildTransport(identifier);
             transportRepository.addTransport(transportIdentifier);
         }
+
         logger.info(transportRepository.getTransports().size() + " transports built successfully");
     }
 
-    private Transport buildTransport(model.identifiers.TransportIdentifier identifier) {
+    private Transport buildTransport(model.identifiers.TransportIdentifier identifier) throws IllegalArgumentException {
         Transport transport;
         switch (identifier) {
             case CAR:
@@ -56,8 +59,7 @@ public class TransportBuilder {
                 transport = new Transport(identifier, DEFAULT_PLANE_COST, true);
                 break;
             default:
-                // TODO lever une exception
-                return null;
+                throw new IllegalArgumentException("Invalid transport type. Check available transports");
         }
 
         logger.info(identifier + " creation");

@@ -1,6 +1,7 @@
 package model;
 
 import model.identifiers.NetworkIdentifier;
+import model.identifiers.POIIdentifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,19 @@ public class Map {
 
     public HashMap<String, Node> getNodes() {
          return nodes;
+    }
+
+    public ArrayList<Node> getTouristicNodes() {
+
+        ArrayList<Node> touristicNodes = new ArrayList<>();
+
+        for (Node node : getNodes().values()){
+            if(node.isPOI() && node.getPoi().getType() == POIIdentifier.ATTRACTION){
+                touristicNodes.add(node);
+            }
+        }
+
+        return touristicNodes;
     }
 
     public Node getNodeFromId(String id){

@@ -1,11 +1,15 @@
 package process;
 
+import log.config.LoggerConfig;
 import log.LoggerUtility;
 import model.*;
+import model.identifiers.POIIdentifier;
 import model.identifiers.TransportIdentifier;
+import model.identifiers.WayIdentifier;
 import model.repositories.TransportRepository;
 import model.repositories.WayTypeRepository;
 import org.apache.log4j.Logger;
+import process.model.AccessibleNode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +26,7 @@ public class Dijkstra {
     public static final int BY_COST = 2;
     private static final int SCALE = 2;
 
-    private static Logger logger = LoggerUtility.getLogger(Dijkstra.class, "html");
+    private static Logger logger = LoggerUtility.getLogger(Dijkstra.class, LoggerConfig.LOG_FILE_TYPE);
 
     /**
      * This method calculate the best itinerary in terms of time between two specific points
@@ -31,16 +35,16 @@ public class Dijkstra {
      * @param map the main map
      * @return the best itinerary between the two points
      */
-    private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map, ArrayList<Transport> transportsToAvoid, int weightType){
+    private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
 
         //The node currently covered
-        Node currentNode = startingNode ;
+        Node currentNode = startingNode;
         //All nodes previously covered
-        ArrayList<String> coveredNodes ;
+        ArrayList<String> coveredNodes;
         //All nodes who are accessible for the itinerary
-        HashMap<String,AccessibleNode> accessibleNodes ;
+        HashMap<String, AccessibleNode> accessibleNodes;
         //All the transports
-        HashMap<TransportIdentifier,Transport> transportRepository = TransportRepository.getInstance().getTransports() ;
+        HashMap<TransportIdentifier,Transport> transportRepository = TransportRepository.getInstance().getTransports();
         //Intern transport's constraints
         ArrayList<Transport> internTransportsToAvoid = new ArrayList<>(transportsToAvoid);
 
@@ -51,9 +55,9 @@ public class Dijkstra {
         coveredNodes.add(startingNode.getId());
         accessibleNodes.put(startingNode.getId(),new AccessibleNode(startingNode,null, null,0, 0, 0, 0));
 
-        while (!coveredNodes.contains(arrivalNode.getId())){
+        while (!coveredNodes.contains(arrivalNode.getId())) {
             //FIRST STEP : find all the adjacent nodes to the current node and update their weight
-            for (Network network : map.getNetworks().values()){
+            for (Network network : map.getNetworks().values()) {
                 if(network.getWaysFromNode(currentNode) != null) {
                     for (Way way : network.getWaysFromNode(currentNode).getWays().values()) {
                         String idNode = way.getNodeB().getId();
@@ -67,14 +71,14 @@ public class Dijkstra {
                             //Transport constraints
 
                             //After car, only public transport
-                            if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
+                            if(transports.contains(transportRepository.get(TransportIdentifier.CAR))) {
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                             }
                             if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
                             //After foot, only public transport or foot
-                            if(transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS)) || transports.contains(transportRepository.get(TransportIdentifier.TRAIN)) || transports.contains(transportRepository.get(TransportIdentifier.BOAT)) || transports.contains(transportRepository.get(TransportIdentifier.PLANE))){
+                            if (transports.contains(transportRepository.get(TransportIdentifier.FOOT)) || transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS)) || transports.contains(transportRepository.get(TransportIdentifier.TRAIN)) || transports.contains(transportRepository.get(TransportIdentifier.BOAT)) || transports.contains(transportRepository.get(TransportIdentifier.PLANE))){
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
@@ -105,19 +109,18 @@ public class Dijkstra {
                                     distance = weight ;
                                     break;
                                 case BY_COST:
-                                    weight = way.getBestPrice(internTransportsToAvoid);
                                     transport = way.getCheaperTransport(internTransportsToAvoid);
                                     if (transport != null) {
                                         time = calculateTime(way.getDistance() * SCALE, WayTypeRepository.getInstance().getWayTypes().get(way.getIdentifier()).getSpeeds().get(transport.getIdentifier()));
                                     } else {
-                                        time = -1;
+                                        continue;
                                     }
-                                    cost = weight;
+                                    cost = way.getBestPrice(internTransportsToAvoid);
                                     distance = way.getDistance() * SCALE ;
+                                    weight = cost + time;
                                     break;
                                 default:
-                                    // TODO : Faire l'exception
-                                    throw new IllegalArgumentException();
+                                    throw new IllegalArgumentException("Invalid itinerary criteria. Available criteria are BY_TIME, BY_DISTANCE and BY_COST.");
                             }
 
                             //Update weight of the node, the node is now accessible
@@ -147,7 +150,6 @@ public class Dijkstra {
                 }
             }
 
-
             //Add the new current node to the covered nodes
             coveredNodes.add(currentNode.getId());
         }
@@ -171,7 +173,6 @@ public class Dijkstra {
             //Update the duration of the itinerary and the distance
             time += accessibleNodes.get(currentNode.getId()).getTime();
             distance += accessibleNodes.get(currentNode.getId()).getDistance();
-
             currentNode = accessibleNodes.get(currentNode.getId()).getPreviousNode();
         }
 
@@ -187,7 +188,7 @@ public class Dijkstra {
         //Transport constraints
 
         //After car, only public transport or foot
-        if(transports.contains(transportRepository.get(TransportIdentifier.CAR))){
+        if (transports.contains(transportRepository.get(TransportIdentifier.CAR))) {
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
         }
         //After bicycle, only public transport, foot, or bicycle
@@ -195,30 +196,30 @@ public class Dijkstra {
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
         }
         //After foot, only public transport or foot
-        if(transports.contains(transportRepository.get(TransportIdentifier.FOOT))){
+        if(transports.contains(transportRepository.get(TransportIdentifier.FOOT))) {
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
         }
         //After public transports, only public transport or foot
-        if( transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))){
+        if (transports.contains(transportRepository.get(TransportIdentifier.METRO)) || transports.contains(transportRepository.get(TransportIdentifier.BUS))) {
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
             cost += transportRepository.get(TransportIdentifier.METRO).getCost() ;
         }
 
-        if(transports.contains(transportRepository.get(TransportIdentifier.PLANE))){
+        if (transports.contains(transportRepository.get(TransportIdentifier.PLANE))) {
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
             cost += transportRepository.get(TransportIdentifier.PLANE).getCost() ;
         }
 
-        if(transports.contains(transportRepository.get(TransportIdentifier.BOAT))){
+        if (transports.contains(transportRepository.get(TransportIdentifier.BOAT))) {
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
             cost += transportRepository.get(TransportIdentifier.BOAT).getCost() ;
         }
 
-        if(transports.contains(transportRepository.get(TransportIdentifier.TRAIN))){
+        if (transports.contains(transportRepository.get(TransportIdentifier.TRAIN))) {
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
             transportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
             cost += transportRepository.get(TransportIdentifier.TRAIN).getCost() ;
@@ -227,7 +228,6 @@ public class Dijkstra {
         ArrayList<Transport> transportList = new ArrayList<>();
         while (transportStack.size() != 0) {
             Transport transport = transportStack.peek();
-            System.out.println(transport);
             transportList.add(transport);
             transportStack.pop();
         }
@@ -274,10 +274,10 @@ public class Dijkstra {
 
         while (currentNode.getPreviousNode() != null){
             //add the transport to the list
-            if(!transportsUsed.contains(currentNode.getTransport())){
+            if (!transportsUsed.contains(currentNode.getTransport())) {
                 transportsUsed.add(currentNode.getTransport());
             }
-            currentNode =  accessibleNodes.get(currentNode.getPreviousNode().getId());
+            currentNode = accessibleNodes.get(currentNode.getPreviousNode().getId());
         }
 
         return transportsUsed ;
@@ -305,7 +305,7 @@ public class Dijkstra {
      * @param transportsToAvoid The transports to avoid in the itinerary
      * @return the best itinerary between all points
      */
-    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType){
+    public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
 
         logger.info("Start itinerary calculation");
         Date startTime = new Date();
@@ -334,5 +334,45 @@ public class Dijkstra {
 
         return new Itinerary(time, cost, distance, stepItineraries);
     }
+
+    public static Itinerary calculateTouristicItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
+
+        logger.info("Start itinerary calculation");
+        Date startTime = new Date();
+
+        ArrayList<Node> touristicNodes = map.getTouristicNodes();
+        Itinerary bestItinerary = null ;
+        boolean isTouristic = false ;
+
+        //Check if the itinerary is already touristic or not
+        for (Node node : nodes){
+            if(node.isPOI() && node.getPoi().getType() == POIIdentifier.ATTRACTION){
+                isTouristic = true ;
+            }
+        }
+
+        //If not, find the best one with an attraction
+        if(!isTouristic) {
+            for (Node touristicNode : touristicNodes) {
+                //Add the touristic node
+                nodes.add(1, touristicNode);
+
+                Itinerary itinerary = calculateItinerary(nodes, map, transportsToAvoid, weightType);
+
+                if (bestItinerary == null || itinerary.getTime() < bestItinerary.getTime()) {
+                    bestItinerary = itinerary;
+                }
+            }
+        }else{
+            bestItinerary = calculateItinerary(nodes, map, transportsToAvoid, weightType);
+        }
+
+        Date finishTime = new Date();
+        logger.info("Best itinerary found in " + (finishTime.getTime() - startTime.getTime()) + " milliseconds");
+
+        return bestItinerary;
+    }
+
+
 
 }

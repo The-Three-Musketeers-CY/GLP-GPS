@@ -42,7 +42,7 @@ public class Itinerary {
                 res += node.toString() + "\n";
             }
             for(Transport transport : stepItinerary.getTransportsUsed()){
-                if(transport != null) res+= transport.toString() + "\n";
+                if(transport != null) res += transport.toString() + "\n";
             }
         }
         res += "}";
