@@ -1,4 +1,5 @@
 package config;
+
 /**
  * This class contains the configuration of the GPS window
  */

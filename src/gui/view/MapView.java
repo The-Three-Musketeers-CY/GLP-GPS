@@ -40,7 +40,6 @@ public class MapView extends JPanel{
         add(test);
         add(testX);
         add(testY);
-
     }
 
     /**
@@ -58,7 +57,7 @@ public class MapView extends JPanel{
         for (Network network : map.getNetworks().values()) {
            for (NodeWays nodeWays : network.getNodeWays().values()) {
                for (Way way : nodeWays.getWays().values()) {
-                   if (way.getIdentifier() != WayIdentifier.FOOT && way.getIdentifier() != WayIdentifier.PLANE_LANE && way.getIdentifier() != WayIdentifier.RAILWAY) paintStrategy.paint(way, newDecX, newDecY, g2d);
+                   paintStrategy.paint(way, newDecX, newDecY, g2d);
                }
            }
         }
@@ -79,7 +78,6 @@ public class MapView extends JPanel{
         for (Node node : map.getNodes().values()) {
             if (node.isPOI()) paintStrategy.paint(node, newDecX, newDecY, g);
         }
-
     }
 
     /**

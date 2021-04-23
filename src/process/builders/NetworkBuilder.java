@@ -28,7 +28,7 @@ public class NetworkBuilder {
     }
 
     private Network buildNetwork(NetworkIdentifier type) throws IllegalArgumentException{
-        WayIdentifier[] acceptedWays ;
+        WayIdentifier[] acceptedWays;
         switch (type) {
             case FOOT:
                 logger.info("Foot network creation");

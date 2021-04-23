@@ -9,14 +9,14 @@ import java.util.HashMap;
 /**
  * This repository class contains all nodes & ways from the XML map before building map
  */
-public class MapRepository {
+public class MapBuildRepository {
 
-    private static MapRepository instance = new MapRepository();
+    private static MapBuildRepository instance = new MapBuildRepository();
 
     private HashMap<String, Node> nodes;
     private HashMap<String, NodeWays> ways;
 
-    private MapRepository(){
+    private MapBuildRepository(){
         nodes = new HashMap<>();
         ways = new HashMap<>();
     }
@@ -25,7 +25,7 @@ public class MapRepository {
      * This method returns the only instance of this class
      * @return instance of this class
      */
-    public static MapRepository getInstance() {
+    public static MapBuildRepository getInstance() {
         return instance;
     }
 
