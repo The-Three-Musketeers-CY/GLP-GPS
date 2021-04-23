@@ -8,6 +8,9 @@ import model.identifiers.WayIdentifier;
 import model.repositories.WayTypeRepository;
 import org.apache.log4j.Logger;
 
+/**
+ * This class builds all way types
+ */
 public class WayTypeBuilder {
 
     // Way's speed
@@ -42,7 +45,7 @@ public class WayTypeBuilder {
 
         for (WayIdentifier identifier : WayIdentifier.values()) {
             WayType wayType = buildWayType(identifier);
-            wayTypeRepository.getWayTypes().put(identifier, wayType);
+            wayTypeRepository.addWayType(wayType);
         }
 
         logger.info(wayTypeRepository.getWayTypes().size() + " way types built successfully");

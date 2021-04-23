@@ -81,6 +81,11 @@ public class MainGUI extends JFrame {
     private ItineraryView itineraryView;
     private JPanel mapPanel = new JPanel();
 
+    /**
+     *
+     * @param title Title of the frame
+     * @param mapPath Path of the XML map
+     */
     public MainGUI(String title, String mapPath) {
         super(title);
 

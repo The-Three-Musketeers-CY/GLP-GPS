@@ -37,6 +37,7 @@ public class MapView extends JPanel{
     public MapView(Map map){
         this.map = map;
 
+        // Display dec on map
         add(test);
         add(testX);
         add(testY);

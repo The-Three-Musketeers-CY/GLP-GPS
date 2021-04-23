@@ -8,7 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 import process.builders.WayTypeBuilder;
 
-public class TestWayTypeBuild {
+/**
+ * Unit test of way types building
+ */
+public class TestWayTypesBuild {
 
     private WayTypeRepository wayTypeRepository = WayTypeRepository.getInstance();
 

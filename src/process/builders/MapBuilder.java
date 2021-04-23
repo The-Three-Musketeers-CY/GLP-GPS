@@ -21,7 +21,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * This class builds the map
+ */
 public class MapBuilder {
 
     private MapBuildRepository mapBuildRepository = MapBuildRepository.getInstance();
@@ -132,7 +134,7 @@ public class MapBuilder {
                 for (Way way : ways.getWays().values()) {
                     String adjNodeID = way.getNodeB().getId();
                     for (Network network : map.getNetworks().values()) {
-                        if (network.isAcceptedWay(way.getIdentifier())) {
+                        if (network.isAcceptedWayType(way.getIdentifier())) {
                             network.addWay(way.getIdentifier(), node, map.getNodes().get(adjNodeID), way.getLineNumber());
                             waysCounter++;
                         }

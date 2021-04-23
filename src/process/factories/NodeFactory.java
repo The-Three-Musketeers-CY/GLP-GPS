@@ -6,7 +6,7 @@ import model.identifiers.POIIdentifier;
 import model.Point;
 
 /**
- * This factory class contains nodes constructing method
+ * This factory class contains nodes constructing methods
  */
 public class NodeFactory {
 

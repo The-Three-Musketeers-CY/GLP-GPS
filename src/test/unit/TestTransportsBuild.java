@@ -8,7 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 import process.builders.TransportBuilder;
 
-public class TestTransportBuild {
+/**
+ * Unit test of transports building
+ */
+public class TestTransportsBuild {
 
     private TransportRepository transportRepository = TransportRepository.getInstance();
 

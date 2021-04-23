@@ -17,6 +17,11 @@ import process.builders.MapBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
+/**
+ * Unit test of map building
+ *
+ * The test is based on the test map : /src/test/map/map.xml
+ */
 public class TestMapBuild {
 
     private Map map;

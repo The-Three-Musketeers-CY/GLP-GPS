@@ -8,6 +8,9 @@ import model.repositories.WayTypeRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class represents a way
+ */
 public class Way {
 
     private WayIdentifier identifier;
@@ -15,40 +18,80 @@ public class Way {
     private Node nodeB;
     private String lineNumber;
 
+    /**
+     * Constructs the way
+     * @param identifier Type of the way
+     * @param nodeA Departure node of the way
+     * @param nodeB Arrival node of the way
+     */
     public Way(WayIdentifier identifier, Node nodeA, Node nodeB) {
         this.identifier = identifier;
         this.nodeA = nodeA;
         this.nodeB = nodeB;
         lineNumber = null;
     }
+
+    /**
+     * Constructs the way with line
+     * @param identifier Type of the way
+     * @param nodeA Departure node of the way
+     * @param nodeB Arrival node of the way
+     * @param lineNumber Bus line number who is on the way
+     */
     public Way(WayIdentifier identifier, Node nodeA, Node nodeB, String lineNumber) {
         this.identifier = identifier;
         this.nodeA = nodeA;
         this.nodeB = nodeB;
         this.lineNumber = lineNumber;
     }
+
+    /**
+     * This method returns the identifier type of this way
+     * @return Identifier type of this way
+     */
     public WayIdentifier getIdentifier() {
         return identifier;
     }
 
+    /**
+     * This method returns the type of this way
+     * @return Type of this way
+     */
     public WayType getType() {
         return WayTypeRepository.getInstance().getWayTypes().get(identifier);
     }
 
+    /**
+     * This method returns the departure node of this way
+     * @return Departure node of this way
+     */
     public Node getNodeA() {
         return nodeA;
     }
 
+    /**
+     * This method returns the arrival node of this way
+     * @return Arrival node of this way
+     */
     public Node getNodeB() {
         return nodeB;
     }
 
+    /**
+     * This method returns distance between the two nodes
+     * @return Distance between the two nodes
+     */
     public float getDistance() {
         Point node1Position = nodeA.getPosition();
         Point node2Position = nodeB.getPosition();
         return (float) Math.abs(Math.sqrt(Math.pow(node2Position.getX() - node1Position.getX(), 2) + Math.pow(node2Position.getY() - node1Position.getY(), 2)));
     }
 
+    /**
+     * This method returns the highest speed on this way
+     * @param transportsToAvoid Exclude transport list
+     * @return Highest speed on this way
+     */
     public int getHigherSpeed(ArrayList<Transport> transportsToAvoid) {
 
         HashMap<TransportIdentifier, Integer> speeds = getType().getSpeeds();
@@ -66,6 +109,11 @@ public class Way {
         return maxSpeed ;
     }
 
+    /**
+     * This method returns the transport with the best price on this way
+     * @param transportsToAvoid Excludes transport list
+     * @return Transport with the best price on this way
+     */
     public float getBestPrice(ArrayList<Transport> transportsToAvoid){
 
         TransportIdentifier[] transportIdentifiers = getType().getAvailableTransports();
@@ -83,7 +131,12 @@ public class Way {
         return minCost;
     }
 
-    public Transport getHigherTransport(ArrayList<Transport> transportsToAvoid){
+    /**
+     * This method returns the transport with the highest speed on this way
+     * @param transportsToAvoid Excludes transport list
+     * @return Transport with the highest speed on this way
+     */
+    public Transport getHigherSpeedTransport(ArrayList<Transport> transportsToAvoid){
         HashMap<TransportIdentifier, Integer> speeds = getType().getSpeeds();
 
         int maxSpeed = 0 ;
@@ -101,6 +154,11 @@ public class Way {
         return TransportRepository.getInstance().getTransports().get(identifierHigherSpeed);
     }
 
+    /**
+     * This method returns the transport with the cheaper price on this way
+     * @param transportsToAvoid Excludes transport list
+     * @return Transport with the cheaper price on this way
+     */
     public Transport getCheaperTransport(ArrayList<Transport> transportsToAvoid){
 
         TransportIdentifier[] transportIdentifiers = getType().getAvailableTransports();
@@ -121,6 +179,10 @@ public class Way {
 
     }
 
+    /**
+     * This method returns the bus line number associated to this way
+     * @return Bus line number associated to this way
+     */
     public String getLineNumber() {
         return lineNumber;
     }
@@ -134,4 +196,5 @@ public class Way {
                 ", lineNumber='" + lineNumber + '\'' +
                 '}';
     }
+
 }

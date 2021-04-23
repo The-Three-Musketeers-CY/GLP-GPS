@@ -8,7 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 import process.builders.NetworkBuilder;
 
-public class TestNetworkBuild {
+/**
+ * Unit test of networks building
+ */
+public class TestNetworksBuild {
 
     private Map map;
 
