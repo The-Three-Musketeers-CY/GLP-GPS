@@ -360,17 +360,26 @@ public class Dijkstra {
             }
         }
 
+        ArrayList<Node> tempNodes = new ArrayList<>() ;
+
+
         //If not, find the best one with an attraction
         if(!isTouristic) {
             for (Node touristicNode : touristicNodes) {
-                //Add the touristic node
-                nodes.add(1, touristicNode);
 
-                Itinerary itinerary = calculateItinerary(nodes, map, transportsToAvoid, weightType);
+                tempNodes.addAll(nodes);
+
+                //Add the touristic node
+                tempNodes.add(1, touristicNode);
+
+                Itinerary itinerary = calculateItinerary(tempNodes, map, transportsToAvoid, weightType);
 
                 if (bestItinerary == null || itinerary.getTime() < bestItinerary.getTime()) {
                     bestItinerary = itinerary;
                 }
+
+                tempNodes.clear();
+
             }
         }else{
             bestItinerary = calculateItinerary(nodes, map, transportsToAvoid, weightType);
