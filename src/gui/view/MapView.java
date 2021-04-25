@@ -11,7 +11,7 @@ import java.awt.*;
 /**
  * This class represents the map view panel of the GPS
  */
-public class MapView extends JPanel{
+public class MapView extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,9 +26,9 @@ public class MapView extends JPanel{
 
     private PaintStrategy paintStrategy = new PaintStrategy();
 
-    private JLabel test = new JLabel("Décalage |");
-    private JLabel testX = new JLabel();
-    private JLabel testY = new JLabel();
+    private JLabel decLabel = new JLabel("Décalage |");
+    private JLabel decLabelX = new JLabel();
+    private JLabel decLabelY = new JLabel();
 
     /**
      * This methods construct the map view panel of the GPS from the GPS map
@@ -38,9 +38,9 @@ public class MapView extends JPanel{
         this.map = map;
 
         // Display dec on map
-        add(test);
-        add(testX);
-        add(testY);
+        add(decLabel);
+        add(decLabelX);
+        add(decLabelY);
     }
 
     /**
@@ -52,13 +52,13 @@ public class MapView extends JPanel{
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g.create();
 
-        testX.setText("X : " + (GPSConfig.MAP_SIZE_WIDTH - (GPSConfig.MAP_SIZE_WIDTH + newDecX)));
-        testY.setText("Y : " + (GPSConfig.MAP_SIZE_HEIGHT - (GPSConfig.MAP_SIZE_HEIGHT + newDecY)));
+        decLabelX.setText("X : " + (GPSConfig.MAP_SIZE_WIDTH - (GPSConfig.MAP_SIZE_WIDTH + newDecX)));
+        decLabelY.setText("Y : " + (GPSConfig.MAP_SIZE_HEIGHT - (GPSConfig.MAP_SIZE_HEIGHT + newDecY)));
 
         for (Network network : map.getNetworks().values()) {
            for (NodeWays nodeWays : network.getNodeWays().values()) {
                for (Way way : nodeWays.getWays().values()) {
-                   paintStrategy.paint(way, newDecX, newDecY, g2d);
+                   if (way.getIdentifier() != WayIdentifier.FOOT && way.getIdentifier() != WayIdentifier.PLANE_LANE && way.getIdentifier() != WayIdentifier.RAILWAY) paintStrategy.paint(way, newDecX, newDecY, g2d);
                }
            }
         }

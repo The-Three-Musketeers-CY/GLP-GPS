@@ -45,7 +45,7 @@ public class MainGUI extends JFrame {
 
     private Logger logger = LoggerUtility.getLogger(MainGUI.class, LoggerConfig.LOG_FILE_TYPE);
 
-    private JButton resetButton = new JButton("Reset default position");
+    private JButton resetButton = new JButton("Position par défaut");
     private JButton calculateButton = new JButton("Rechercher");
     private JButton addStepButton = new JButton("Ajouter une étape");
     private JButton calculateWithAttractionButton = new JButton("Itinéraire touristique");
@@ -207,21 +207,21 @@ public class MainGUI extends JFrame {
         itineraryPanel.add(transportsOptionsLabel);
 
         itineraryPanel.add(busTransport);
-        JLabel busTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_bus_black_24dp.png"));
+        JLabel busTransportLabel = new JLabel(new ImageIcon("src/img/bus.png"));
         itineraryPanel.add(busTransportLabel);
         layout.putConstraint(SpringLayout.WEST,busTransportLabel, 0, SpringLayout.EAST, busTransport);
         layout.putConstraint(SpringLayout.NORTH,busTransportLabel, 0, SpringLayout.NORTH, busTransport);
         busTransport.setSelected(true);
 
         itineraryPanel.add(carTransport);
-        JLabel carTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_car_black_24dp.png"));
+        JLabel carTransportLabel = new JLabel(new ImageIcon("src/img/car.png"));
         itineraryPanel.add(carTransportLabel);
         layout.putConstraint(SpringLayout.WEST,carTransportLabel, 0, SpringLayout.EAST, carTransport);
         layout.putConstraint(SpringLayout.NORTH,carTransportLabel, 0, SpringLayout.NORTH, carTransport);
         carTransport.setSelected(true);
 
         itineraryPanel.add(footTransport);
-        JLabel footTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_walk_black_24dp.png"));
+        JLabel footTransportLabel = new JLabel(new ImageIcon("src/img/walk.png"));
         itineraryPanel.add(footTransportLabel);
         layout.putConstraint(SpringLayout.WEST,footTransportLabel, 0, SpringLayout.EAST, footTransport);
         layout.putConstraint(SpringLayout.NORTH,footTransportLabel, 0, SpringLayout.NORTH, footTransport);
@@ -229,35 +229,35 @@ public class MainGUI extends JFrame {
         footTransport.setEnabled(false);
 
         itineraryPanel.add(metroTransport);
-        JLabel metroTransportLabel = new JLabel(new ImageIcon("src/img/round_subway_black_24dp.png"));
+        JLabel metroTransportLabel = new JLabel(new ImageIcon("src/img/subway.png"));
         itineraryPanel.add(metroTransportLabel);
         layout.putConstraint(SpringLayout.WEST,metroTransportLabel, 0, SpringLayout.EAST, metroTransport);
         layout.putConstraint(SpringLayout.NORTH,metroTransportLabel, 0, SpringLayout.NORTH, metroTransport);
         metroTransport.setSelected(true);
 
         itineraryPanel.add(trainTransport);
-        JLabel trainTransportLabel = new JLabel(new ImageIcon("src/img/round_train_black_24dp.png"));
+        JLabel trainTransportLabel = new JLabel(new ImageIcon("src/img/train.png"));
         itineraryPanel.add(trainTransportLabel);
         layout.putConstraint(SpringLayout.WEST,trainTransportLabel, 0, SpringLayout.EAST, trainTransport);
         layout.putConstraint(SpringLayout.NORTH,trainTransportLabel, 0, SpringLayout.NORTH, trainTransport);
         trainTransport.setSelected(true);
 
         itineraryPanel.add(planeTransport);
-        JLabel planeTransportLabel = new JLabel(new ImageIcon("src/img/round_flight_black_24dp.png"));
+        JLabel planeTransportLabel = new JLabel(new ImageIcon("src/img/flight.png"));
         itineraryPanel.add(planeTransportLabel);
         layout.putConstraint(SpringLayout.WEST,planeTransportLabel, 0, SpringLayout.EAST, planeTransport);
         layout.putConstraint(SpringLayout.NORTH,planeTransportLabel, 0, SpringLayout.NORTH, planeTransport);
         planeTransport.setSelected(true);
 
         itineraryPanel.add(boatTransport);
-        JLabel boatTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_boat_black_24dp.png"));
+        JLabel boatTransportLabel = new JLabel(new ImageIcon("src/img/boat.png"));
         itineraryPanel.add(boatTransportLabel);
         layout.putConstraint(SpringLayout.WEST,boatTransportLabel, 0, SpringLayout.EAST, boatTransport);
         layout.putConstraint(SpringLayout.NORTH,boatTransportLabel, 0, SpringLayout.NORTH, boatTransport);
         boatTransport.setSelected(true);
 
         itineraryPanel.add(bikeTransport);
-        JLabel bikeTransportLabel = new JLabel(new ImageIcon("src/img/round_directions_bike_black_24dp.png"));
+        JLabel bikeTransportLabel = new JLabel(new ImageIcon("src/img/bike.png"));
         itineraryPanel.add(bikeTransportLabel);
         layout.putConstraint(SpringLayout.WEST,bikeTransportLabel, 0, SpringLayout.EAST, bikeTransport);
         layout.putConstraint(SpringLayout.NORTH,bikeTransportLabel, 0, SpringLayout.NORTH, bikeTransport);
@@ -400,18 +400,15 @@ public class MainGUI extends JFrame {
                 if (node.getPosition().getX() + mapView.getNewDecX() <= x+6 && node.getPosition().getX() + mapView.getNewDecX() >= x-6
                         && node.getPosition().getY() + mapView.getNewDecY() <= y+6 && node.getPosition().getY() + mapView.getNewDecY() >= y-6) {
                     if (node.isPOI()) {
-                        String[] buttons = { "OK", "Départ","Arrivée"};
+                        String[] buttons = { "OK", "Départ", "Arrivée" };
                         int result = JOptionPane.showOptionDialog(mapView,  node.getPoi().getName() + " | Type : " + node.getPoi().getType().toString(), "Informations sur le lieu",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, null);
-
                         if (result == 1) {
                             startNodeField.setText(node.getPoi().getName());
                         } else if(result == 2) {
                             arrivalNodeField.setText(node.getPoi().getName());
                         }
-
                     }
-                    // else JOptionPane.showMessageDialog(mapView,node.toString(), "PAS POI", JOptionPane.ERROR_MESSAGE);>
                 }
             }
         }
@@ -442,7 +439,7 @@ public class MainGUI extends JFrame {
 
         private JTextField component;
 
-        public AutoCompletionListener(JTextField component){
+        public AutoCompletionListener(JTextField component) {
             this.component = component ;
             autoCompletionPanel.setVisible(false);
             itineraryPanel.add(autoCompletionPanel);
@@ -464,7 +461,7 @@ public class MainGUI extends JFrame {
             // Do nothing...
         }
 
-        public void autoComplete(){
+        public void autoComplete() {
 
             ArrayList<String> nodeNames = map.getAllNodeNames();
             String currentText = component.getText();
@@ -662,7 +659,7 @@ public class MainGUI extends JFrame {
         }
     }
 
-    private class AddStepListener implements MouseListener{
+    private class AddStepListener implements MouseListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -804,7 +801,7 @@ public class MainGUI extends JFrame {
                 if(cpt != 0 && cpt < itinerary.getStepItineraries().size()){
                     JLabel stepLabel = new JLabel();
                     stepLabel.setText(stepItinerary.getStepItineraryNodes()[0].getPoi().getName());
-                    stepLabel.setIcon(new ImageIcon("src/img/round_place_black_24DP.png"));
+                    stepLabel.setIcon(new ImageIcon("src/img/place.png"));
                     this.add(stepLabel);
                     itineraryLayout.putConstraint(SpringLayout.NORTH, stepLabel, 15, SpringLayout.SOUTH, previousLabel);
                     previousLabel = stepLabel;
@@ -822,28 +819,28 @@ public class MainGUI extends JFrame {
                             if (nextTransport != null) {
                                 switch (nextTransport.getIdentifier()){
                                     case BUS :
-                                        iconPath = "src/img/round_directions_bus_black_24dp.png";
+                                        iconPath = "src/img/bus.png";
                                         break;
                                     case CAR:
-                                        iconPath = "src/img/round_directions_car_black_24dp.png";
+                                        iconPath = "src/img/car.png";
                                         break;
                                     case BICYCLE:
-                                        iconPath = "src/img/round_directions_bike_black_24dp.png";
+                                        iconPath = "src/img/bike.png";
                                         break;
                                     case FOOT:
-                                        iconPath = "src/img/round_directions_walk_black_24dp.png";
+                                        iconPath = "src/img/walk.png";
                                         break;
                                     case BOAT:
-                                        iconPath = "src/img/round_directions_boat_black_24dp.png";
+                                        iconPath = "src/img/boat.png";
                                         break;
                                     case METRO:
-                                        iconPath = "src/img/round_subway_black_24dp.png";
+                                        iconPath = "src/img/subway.png";
                                         break;
                                     case TRAIN:
-                                        iconPath = "src/img/round_train_black_24dp.png";
+                                        iconPath = "src/img/train.png";
                                         break;
                                     case PLANE:
-                                        iconPath = "src/img/round_flight_black_24dp.png";
+                                        iconPath = "src/img/flight.png";
                                         break;
                                     default:
                                         iconPath = null;

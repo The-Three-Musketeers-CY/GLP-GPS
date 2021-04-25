@@ -34,7 +34,7 @@ public class MapBuilder {
      * Create a MapBuilder
      * @param path the map file's path
      */
-    public MapBuilder(String path) throws IllegalArgumentException, IOException, ParserConfigurationException, SAXException{
+    public MapBuilder(String path) throws IllegalArgumentException, IOException, ParserConfigurationException, SAXException {
 
         File file = new File(path);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

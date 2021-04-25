@@ -47,8 +47,6 @@ public class PaintStrategy {
      * @param g2d 2D graphic component
      */
     public void paint(Way way, int decX, int decY, Graphics2D g2d) {
-        if (way.getIdentifier() == WayIdentifier.FOOT || way.getIdentifier() == WayIdentifier.PLANE_LANE || way.getIdentifier() == WayIdentifier.RAILWAY) return;
-
         g2d.setStroke(new BasicStroke(3));
         g2d.setColor(getWayTypeColor(way.getType()));
         int x1 = way.getNodeA().getPosition().getX() + decX;
