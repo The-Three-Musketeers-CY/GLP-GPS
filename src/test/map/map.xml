@@ -57,13 +57,13 @@
     <node id="10" x="300" y="300">
         <poi type="STATION">Saint-Gilles - Chemin Vert</poi>
         <adjacentNode id="9" type="BUS_LANE" lineNumber="1"/>
-        <adjacentNode id="11" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="11" type="URBAN_ROAD"/>
         <adjacentNode id="30" type="URBAN_ROAD" />
         <adjacentNode id="31" type="URBAN_ROAD" />
         <adjacentNode id="124" type="URBAN_ROAD" />
     </node>
     <node id="11" x="350" y="200">
-        <adjacentNode id="10" type="URBAN_ROAD" />
+        <adjacentNode id="10" type="BUS_LANE" lineNumber="1" />
         <adjacentNode id="12" type="URBAN_ROAD" />
         <adjacentNode id="13" type="URBAN_ROAD" />
     </node>
@@ -194,7 +194,7 @@
         <poi type="STATION">Place de Clichy</poi>
         <adjacentNode id="6" type="URBAN_ROAD" />
         <adjacentNode id="34" type="METRO" />
-        <adjacentNode id="35" type="URBAN_ROAD" />
+        <adjacentNode id="35" type="BUS_LANE" lineNumber="1"/>
         <adjacentNode id="44" type="METRO" />
     </node>
     <node id="34" x="170" y="120">
@@ -207,7 +207,7 @@
         <poi type="STATION">Bastille</poi>
         <adjacentNode id="1" type="URBAN_ROAD" />
         <adjacentNode id="4" type="BUS_LANE" lineNumber="1"/>
-        <adjacentNode id="33" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="33" type="URBAN_ROAD" />
     </node>
     <node id="36" x="50" y="300">
         <poi type="STATION">Bastille - Beaumarchais</poi>
@@ -220,31 +220,31 @@
     </node>
     <node id="38" x="20" y="360">
         <adjacentNode id="37" type="URBAN_ROAD" />
-        <adjacentNode id="39" type="URBAN_ROAD" />
+        <adjacentNode id="39" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="39" x="50" y="400">
         <poi type="STATION">République</poi>
-        <adjacentNode id="38" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="38" type="URBAN_ROAD"/>
         <adjacentNode id="40" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="40" x="100" y="360">
         <adjacentNode id="39" type="URBAN_ROAD" />
-        <adjacentNode id="41" type="URBAN_ROAD" />
+        <adjacentNode id="41" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="41" x="150" y="380">
         <poi type="STATION">République - Magenta</poi>
-        <adjacentNode id="40" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="40" type="URBAN_ROAD" />
         <adjacentNode id="42" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="42" x="170" y="330">
         <adjacentNode id="41" type="URBAN_ROAD" />
-        <adjacentNode id="43" type="URBAN_ROAD" />
+        <adjacentNode id="43" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="43" x="150" y="280">
         <poi type="STATION">Saint-Claude</poi>
         <adjacentNode id="7" type="URBAN_ROAD" />
         <adjacentNode id="9" type="BUS_LANE" lineNumber="1"/>
-        <adjacentNode id="42" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="42" type="URBAN_ROAD"/>
     </node>
     <node id="44" x="350" y="110">
         <poi type="STATION">Rome</poi>

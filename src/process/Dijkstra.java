@@ -5,7 +5,6 @@ import log.LoggerUtility;
 import model.*;
 import model.identifiers.POIIdentifier;
 import model.identifiers.TransportIdentifier;
-import model.identifiers.WayIdentifier;
 import model.repositories.TransportRepository;
 import model.repositories.WayTypeRepository;
 import org.apache.log4j.Logger;
@@ -34,6 +33,7 @@ public class Dijkstra {
      * @param arrivalNode the arrival node of the itinerary
      * @param map the main map
      * @return the best itinerary between the two points
+     * @throws IllegalArgumentException Throws when IllegalArgumentException is resolved
      */
     private static StepItinerary calculateStepItinerary(Node startingNode, Node arrivalNode, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
 
@@ -70,10 +70,16 @@ public class Dijkstra {
 
                             //Transport constraints
 
+                            //Cannot change transport when not on POI
+                            if (!currentNode.isPOI() && accessibleNodes.get(currentNode.getId()).getTransport() != null) {
+                                internTransportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(accessibleNodes.get(currentNode.getId()).getTransport().getIdentifier()));
+                            }
+
                             //After car, only public transport
                             if(transports.contains(transportRepository.get(TransportIdentifier.CAR))) {
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                             }
+                            //After bicycle, only public transport
                             if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
@@ -92,7 +98,7 @@ public class Dijkstra {
                             switch (weightType) {
                                 case DEFAULT_BY_TIME:
                                     weight = calculateTime(way.getDistance() * SCALE, way.getHigherSpeed(internTransportsToAvoid));
-                                    transport = way.getHigherTransport(internTransportsToAvoid);
+                                    transport = way.getHigherSpeedTransport(internTransportsToAvoid);
                                     time = weight;
                                     if (transport != null) {
                                         cost = transport.getCost();
@@ -103,7 +109,7 @@ public class Dijkstra {
                                     break;
                                 case BY_DISTANCE:
                                     weight = way.getDistance() * SCALE ;
-                                    transport = way.getHigherTransport(internTransportsToAvoid);
+                                    transport = way.getHigherSpeedTransport(internTransportsToAvoid);
                                     time = calculateTime(weight, way.getHigherSpeed(internTransportsToAvoid));
                                     cost = way.getBestPrice(internTransportsToAvoid);
                                     distance = weight ;
@@ -253,9 +259,9 @@ public class Dijkstra {
      * @param previousNode the previous node
      * @param accessibleNodes all the accessible nodes
      */
-    private static void updateWeight(float weight, float time, float cost, float distance, Node node, Node previousNode ,Transport transport, HashMap<String,AccessibleNode> accessibleNodes){
-        if(accessibleNodes.containsKey(node.getId())){
-            if(weight < accessibleNodes.get(node.getId()).getWeight()){
+    private static void updateWeight(float weight, float time, float cost, float distance, Node node, Node previousNode ,Transport transport, HashMap<String,AccessibleNode> accessibleNodes) {
+        if (accessibleNodes.containsKey(node.getId())) {
+            if (weight < accessibleNodes.get(node.getId()).getWeight()) {
                 accessibleNodes.get(node.getId()).setWeight(weight);
                 accessibleNodes.get(node.getId()).setTime(time);
                 accessibleNodes.get(node.getId()).setCost(cost);
@@ -263,12 +269,12 @@ public class Dijkstra {
                 accessibleNodes.get(node.getId()).setPreviousNode(previousNode);
                 accessibleNodes.get(node.getId()).setTransport(transport);
             }
-        }else{
+        } else {
             accessibleNodes.put(node.getId(), new AccessibleNode(node,previousNode,transport,weight, time, cost, distance));
         }
     }
 
-    private static ArrayList<Transport> transportsUsed(HashMap<String, AccessibleNode> accessibleNodes, AccessibleNode currentNode){
+    private static ArrayList<Transport> transportsUsed(HashMap<String, AccessibleNode> accessibleNodes, AccessibleNode currentNode) {
 
         ArrayList<Transport> transportsUsed = new ArrayList<>();
 
@@ -283,7 +289,7 @@ public class Dijkstra {
         return transportsUsed ;
     }
 
-    private static double carPrice(HashMap<String, AccessibleNode> accessibleNodes, AccessibleNode currentNode){
+    private static double carPrice(HashMap<String, AccessibleNode> accessibleNodes, AccessibleNode currentNode) {
 
         double price = 0 ;
 
@@ -304,6 +310,7 @@ public class Dijkstra {
      * @param map the main map
      * @param transportsToAvoid The transports to avoid in the itinerary
      * @return the best itinerary between all points
+     * @throws IllegalArgumentException Throws when IllegalArgumentException is resolved
      */
     public static Itinerary calculateItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
 
@@ -335,7 +342,15 @@ public class Dijkstra {
         return new Itinerary(time, cost, distance, stepItineraries);
     }
 
-    public static Itinerary calculateTouristicItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException{
+    /**
+     * This method calculate the best itinerary in terms of time between all points given by the user with transport constraints
+     * @param nodes Collection of all points into the itinerary path
+     * @param map the main map
+     * @param transportsToAvoid The transports to avoid in the itinerary
+     * @return the best itinerary between all points
+     * @throws IllegalArgumentException Throws when IllegalArgumentException is resolved
+     */
+    public static Itinerary calculateTouristicItinerary(ArrayList<Node> nodes, Map map, ArrayList<Transport> transportsToAvoid, int weightType) throws IllegalArgumentException {
 
         logger.info("Start itinerary calculation");
         Date startTime = new Date();
@@ -351,17 +366,29 @@ public class Dijkstra {
             }
         }
 
+        ArrayList<Node> tempNodes = new ArrayList<>() ;
+        ArrayList<Transport> temptransports =  new ArrayList<>() ;
+
         //If not, find the best one with an attraction
         if(!isTouristic) {
             for (Node touristicNode : touristicNodes) {
-                //Add the touristic node
-                nodes.add(1, touristicNode);
 
-                Itinerary itinerary = calculateItinerary(nodes, map, transportsToAvoid, weightType);
+                tempNodes.addAll(nodes);
+                temptransports.addAll(transportsToAvoid);
+
+                //Add the touristic node
+                tempNodes.add(1, touristicNode);
+
+                Itinerary itinerary = calculateItinerary(tempNodes, map, temptransports, weightType);
+
 
                 if (bestItinerary == null || itinerary.getTime() < bestItinerary.getTime()) {
                     bestItinerary = itinerary;
                 }
+
+                tempNodes.clear();
+                temptransports.clear();
+
             }
         }else{
             bestItinerary = calculateItinerary(nodes, map, transportsToAvoid, weightType);
@@ -372,7 +399,5 @@ public class Dijkstra {
 
         return bestItinerary;
     }
-
-
 
 }

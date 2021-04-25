@@ -47,26 +47,35 @@ public class PaintStrategy {
      * @param g2d 2D graphic component
      */
     public void paint(Way way, int decX, int decY, Graphics2D g2d) {
-        if (way.getType().getIdentifier() != WayIdentifier.FOOT) g2d.setStroke(new BasicStroke(3));
-        else g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        g2d.setStroke(new BasicStroke(3));
         g2d.setColor(getWayTypeColor(way.getType()));
         int x1 = way.getNodeA().getPosition().getX() + decX;
         int x2 = way.getNodeB().getPosition().getX() + decX;
         int y1 = way.getNodeA().getPosition().getY() + decY;
         int y2 = way.getNodeB().getPosition().getY() + decY;
-        if (y1 > y2) {
+        if (x1 < x2 && y1 > y2) {
+            x1 = x1 + 2;
+            x2 = x2 + 2;
+            y1 = y1 + 2;
+            y2 = y2 + 2;
+        }
+        if (x1 < x2 && y1 < y2) {
+            x1 = x1 - 1;
+            x2 = x2 - 1;
             y1 = y1 + 1;
             y2 = y2 + 1;
-        } else {
+        }
+        if (x1 > x2 && y1 > y2) {
+            x1 = x1 + 1;
+            x2 = x2 + 1;
             y1 = y1 - 1;
             y2 = y2 - 1;
         }
-        if (x1 > x2) {
+        if (x1 > x2 && y1 < y2) {
             x1 = x1 - 1;
             x2 = x2 - 1;
-        } else {
-            x1 = x1 + 1;
-            x2 = x2 + 1;
+            y1 = y1 + 1;
+            y2 = y2 + 1;
         }
         if (x1 == x2 && y1 > y2) {
             x1 = x1 + 1;
@@ -94,11 +103,9 @@ public class PaintStrategy {
      * @param g2d 2D graphic component
      */
     public void paint(Node node1, Node node2, int decX, int decY, Graphics2D g2d){
-        if(node1 != null && node2 != null) {
-            g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
-            g2d.setColor(DEFAULT_ITINERARY_COLOR);
-            g2d.drawLine(node1.getPosition().getX() + decX, node1.getPosition().getY() + decY, node2.getPosition().getX() + decX, node2.getPosition().getY() + decY);
-        }
+        g2d.setStroke(new BasicStroke(7, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        g2d.setColor(DEFAULT_ITINERARY_COLOR);
+        g2d.drawLine(node1.getPosition().getX() + decX, node1.getPosition().getY() + decY, node2.getPosition().getX() + decX, node2.getPosition().getY() + decY);
     }
 
     private Color getNodeTypeColor(Node node){

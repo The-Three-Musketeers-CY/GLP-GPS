@@ -15,16 +15,24 @@ public class TransportRepository {
         transports = new HashMap<>();
     }
 
+    /**
+     * This method add Transport to transports list
+     * @param transportIdentifier Identifier type of the transport
+     */
     public void addTransport(Transport transportIdentifier) {
         transports.put(transportIdentifier.getIdentifier(), transportIdentifier);
     }
 
+    /**
+     * This method returns all transports
+     * @return The transports list
+     */
     public HashMap<TransportIdentifier, Transport> getTransports() {
         return transports;
     }
 
     /**
-     * This method return all public transports
+     * This method returns all public transports
      * @return The public transports list
      */
     public ArrayList<Transport> getPublicTransports(){
@@ -39,7 +47,7 @@ public class TransportRepository {
     }
 
     /**
-     * This method return all Individual transports
+     * This method returns all Individual transports
      * @return The individual transports list
      */
     public ArrayList<Transport> getIndividualTransports(){
@@ -54,7 +62,7 @@ public class TransportRepository {
     }
 
     /**
-     * This method return all transports without the exclusive transport that the user wants to use
+     * This method returns all transports without the exclusive transport that the user wants to use
      * @param exclusiveTransportIdentifier the exclusive transport that the user wants to use
      * @return The transports list without the exclusive transports, so all the transports to avoid
      */
@@ -73,6 +81,9 @@ public class TransportRepository {
         return transportsToAvoid ;
     }
 
+    /**
+     * @return Instance of this class
+     */
     public static TransportRepository getInstance() {
         return instance;
     }

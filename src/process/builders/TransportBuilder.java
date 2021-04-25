@@ -6,6 +6,9 @@ import model.Transport;
 import model.repositories.TransportRepository;
 import org.apache.log4j.Logger;
 
+/**
+ * This class builds all transports
+ */
 public class TransportBuilder {
 
     private static final float FREE_COST = 0;

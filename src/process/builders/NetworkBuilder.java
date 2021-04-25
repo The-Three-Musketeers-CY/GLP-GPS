@@ -8,6 +8,9 @@ import model.identifiers.NetworkIdentifier;
 import model.identifiers.WayIdentifier;
 import org.apache.log4j.Logger;
 
+/**
+ * This class builds all networks
+ */
 public class NetworkBuilder {
 
     private Logger logger = LoggerUtility.getLogger(NetworkBuilder.class, LoggerConfig.LOG_FILE_TYPE);
@@ -28,7 +31,7 @@ public class NetworkBuilder {
     }
 
     private Network buildNetwork(NetworkIdentifier type) throws IllegalArgumentException{
-        WayIdentifier[] acceptedWays ;
+        WayIdentifier[] acceptedWays;
         switch (type) {
             case FOOT:
                 logger.info("Foot network creation");

@@ -13,7 +13,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import process.factories.NodeFactory;
-import process.repositories.MapRepository;
+import process.repositories.MapBuildRepository;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,10 +21,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * This class builds the map
+ */
 public class MapBuilder {
 
-    private MapRepository mapRepository = MapRepository.getInstance();
+    private MapBuildRepository mapBuildRepository = MapBuildRepository.getInstance();
 
     private Logger logger = LoggerUtility.getLogger(MapBuilder.class, LoggerConfig.LOG_FILE_TYPE);
 
@@ -32,7 +34,7 @@ public class MapBuilder {
      * Create a MapBuilder
      * @param path the map file's path
      */
-    public MapBuilder(String path) throws IllegalArgumentException, IOException, ParserConfigurationException, SAXException{
+    public MapBuilder(String path) throws IllegalArgumentException, IOException, ParserConfigurationException, SAXException {
 
         File file = new File(path);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -65,7 +67,7 @@ public class MapBuilder {
                 } else {
                     node = NodeFactory.create(id, Integer.parseInt(posX), Integer.parseInt(posY));
                 }
-                mapRepository.addNode(node);
+                mapBuildRepository.addNode(node);
             }
         }
         logger.info("Read " + indexNode + " nodes from map file");
@@ -75,7 +77,7 @@ public class MapBuilder {
             Node nd = nl.item(indexNode);
             if(nd.getNodeType()== Node.ELEMENT_NODE) {
                 Element elt = (Element) nd;
-                model.Node node = mapRepository.getNode(Float.parseFloat(elt.getAttribute("x")), Float.parseFloat(elt.getAttribute("y")));
+                model.Node node = mapBuildRepository.getNode(Float.parseFloat(elt.getAttribute("x")), Float.parseFloat(elt.getAttribute("y")));
                 if (node != null) {
                     NodeList nodeList = elt.getElementsByTagName("adjacentNode");
                     for (int indexAdjacentNode = 0; indexAdjacentNode < nodeList.getLength(); indexAdjacentNode++) {
@@ -84,7 +86,7 @@ public class MapBuilder {
                             Element eltAdjacent = (Element) ndAdjacent;
                             String id = eltAdjacent.getAttribute("id");
                             String typeAdjacent = eltAdjacent.getAttribute("type");
-                            model.Node adjNode = mapRepository.getNode(id);
+                            model.Node adjNode = mapBuildRepository.getNode(id);
                             Way way;
                             if(!eltAdjacent.getAttribute("lineNumber").isBlank()){
                                 String lineNumber = eltAdjacent.getAttribute("lineNumber");
@@ -93,13 +95,14 @@ public class MapBuilder {
                             else {
                                 way = new Way(WayIdentifier.valueOf(typeAdjacent), node, adjNode);
                             }
-                            mapRepository.addWayToNode(way);
+                            mapBuildRepository.addWayToNode(way);
                         }
                     }
                 }
             }
         }
     }
+
     /**
      * This method built a new map with its different nodes, ways, networks
      */
@@ -108,53 +111,53 @@ public class MapBuilder {
         // Initializing map
         Map map = new Map();
 
-            // Creating networks, transports and wayTypes
-            NetworkBuilder networkBuilder = new NetworkBuilder();
-            networkBuilder.buildNetworks(map);
-            TransportBuilder transportBuilder = new TransportBuilder();
-            transportBuilder.buildTransports();
-            WayTypeBuilder wayTypeBuilder = new WayTypeBuilder();
-            wayTypeBuilder.buildWayTypes();
+        // Creating networks, transports and wayTypes
+        NetworkBuilder networkBuilder = new NetworkBuilder();
+        networkBuilder.buildNetworks(map);
+        TransportBuilder transportBuilder = new TransportBuilder();
+        transportBuilder.buildTransports();
+        WayTypeBuilder wayTypeBuilder = new WayTypeBuilder();
+        wayTypeBuilder.buildWayTypes();
 
-            // Putting nodes into map
-            for (model.Node node : mapRepository.getNodes().values()) {
-                map.getNodes().put(node.getId(), node);
-            }
-            logger.info("Add " + map.getNodes().size() + " nodes to the map");
+        // Putting nodes into map
+        for (model.Node node : mapBuildRepository.getNodes().values()) {
+            map.getNodes().put(node.getId(), node);
+        }
+        logger.info("Add " + map.getNodes().size() + " nodes to the map");
 
 
-            // Putting all ways into all concerned networks
-            int waysCounter = 0;
-            for (model.Node node : mapRepository.getNodes().values()) {
-                NodeWays ways = mapRepository.getNodeWays(node.getId());
-                if (ways != null)
-                    for (Way way : ways.getWays().values()) {
-                        String adjNodeID = way.getNodeB().getId();
-                        for (Network network : map.getNetworks().values()) {
-                            if (network.isAcceptedWay(way.getIdentifier())) {
-                                network.addWay(way.getIdentifier(), node, map.getNodes().get(adjNodeID), way.getLineNumber());
-                                waysCounter++;
-                            }
+        // Putting all ways into all concerned networks
+        int waysCounter = 0;
+        for (model.Node node : mapBuildRepository.getNodes().values()) {
+            NodeWays ways = mapBuildRepository.getNodeWays(node.getId());
+            if (ways != null)
+                for (Way way : ways.getWays().values()) {
+                    String adjNodeID = way.getNodeB().getId();
+                    for (Network network : map.getNetworks().values()) {
+                        if (network.isAcceptedWayType(way.getIdentifier())) {
+                            network.addWay(way.getIdentifier(), node, map.getNodes().get(adjNodeID), way.getLineNumber());
+                            waysCounter++;
                         }
                     }
-            }
-            logger.info("Add " + waysCounter + " ways to the map");
+                }
+        }
+        logger.info("Add " + waysCounter + " ways to the map");
 
 
-            // Putting foot ways
-            Network footNetwork = map.getNetworks().get(NetworkIdentifier.FOOT);
-            for (model.Node nodeA : map.getNodes().values()) {
-                if (nodeA.isPOI()) {
-                    footNetwork.getNodeWays().put(nodeA.getId(), new NodeWays(nodeA));
-                    for (model.Node nodeB : map.getNodes().values()) {
-                        if (nodeB.isPOI())
-                            footNetwork.getNodeWays().get(nodeA.getId()).getWays().put(nodeB.getId(), new Way(WayIdentifier.FOOT, nodeA, nodeB));
-                    }
+        // Putting foot ways
+        Network footNetwork = map.getNetworks().get(NetworkIdentifier.FOOT);
+        for (model.Node nodeA : map.getNodes().values()) {
+            if (nodeA.isPOI()) {
+                footNetwork.getNodeWays().put(nodeA.getId(), new NodeWays(nodeA));
+                for (model.Node nodeB : map.getNodes().values()) {
+                    if (nodeB.isPOI())
+                        footNetwork.getNodeWays().get(nodeA.getId()).getWays().put(nodeB.getId(), new Way(WayIdentifier.FOOT, nodeA, nodeB));
                 }
             }
+        }
 
-            // Returning map after building it correctly
-            logger.info("Map built successfully");
+        // Returning map after building it correctly
+        logger.info("Map built successfully");
 
         return map;
     }
