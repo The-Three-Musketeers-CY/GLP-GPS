@@ -70,10 +70,16 @@ public class Dijkstra {
 
                             //Transport constraints
 
+                            //Cannot change transport when not on POI
+                            if (!currentNode.isPOI() && accessibleNodes.get(currentNode.getId()).getTransport() != null) {
+                                internTransportsToAvoid.addAll(TransportRepository.getInstance().getTransportToAvoid(accessibleNodes.get(currentNode.getId()).getTransport().getIdentifier()));
+                            }
+
                             //After car, only public transport
                             if(transports.contains(transportRepository.get(TransportIdentifier.CAR))) {
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.BICYCLE));
                             }
+                            //After bicycle, only public transport
                             if (transports.contains(transportRepository.get(TransportIdentifier.BICYCLE))) {
                                 internTransportsToAvoid.add(transportRepository.get(TransportIdentifier.CAR));
                             }
