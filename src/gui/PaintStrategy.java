@@ -53,19 +53,29 @@ public class PaintStrategy {
         int x2 = way.getNodeB().getPosition().getX() + decX;
         int y1 = way.getNodeA().getPosition().getY() + decY;
         int y2 = way.getNodeB().getPosition().getY() + decY;
-        if (y1 > y2) {
+        if (x1 < x2 && y1 > y2) {
+            x1 = x1 + 2;
+            x2 = x2 + 2;
+            y1 = y1 + 2;
+            y2 = y2 + 2;
+        }
+        if (x1 < x2 && y1 < y2) {
+            x1 = x1 - 1;
+            x2 = x2 - 1;
             y1 = y1 + 1;
             y2 = y2 + 1;
-        } else {
+        }
+        if (x1 > x2 && y1 > y2) {
+            x1 = x1 + 1;
+            x2 = x2 + 1;
             y1 = y1 - 1;
             y2 = y2 - 1;
         }
-        if (x1 > x2) {
+        if (x1 > x2 && y1 < y2) {
             x1 = x1 - 1;
             x2 = x2 - 1;
-        } else {
-            x1 = x1 + 1;
-            x2 = x2 + 1;
+            y1 = y1 + 1;
+            y2 = y2 + 1;
         }
         if (x1 == x2 && y1 > y2) {
             x1 = x1 + 1;

@@ -57,13 +57,13 @@
     <node id="10" x="300" y="300">
         <poi type="STATION">Saint-Gilles - Chemin Vert</poi>
         <adjacentNode id="9" type="BUS_LANE" lineNumber="1"/>
-        <adjacentNode id="11" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="11" type="URBAN_ROAD"/>
         <adjacentNode id="30" type="URBAN_ROAD" />
         <adjacentNode id="31" type="URBAN_ROAD" />
         <adjacentNode id="124" type="URBAN_ROAD" />
     </node>
     <node id="11" x="350" y="200">
-        <adjacentNode id="10" type="URBAN_ROAD" />
+        <adjacentNode id="10" type="BUS_LANE" lineNumber="1" />
         <adjacentNode id="12" type="URBAN_ROAD" />
         <adjacentNode id="13" type="URBAN_ROAD" />
     </node>
@@ -194,7 +194,7 @@
         <poi type="STATION">Place de Clichy</poi>
         <adjacentNode id="6" type="URBAN_ROAD" />
         <adjacentNode id="34" type="METRO" />
-        <adjacentNode id="35" type="URBAN_ROAD" />
+        <adjacentNode id="35" type="BUS_LANE" lineNumber="1"/>
         <adjacentNode id="44" type="METRO" />
     </node>
     <node id="34" x="170" y="120">
@@ -207,7 +207,7 @@
         <poi type="STATION">Bastille</poi>
         <adjacentNode id="1" type="URBAN_ROAD" />
         <adjacentNode id="4" type="BUS_LANE" lineNumber="1"/>
-        <adjacentNode id="33" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="33" type="URBAN_ROAD" />
     </node>
     <node id="36" x="50" y="300">
         <poi type="STATION">Bastille - Beaumarchais</poi>
