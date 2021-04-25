@@ -220,31 +220,31 @@
     </node>
     <node id="38" x="20" y="360">
         <adjacentNode id="37" type="URBAN_ROAD" />
-        <adjacentNode id="39" type="URBAN_ROAD" />
+        <adjacentNode id="39" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="39" x="50" y="400">
         <poi type="STATION">République</poi>
-        <adjacentNode id="38" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="38" type="URBAN_ROAD"/>
         <adjacentNode id="40" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="40" x="100" y="360">
         <adjacentNode id="39" type="URBAN_ROAD" />
-        <adjacentNode id="41" type="URBAN_ROAD" />
+        <adjacentNode id="41" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="41" x="150" y="380">
         <poi type="STATION">République - Magenta</poi>
-        <adjacentNode id="40" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="40" type="URBAN_ROAD" />
         <adjacentNode id="42" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="42" x="170" y="330">
         <adjacentNode id="41" type="URBAN_ROAD" />
-        <adjacentNode id="43" type="URBAN_ROAD" />
+        <adjacentNode id="43" type="BUS_LANE" lineNumber="1"/>
     </node>
     <node id="43" x="150" y="280">
         <poi type="STATION">Saint-Claude</poi>
         <adjacentNode id="7" type="URBAN_ROAD" />
         <adjacentNode id="9" type="BUS_LANE" lineNumber="1"/>
-        <adjacentNode id="42" type="BUS_LANE" lineNumber="1"/>
+        <adjacentNode id="42" type="URBAN_ROAD"/>
     </node>
     <node id="44" x="350" y="110">
         <poi type="STATION">Rome</poi>
