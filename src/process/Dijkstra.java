@@ -361,24 +361,27 @@ public class Dijkstra {
         }
 
         ArrayList<Node> tempNodes = new ArrayList<>() ;
-
+        ArrayList<Transport> temptransports =  new ArrayList<>() ;
 
         //If not, find the best one with an attraction
         if(!isTouristic) {
             for (Node touristicNode : touristicNodes) {
 
                 tempNodes.addAll(nodes);
+                temptransports.addAll(transportsToAvoid);
 
                 //Add the touristic node
                 tempNodes.add(1, touristicNode);
 
-                Itinerary itinerary = calculateItinerary(tempNodes, map, transportsToAvoid, weightType);
+                Itinerary itinerary = calculateItinerary(tempNodes, map, temptransports, weightType);
+
 
                 if (bestItinerary == null || itinerary.getTime() < bestItinerary.getTime()) {
                     bestItinerary = itinerary;
                 }
 
                 tempNodes.clear();
+                temptransports.clear();
 
             }
         }else{
