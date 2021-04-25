@@ -5,7 +5,7 @@ package config;
  */
 public class GPSConfig {
 
-    public static final String GPS_FRAME_NAME = "Test GPS - v4";
+    public static final String GPS_FRAME_NAME = "GPS - v4";
     public static final String MAP_PATH = "src/test/map/map.xml";
 
     public static final int WINDOW_WIDTH = 1000;
