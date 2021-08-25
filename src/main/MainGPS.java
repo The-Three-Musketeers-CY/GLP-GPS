@@ -1,3 +1,5 @@
+package main;
+
 import config.GPSConfig;
 import gui.MainGUI;
 
